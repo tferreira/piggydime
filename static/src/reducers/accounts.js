@@ -1,4 +1,4 @@
-import { FETCH_ACCOUNTS_DATA_REQUEST, RECEIVE_ACCOUNTS_DATA } from '../constants';
+import { RECEIVE_ACCOUNTS_DATA, FETCH_ACCOUNTS_DATA_REQUEST } from '../constants';
 import { createReducer } from '../utils/misc';
 
 const initialState = {

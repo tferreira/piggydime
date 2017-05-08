@@ -1,20 +1,21 @@
-# React-Redux-Flask #
+# Piggybank #
 
-Boilerplate application for a Flask JWT Backend and a React/Redux Front-End with Material UI.
+This app allows you to keep track of your bank accounts balance.
 
-* Python 2.7+ or 3.x
-* Pytest
-* Heroku
-* Flask
-* React
-* Redux
-* React-Router 2.0
-* React-Router-Redux
-* Babel 6
-* SCSS processing
-* Webpack
+This project is a WIP. The basic features that needs to be implemented are the following:
 
-![screenshot](http://i.imgur.com/ZIS4qkw.png)
+ * [ ] Be able to have multiple accounts
+ * [ ] Quick menu for new transactions
+ * [ ] Recurring transactions
+ * [ ] Previsional balance to a custom date
+
+ In the future, we'd want to have:
+
+ * [ ] Statistics charts
+ * [ ] Import transactions data from bank CSV exports
+ * [ ] Backup/Restore feature
+
+## How to install
 
 ### Create DB
 ```sh

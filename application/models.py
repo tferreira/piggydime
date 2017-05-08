@@ -22,3 +22,12 @@ class User(db.Model):
             return user
         else:
             return None
+
+
+class Account(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    user = db.Column(db.Integer())
+    label = db.Column(db.String(255))
+    bank = db.Column(db.String(255))
+    iban = db.Column(db.String(34), unique=True)
+    bic = db.Column(db.String(12))

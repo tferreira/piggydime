@@ -15,15 +15,15 @@ function mapDispatchToProps(dispatch) {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class Analytics extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class AccountsListView extends React.Component { // eslint-disable-line react/prefer-stateless-function
     render() {
         return (
             <div className="col-md-8">
-                <h1>Analytics</h1>
+                <h1>Accounts</h1>
                 <hr />
             </div>
         );
     }
 }
 
-export default Analytics;
+export default AccountsListView;

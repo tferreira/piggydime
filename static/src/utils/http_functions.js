@@ -42,3 +42,7 @@ export function has_github_token(token) {
 export function data_about_user(token) {
     return axios.get('api/user', tokenConfig(token));
 }
+
+export function data_about_accounts(token) {
+    return axios.get('api/accounts', tokenConfig(token))
+}

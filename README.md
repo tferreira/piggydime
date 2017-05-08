@@ -1,4 +1,4 @@
-# Piggybank #
+# Piggydime #
 
 This app allows you to keep track of your bank accounts balance.
 

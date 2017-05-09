@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
 
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class AccountsListView extends React.Component {
+export default class AccountsSideList extends React.Component {
     componentDidMount() {
         this.fetchData();
     }
@@ -60,7 +60,7 @@ export default class AccountsListView extends React.Component {
     }
 }
 
-AccountsListView.propTypes = {
+AccountsSideList.propTypes = {
     fetchAccountsData: React.PropTypes.func,
     loaded: React.PropTypes.bool,
     data: React.PropTypes.any,

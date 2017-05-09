@@ -44,7 +44,7 @@ export default class AccountsSideList extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={`${styles}`}>
                 {!this.props.loaded
                     ? <h1>Loading data...</h1>
                     :

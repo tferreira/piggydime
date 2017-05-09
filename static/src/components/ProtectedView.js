@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actionCreators from '../actions/data';
+import * as actionCreators from '../actions/user';
 
 function mapStateToProps(state) {
     return {
-        data: state.data,
+        data: state.user.data,
         token: state.auth.token,
-        loaded: state.data.loaded,
-        isFetching: state.data.isFetching,
+        loaded: state.user.loaded,
+        isFetching: state.user.isFetching,
     };
 }
 
@@ -26,7 +26,7 @@ export default class ProtectedView extends React.Component {
 
     fetchData() {
         const token = this.props.token;
-        this.props.fetchProtectedData(token);
+        this.props.fetchUserData(token);
     }
 
     render() {
@@ -38,7 +38,7 @@ export default class ProtectedView extends React.Component {
                     <div>
                         <h1>Welcome back,
                             {this.props.userName}!</h1>
-                        <h1>{this.props.data.data.email}</h1>
+                        <h1>{this.props.data.email}</h1>
                     </div>
                 }
             </div>
@@ -47,7 +47,7 @@ export default class ProtectedView extends React.Component {
 }
 
 ProtectedView.propTypes = {
-    fetchProtectedData: React.PropTypes.func,
+    fetchUserData: React.PropTypes.func,
     loaded: React.PropTypes.bool,
     userName: React.PropTypes.string,
     data: React.PropTypes.any,

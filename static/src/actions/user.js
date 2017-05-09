@@ -1,30 +1,30 @@
-import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA } from '../constants/index';
+import { FETCH_USER_DATA_REQUEST, RECEIVE_USER_DATA } from '../constants/index';
 import { parseJSON } from '../utils/misc';
 import { data_about_user, data_about_accounts } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
 
-export function receiveProtectedData(data) {
+export function receiveUserData(data) {
     return {
-        type: RECEIVE_PROTECTED_DATA,
+        type: RECEIVE_USER_DATA,
         payload: {
             data,
         },
     };
 }
 
-export function fetchProtectedDataRequest() {
+export function fetchUserDataRequest() {
     return {
-        type: FETCH_PROTECTED_DATA_REQUEST,
+        type: FETCH_USER_DATA_REQUEST,
     };
 }
 
-export function fetchProtectedData(token) {
+export function fetchUserData(token) {
     return (dispatch) => {
-        dispatch(fetchProtectedDataRequest());
+        dispatch(fetchUserDataRequest());
         data_about_user(token)
             .then(parseJSON)
             .then(response => {
-                dispatch(receiveProtectedData(response.result));
+                dispatch(receiveUserData(response.result));
             })
             .catch(error => {
                 if (error.status === 401) {

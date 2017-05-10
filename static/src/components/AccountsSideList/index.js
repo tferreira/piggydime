@@ -1,7 +1,16 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators from '../actions/accounts';
+import * as actionCreators from '../../actions/accounts';
+
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import Subheader from 'material-ui/Subheader';
+import Edit from 'material-ui/svg-icons/image/edit';
+
+/* component styles */
+import styles from './styles.scss';
+
 
 function mapStateToProps(state) {
     return {
@@ -31,12 +40,15 @@ export default class AccountsSideList extends React.Component {
     renderAccountsList( accounts ) {
         const rows = accounts.map((row) => {
             return (
-                <li key={'account-' + row.id}>
-                    <p>{row.label}</p>
-                    <p>{row.bank}</p>
-                    <p>{row.iban}</p>
-                    <p>{row.bic}</p>
-                </li>
+                <GridTile
+                    key={'account-' + row.id}
+                    title={row.label}
+                    subtitle={<span><b>{row.bank}</b></span>}
+                    actionIcon={<IconButton><Edit color="white" /></IconButton>}
+                    className={styles.gridTile}
+                    cols={1}
+                >
+                </GridTile>
             )
         })
         return rows
@@ -44,15 +56,19 @@ export default class AccountsSideList extends React.Component {
 
     render() {
         return (
-            <div className={`${styles}`}>
+            <div className={styles.sidebar}>
                 {!this.props.loaded
                     ? <h1>Loading data...</h1>
                     :
-                    <div>
-                        <h1>Your accounts</h1>
-                        <h1>
-                            <ul>{this.renderAccountsList(this.props.data)}</ul>
-                        </h1>
+                    <div className={styles.root}>
+                        <Subheader>Your accounts</Subheader>
+                        <GridList
+                            cellHeight={100}
+                            className={styles.gridList}
+                            cols={1}
+                        >
+                        {this.renderAccountsList(this.props.data)}
+                        </GridList>
                     </div>
                 }
             </div>

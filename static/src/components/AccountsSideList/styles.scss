@@ -1,0 +1,19 @@
+:local(.sidebar) {
+  width: 220;
+}
+
+:local(.root) {
+  width: 220;
+  display: 'flex';
+  flex-wrap: 'wrap';
+  justify-content: 'space-around';
+
+}
+
+:local(.gridList) {
+  overflow-y: 'auto';
+}
+
+:local(.gridTile) {
+  background-color: rgb(0, 188, 212);
+}

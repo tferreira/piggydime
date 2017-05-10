@@ -3,6 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/accounts';
 
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
@@ -61,7 +64,11 @@ export default class AccountsSideList extends React.Component {
                     ? <h1>Loading data...</h1>
                     :
                     <div className={styles.root}>
-                        <Subheader>Your accounts</Subheader>
+                        <Subheader>Your accounts
+                            <FloatingActionButton mini={true} className={styles.addButton}>
+                              <ContentAdd />
+                            </FloatingActionButton>
+                        </Subheader>
                         <GridList
                             cellHeight={100}
                             className={styles.gridList}

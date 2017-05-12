@@ -55,3 +55,13 @@ export function create_account(token, label, bank, iban, bic) {
         bic,
     }, tokenConfig(token));
 }
+
+export function edit_account(token, id, label, bank, iban, bic) {
+    return axios.post('api/accounts/edit', {
+        id,
+        label,
+        bank,
+        iban,
+        bic,
+    }, tokenConfig(token));
+}

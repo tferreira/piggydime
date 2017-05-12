@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/accounts';
 
 import AddAccount from '../Modals/AddAccount.js'
+import EditAccount from '../Modals/EditAccount.js'
 
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
-import Edit from 'material-ui/svg-icons/image/edit';
 
 /* component styles */
 import styles from './styles.scss';
@@ -46,7 +46,7 @@ export default class AccountsSideList extends React.Component {
                     key={'account-' + row.id}
                     title={row.label}
                     subtitle={<span><b>{row.bank}</b></span>}
-                    actionIcon={<IconButton><Edit color="white" /></IconButton>}
+                    actionIcon={<EditAccount editAccount={this.editAccount.bind(this)} fields={row}/>}
                     className={styles.gridTile}
                     cols={1}
                 >
@@ -59,6 +59,12 @@ export default class AccountsSideList extends React.Component {
     createAccount( account ) {
         const token = this.props.token;
         this.props.createAccount(token, account);
+    }
+
+    editAccount( account ) {
+        const token = this.props.token;
+        this.props.editAccount(token, account);
+        this.fetchData();
     }
 
     render() {

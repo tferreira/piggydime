@@ -101,3 +101,25 @@ def create_account():
     return jsonify(
         id=account.id
     )
+
+
+@app.route("/api/accounts/edit", methods=["POST"])
+@requires_auth
+def edit_account():
+    incoming = request.get_json()
+    account = Account.query.filter_by(id=incoming["id"])
+    account.update({
+        'label': incoming["label"],
+        'bank': incoming["bank"],
+        'iban': incoming["iban"],
+        'bic': incoming["bic"]
+    })
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Account with that IBAN already exists"), 409
+
+    return jsonify(
+        id=account.first().id
+    )

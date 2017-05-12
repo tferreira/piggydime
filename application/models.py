@@ -42,3 +42,11 @@ class Account(db.Model):
     @staticmethod
     def get_accounts(user):
         return Account.query.filter_by(user=user['id']).all()
+
+    @staticmethod
+    def get_account_by_id(id):
+        account = Account.query.filter_by(id=id)
+        if account:
+            return account
+        else:
+            return None

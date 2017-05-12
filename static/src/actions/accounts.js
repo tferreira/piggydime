@@ -1,6 +1,6 @@
 import { FETCH_ACCOUNTS_DATA_REQUEST, RECEIVE_ACCOUNTS_DATA } from '../constants/index';
 import { parseJSON } from '../utils/misc';
-import { data_about_accounts, create_account } from '../utils/http_functions';
+import { data_about_accounts, create_account, edit_account } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
 
 export function receiveAccountsData(data) {
@@ -39,7 +39,20 @@ export function createAccount(token, account) {
         create_account(token, account.label, account.bank, account.iban, account.bic)
             .then(parseJSON)
             .then(response => {
-                fetchAccountsData(token);
+            })
+            .catch(error => {
+                if (error.status === 401) {
+                    dispatch(logoutAndRedirect(error));
+                }
+            });
+    };
+}
+
+export function editAccount(token, account) { 
+    return (dispatch) => {
+        edit_account(token, account.id, account.label, account.bank, account.iban, account.bic)
+            .then(parseJSON)
+            .then(response => {
             })
             .catch(error => {
                 if (error.status === 401) {

@@ -78,3 +78,26 @@ def get_accounts():
             'bic': account.bic
         })
     return jsonify(result=accountsList)
+
+
+@app.route("/api/accounts/create", methods=["POST"])
+@requires_auth
+def create_account():
+    incoming = request.get_json()
+    account = Account(
+        user=g.current_user,
+        label=incoming["label"],
+        bank=incoming["bank"],
+        iban=incoming["iban"],
+        bic=incoming["bic"]
+    )
+    db.session.add(account)
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Account with that IBAN already exists"), 409
+
+    return jsonify(
+        id=account.id
+    )

@@ -3,8 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/accounts';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import AddAccountModal from '../Modals/AddAccountModal.js'
 
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
@@ -57,6 +56,11 @@ export default class AccountsSideList extends React.Component {
         return rows
     }
 
+    addAccount( account ) {
+        const token = this.props.token;
+        this.props.addAccount(token, account);
+    }
+
     render() {
         return (
             <div className={styles.sidebar}>
@@ -65,9 +69,7 @@ export default class AccountsSideList extends React.Component {
                     :
                     <div className={styles.root}>
                         <Subheader>Your accounts
-                            <FloatingActionButton mini={true} className={styles.addButton}>
-                              <ContentAdd />
-                            </FloatingActionButton>
+                            <AddAccountModal addAccount={this.addAccount.bind(this)} />
                         </Subheader>
                         <GridList
                             cellHeight={100}

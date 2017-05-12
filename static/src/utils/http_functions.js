@@ -46,3 +46,12 @@ export function data_about_user(token) {
 export function data_about_accounts(token) {
     return axios.get('api/accounts', tokenConfig(token))
 }
+
+export function create_account(token, label, bank, iban, bic) {
+    return axios.post('api/accounts/create', {
+        label,
+        bank,
+        iban,
+        bic,
+    }, tokenConfig(token));
+}

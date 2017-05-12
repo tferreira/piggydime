@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 
 import styles from './styles.scss';
 
-export default class AddAccountModal extends React.Component {
+export default class AddAccount extends React.Component {
   state = {
     open: false,
     disabled: true,
@@ -99,7 +99,7 @@ export default class AddAccountModal extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
-      this.props.addAccount({
+      this.props.createAccount({
         label: this.state.labelValue,
         bank: this.state.bankValue,
         iban: this.state.ibanValue,

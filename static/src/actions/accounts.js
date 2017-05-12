@@ -34,7 +34,7 @@ export function fetchAccountsData(token) {
     };
 }
 
-export function addAccount(token, account) { 
+export function createAccount(token, account) { 
     return (dispatch) => {
         create_account(token, account.label, account.bank, account.iban, account.bic)
             .then(parseJSON)

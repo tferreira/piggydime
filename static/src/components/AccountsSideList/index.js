@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/accounts';
 
-import AddAccountModal from '../Modals/AddAccountModal.js'
+import AddAccount from '../Modals/AddAccount.js'
 
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
@@ -56,9 +56,9 @@ export default class AccountsSideList extends React.Component {
         return rows
     }
 
-    addAccount( account ) {
+    createAccount( account ) {
         const token = this.props.token;
-        this.props.addAccount(token, account);
+        this.props.createAccount(token, account);
     }
 
     render() {
@@ -69,7 +69,7 @@ export default class AccountsSideList extends React.Component {
                     :
                     <div className={styles.root}>
                         <Subheader>Your accounts
-                            <AddAccountModal addAccount={this.addAccount.bind(this)} />
+                            <AddAccount createAccount={this.createAccount.bind(this)} />
                         </Subheader>
                         <GridList
                             cellHeight={100}

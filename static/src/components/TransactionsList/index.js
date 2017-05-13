@@ -52,6 +52,10 @@ export default class TransactionsList extends React.Component {
     this.setState({selectedAccount: this.props.selectedAccount})
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    this.scrollToBottom()
+  }
+
   handleToggle = (event, toggled) => {
     this.setState({
       [event.target.name]: toggled,
@@ -76,6 +80,10 @@ export default class TransactionsList extends React.Component {
     }))
   }
 
+  scrollToBottom() {
+    this.refs.table.refs.tableDiv.scrollTop = this.refs.table.refs.tableDiv.scrollHeight
+  }
+
   renderTransactionsList( transactions ) {
     const rows = transactions.map((row, index) => {
       return (
@@ -98,6 +106,7 @@ export default class TransactionsList extends React.Component {
         :
         <div className={styles.mainTable}>
           <Table
+            ref='table'
             height={this.state.height}
             fixedHeader={this.state.fixedHeader}
             fixedFooter={this.state.fixedFooter}
@@ -121,6 +130,7 @@ export default class TransactionsList extends React.Component {
               deselectOnClickaway={this.state.deselectOnClickaway}
               showRowHover={this.state.showRowHover}
               stripedRows={this.state.stripedRows}
+              style={{height: '100%'}}
             >
               {this.renderTransactionsList(this.state.transactionsList)}
             </TableBody>

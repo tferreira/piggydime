@@ -34,6 +34,7 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TransactionsList extends React.Component {
   state = {
+    selectedAccount: 0,
     fixedHeader: true,
     fixedFooter: true,
     stripedRows: true,
@@ -45,6 +46,10 @@ export default class TransactionsList extends React.Component {
     showCheckboxes: false,
     height: '300px',
   };
+
+  componentWillMount() {
+    this.setState({selectedAccount: this.props.selectedAccount})
+  }
 
   handleToggle = (event, toggled) => {
     this.setState({

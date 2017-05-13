@@ -23,8 +23,8 @@ export default class AccountsContainer extends React.Component {
     return (
       <section>
         <div className={styles.inRow}>
-          <AccountsSideList notifyContainer={this.receiveSelectedAccount.bind(this)}/>
-          <TransactionsList />
+          <AccountsSideList notifyContainer={this.receiveSelectedAccount.bind(this)} />
+          <TransactionsList selectedAccount={this.state.selectedAccount} />
         </div>
       </section>
     )

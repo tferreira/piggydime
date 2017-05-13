@@ -1,9 +1,14 @@
 import React from 'react';
 
-/* components */
 import AccountsSideList from '../../components/AccountsSideList';
+import TransactionsList from '../../components/TransactionsList';
+
+import styles from './styles.scss';
 
 export const AccountsContainer = () =>
   <section>
-    <AccountsSideList />
+    <div className={styles.inRow}>
+      <AccountsSideList />
+      <TransactionsList />
+    </div>
   </section>;

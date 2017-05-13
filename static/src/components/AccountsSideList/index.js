@@ -30,6 +30,12 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class AccountsSideList extends React.Component {
+  state = {
+    selectedAccount: 0,
+  };
+
+  select = (id) => this.setState({selectedAccount: id});
+
   componentDidMount() {
     this.fetchData();
   }
@@ -47,8 +53,9 @@ export default class AccountsSideList extends React.Component {
           title={row.label}
           subtitle={<span><b>{row.bank}</b></span>}
           actionIcon={<EditAccount fields={row} editAccount={this.editAccount.bind(this)} deleteAccount={this.deleteAccount.bind(this)} />}
-          className={styles.gridTile}
+          className={this.state.selectedAccount === row.id ? styles.gridTileSelected : styles.gridTile}
           cols={1}
+          onTouchTap={(e) => {e.stopPropagation(); this.select(row.id);}}
         >
         </GridTile>
       )
@@ -89,7 +96,7 @@ export default class AccountsSideList extends React.Component {
           className={styles.gridList}
           cols={1}
         >
-        {this.renderAccountsList(this.props.data)}
+          {this.renderAccountsList(this.props.data)}
         </GridList>
         </div>
       }

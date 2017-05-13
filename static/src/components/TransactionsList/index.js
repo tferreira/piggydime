@@ -101,13 +101,13 @@ export default class TransactionsList extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {this.renderTransactionsList(this.props.data)}
+              {this.renderTransactionsList([])}
             </TableBody>
             <TableFooter
               adjustForCheckbox={this.state.showCheckboxes}
             >
               <TableRow>
-                <TableRowColumn onTouchTap={this.addRow()} colSpan="4" style={{textAlign: 'center'}}>
+                <TableRowColumn onTouchTap={this.addRow} colSpan="4" style={{textAlign: 'center'}}>
                   Click here to add a new transaction
                 </TableRowColumn>
               </TableRow>

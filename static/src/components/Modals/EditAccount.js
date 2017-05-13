@@ -36,7 +36,7 @@ export default class EditAccount extends React.Component {
     const next_state = {};
     next_state[type] = value;
     this.setState(next_state, () => {
-        this.isDisabled();
+      this.isDisabled();
     });
   }
 
@@ -48,7 +48,7 @@ export default class EditAccount extends React.Component {
 
     if (this.state.labelValue === '') {
       this.setState({
-        email_error_text: null,
+      email_error_text: null,
       });
     } else {
       label_is_valid = true;
@@ -56,7 +56,7 @@ export default class EditAccount extends React.Component {
 
     if (this.state.bankValue === '') {
       this.setState({
-        email_error_text: null,
+      email_error_text: null,
       });
     } else {
       bank_is_valid = true;
@@ -64,37 +64,37 @@ export default class EditAccount extends React.Component {
 
     if (this.state.ibanValue === '') {
       this.setState({
-        iban_error_text: null,
+      iban_error_text: null,
       });
     } else if (this.state.ibanValue.length <= 34) {
       iban_is_valid = true;
       this.setState({
-        iban_error_text: null,
+      iban_error_text: null,
       });
     } else {
       this.setState({
-        iban_error_text: 'Your IBAN can have 34 characters max.',
+      iban_error_text: 'Your IBAN can have 34 characters max.',
       });
     }
 
     if (this.state.bicValue.length <= 12) {
       bic_is_valid = true;
       this.setState({
-        bic_error_text: null,
+      bic_error_text: null,
       });
     } else {
       this.setState({
-        bic_error_text: 'Your BIC can have 12 characters max.',
+      bic_error_text: 'Your BIC can have 12 characters max.',
       });
     }
 
     if (label_is_valid && bank_is_valid && iban_is_valid && bic_is_valid) {
       this.setState({
-        disabled: false,
+      disabled: false,
       });
     } else {
       this.setState({
-        disabled: true,
+      disabled: true,
       });
     }
   }
@@ -102,11 +102,11 @@ export default class EditAccount extends React.Component {
   onSubmit = () => {
     if (!this.state.disabled) {
       this.props.editAccount({
-        id: this.state.id,
-        label: this.state.labelValue,
-        bank: this.state.bankValue,
-        iban: this.state.ibanValue,
-        bic: this.state.bicValue
+      id: this.state.id,
+      label: this.state.labelValue,
+      bank: this.state.bankValue,
+      iban: this.state.ibanValue,
+      bic: this.state.bicValue
       });
       this.handleClose();
     }
@@ -122,62 +122,62 @@ export default class EditAccount extends React.Component {
   render() {
     const actions = [
       <RaisedButton
-        label="Delete"
-        secondary={true}
-        onTouchTap={this.onDelete}
+      label="Delete"
+      secondary={true}
+      onTouchTap={this.onDelete}
       />,
       <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={this.handleClose}
+      label="Cancel"
+      primary={true}
+      onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.onSubmit}
-        disabled={this.state.disabled}
+      label="Submit"
+      primary={true}
+      keyboardFocused={true}
+      onTouchTap={this.onSubmit}
+      disabled={this.state.disabled}
       />,
     ];
 
     return (
       <div>
-        <IconButton onTouchTap={this.handleOpen} ><Edit color="white" /></IconButton>
-        <Dialog
-          title="Edit account"
-          actions={actions}
-          modal={false}
-          className={styles.dialog}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <div>
-              <TextField
-                floatingLabelText="Label"
-                errorText={this.state.email_error_text}
-                onChange={(e) => this.changeValue(e, 'labelValue')}
-                defaultValue={this.state.labelValue}
-              /><br />
-              <TextField
-                floatingLabelText="Bank"
-                errorText={this.state.email_error_text}
-                onChange={(e) => this.changeValue(e, 'bankValue')}
-                defaultValue={this.state.bankValue}
-              /><br />
-              <TextField
-                floatingLabelText="IBAN"
-                errorText={this.state.iban_error_text}
-                onChange={(e) => this.changeValue(e, 'ibanValue')}
-                defaultValue={this.state.ibanValue}
-              /><br />
-              <TextField
-                floatingLabelText="BIC"
-                errorText={this.state.bic_error_text}
-                onChange={(e) => this.changeValue(e, 'bicValue')}
-                defaultValue={this.state.bicValue}
-              /><br />
-            </div>
-        </Dialog>
+      <IconButton onTouchTap={this.handleOpen} ><Edit color="white" /></IconButton>
+      <Dialog
+        title="Edit account"
+        actions={actions}
+        modal={false}
+        className={styles.dialog}
+        open={this.state.open}
+        onRequestClose={this.handleClose}
+      >
+        <div>
+          <TextField
+          floatingLabelText="Label"
+          errorText={this.state.email_error_text}
+          onChange={(e) => this.changeValue(e, 'labelValue')}
+          defaultValue={this.state.labelValue}
+          /><br />
+          <TextField
+          floatingLabelText="Bank"
+          errorText={this.state.email_error_text}
+          onChange={(e) => this.changeValue(e, 'bankValue')}
+          defaultValue={this.state.bankValue}
+          /><br />
+          <TextField
+          floatingLabelText="IBAN"
+          errorText={this.state.iban_error_text}
+          onChange={(e) => this.changeValue(e, 'ibanValue')}
+          defaultValue={this.state.ibanValue}
+          /><br />
+          <TextField
+          floatingLabelText="BIC"
+          errorText={this.state.bic_error_text}
+          onChange={(e) => this.changeValue(e, 'bicValue')}
+          defaultValue={this.state.bicValue}
+          /><br />
+        </div>
+      </Dialog>
       </div>
     );
   }

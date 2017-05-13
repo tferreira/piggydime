@@ -5,11 +5,11 @@ import user from './user';
 import accounts from './accounts';
 
 const rootReducer = combineReducers({
-    routing: routerReducer,
-    /* your reducers */
-    auth,
-    user,
-    accounts,
+  routing: routerReducer,
+  /* your reducers */
+  auth,
+  user,
+  accounts,
 });
 
 export default rootReducer;

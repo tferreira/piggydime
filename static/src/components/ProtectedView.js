@@ -4,52 +4,52 @@ import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions/user';
 
 function mapStateToProps(state) {
-    return {
-        data: state.user.data,
-        token: state.auth.token,
-        loaded: state.user.loaded,
-        isFetching: state.user.isFetching,
-    };
+  return {
+    data: state.user.data,
+    token: state.auth.token,
+    loaded: state.user.loaded,
+    isFetching: state.user.isFetching,
+  };
 }
 
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators(actionCreators, dispatch);
+  return bindActionCreators(actionCreators, dispatch);
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ProtectedView extends React.Component {
-    componentDidMount() {
-        this.fetchData();
-    }
+  componentDidMount() {
+    this.fetchData();
+  }
 
 
-    fetchData() {
-        const token = this.props.token;
-        this.props.fetchUserData(token);
-    }
+  fetchData() {
+    const token = this.props.token;
+    this.props.fetchUserData(token);
+  }
 
-    render() {
-        return (
-            <div>
-                {!this.props.loaded
-                    ? <h1>Loading data...</h1>
-                    :
-                    <div>
-                        <h1>Welcome back,
-                            {this.props.userName}!</h1>
-                        <h1>{this.props.data.email}</h1>
-                    </div>
-                }
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        {!this.props.loaded
+          ? <h1>Loading data...</h1>
+          :
+          <div>
+            <h1>Welcome back,
+              {this.props.userName}!</h1>
+            <h1>{this.props.data.email}</h1>
+          </div>
+        }
+      </div>
+    );
+  }
 }
 
 ProtectedView.propTypes = {
-    fetchUserData: React.PropTypes.func,
-    loaded: React.PropTypes.bool,
-    userName: React.PropTypes.string,
-    data: React.PropTypes.any,
-    token: React.PropTypes.string,
+  fetchUserData: React.PropTypes.func,
+  loaded: React.PropTypes.bool,
+  userName: React.PropTypes.string,
+  data: React.PropTypes.any,
+  token: React.PropTypes.string,
 };

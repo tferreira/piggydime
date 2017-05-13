@@ -17,11 +17,11 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <Router history={history}>
-            <Redirect from="/" to="main" />
-            {routes}
-        </Router>
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <Router history={history}>
+      <Redirect from="/" to="main" />
+      {routes}
+    </Router>
+  </Provider>,
+  document.getElementById('root')
 );

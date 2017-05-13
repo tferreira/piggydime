@@ -4,6 +4,6 @@ import React from 'react';
 import AccountsSideList from '../../components/AccountsSideList';
 
 export const AccountsContainer = () =>
-    <section>
-        <AccountsSideList />
-    </section>;
+  <section>
+    <AccountsSideList />
+  </section>;

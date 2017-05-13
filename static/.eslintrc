@@ -12,10 +12,10 @@
   },
   "rules": {
     "camelcase": 0,
-    "indent": ["error", 4],
+    "indent": ["error", 2],
     "global-require": 0,
     "react/jsx-filename-extension": 0,
-    "react/jsx-indent": ["error", 4],
+    "react/jsx-indent": ["error", 2],
     "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 0,

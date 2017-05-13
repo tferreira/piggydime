@@ -81,7 +81,9 @@ export default class TransactionsList extends React.Component {
   }
 
   scrollToBottom() {
-    this.refs.table.refs.tableDiv.scrollTop = this.refs.table.refs.tableDiv.scrollHeight
+    if (this.refs.table !== undefined) {
+      this.refs.table.refs.tableDiv.scrollTop = this.refs.table.refs.tableDiv.scrollHeight
+    }
   }
 
   renderTransactionsList( transactions ) {

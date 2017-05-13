@@ -56,7 +56,6 @@ export default class AccountsSideList extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-    this.selectDefaultAccount();
   }
 
   fetchData() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui/svg-icons/image/edit';
 import TextField from 'material-ui/TextField';
@@ -111,8 +112,20 @@ export default class EditAccount extends React.Component {
     }
   };
 
+  onDelete = () => {
+    this.props.deleteAccount({
+      id: this.state.id
+    });
+    this.handleClose();
+  };
+
   render() {
     const actions = [
+      <RaisedButton
+        label="Delete"
+        secondary={true}
+        onTouchTap={this.onDelete}
+      />,
       <FlatButton
         label="Cancel"
         primary={true}

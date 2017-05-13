@@ -65,3 +65,9 @@ export function edit_account(token, id, label, bank, iban, bic) {
         bic,
     }, tokenConfig(token));
 }
+
+export function delete_account(token, id) {
+    return axios.post('api/accounts/delete', {
+        id,
+    }, tokenConfig(token));
+}

@@ -46,7 +46,7 @@ export default class AccountsSideList extends React.Component {
                     key={'account-' + row.id}
                     title={row.label}
                     subtitle={<span><b>{row.bank}</b></span>}
-                    actionIcon={<EditAccount editAccount={this.editAccount.bind(this)} fields={row}/>}
+                    actionIcon={<EditAccount fields={row} editAccount={this.editAccount.bind(this)} deleteAccount={this.deleteAccount.bind(this)} />}
                     className={styles.gridTile}
                     cols={1}
                 >
@@ -64,6 +64,12 @@ export default class AccountsSideList extends React.Component {
     editAccount( account ) {
         const token = this.props.token;
         this.props.editAccount(token, account);
+        this.fetchData();
+    }
+
+    deleteAccount( id ) {
+        const token = this.props.token;
+        this.props.deleteAccount(token, id);
         this.fetchData();
     }
 

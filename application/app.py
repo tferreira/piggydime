@@ -123,3 +123,20 @@ def edit_account():
     return jsonify(
         id=account.first().id
     )
+
+
+@app.route("/api/accounts/delete", methods=["POST"])
+@requires_auth
+def delete_account():
+    incoming = request.get_json()
+    account = Account.query.filter_by(id=(incoming["id"]))
+    db.session.delete(account)
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Failed to delete account."), 409
+
+    return jsonify(
+        status='ok'
+    )

@@ -129,8 +129,8 @@ def edit_account():
 @requires_auth
 def delete_account():
     incoming = request.get_json()
-    account = Account.query.filter_by(id=(incoming["id"]))
-    db.session.delete(account)
+    account = Account.query.filter_by(id=incoming["id"]["id"])
+    account.delete()
 
     try:
         db.session.commit()

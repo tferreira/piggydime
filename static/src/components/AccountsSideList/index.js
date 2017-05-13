@@ -30,11 +30,22 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class AccountsSideList extends React.Component {
-  state = {
-    selectedAccount: 0,
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      transactionsList: [],
+      selectedAccount: 0,
+    }
+  }
 
-  select = (id) => this.setState({selectedAccount: id});
+  select = (id) => {
+    this.notifySelectedToContainer(id)
+    this.setState({selectedAccount: id})
+  }
+
+  notifySelectedToContainer() {
+    this.props.notifyContainer(this.state.selectedAccount);
+  }
 
   componentDidMount() {
     this.fetchData();

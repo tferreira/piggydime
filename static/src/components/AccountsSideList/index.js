@@ -20,6 +20,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.accounts.loaded,
     isFetching: state.accounts.isFetching,
+    selectedAccount: state.accounts.selectedAccount,
   };
 }
 
@@ -33,22 +34,29 @@ export default class AccountsSideList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      transactionsList: [],
-      selectedAccount: 0,
+      transactionsList: []
     }
   }
 
   select = (id) => {
-    this.notifySelectedToContainer(id)
-    this.setState({selectedAccount: id})
+    this.props.selectAccount(id)
   }
 
-  notifySelectedToContainer() {
-    this.props.notifyContainer(this.state.selectedAccount);
+  selectDefaultAccount() {
+    if (this.props.data !== undefined && this.props.data !== null && this.props.data.length > 0) {
+      for (var first in this.props.data) {
+        console.log(first.id);
+        this.select(first.id);
+        break;
+      }
+    } else {
+      this.select(null);
+    }
   }
 
   componentDidMount() {
     this.fetchData();
+    this.selectDefaultAccount();
   }
 
   fetchData() {
@@ -90,6 +98,7 @@ export default class AccountsSideList extends React.Component {
     const token = this.props.token;
     this.props.deleteAccount(token, id);
     this.fetchData();
+    this.selectDefaultAccount();
   }
 
   render() {
@@ -121,4 +130,6 @@ AccountsSideList.propTypes = {
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,
+  selectedAccount: React.PropTypes.number,
+  selectAccount: React.PropTypes.func,
 };

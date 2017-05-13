@@ -23,6 +23,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.accounts.loaded,
     isFetching: state.accounts.isFetching,
+    selectedAccount: state.accounts.selectedAccount,
   };
 }
 
@@ -34,7 +35,6 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TransactionsList extends React.Component {
   state = {
-    selectedAccount: 0,
     transactionsList: [],
     fixedHeader: true,
     fixedFooter: true,
@@ -47,10 +47,6 @@ export default class TransactionsList extends React.Component {
     showCheckboxes: false,
     height: '400px',
   };
-
-  componentWillMount() {
-    this.setState({selectedAccount: this.props.selectedAccount})
-  }
 
   componentDidUpdate(prevProps, prevState) {
     this.scrollToBottom()
@@ -101,6 +97,14 @@ export default class TransactionsList extends React.Component {
   }
 
   render() {
+    if (this.props.selectedAccount === undefined || this.props.selectedAccount === null) {
+      return (
+        <div className={styles.mainContainer}>
+          <h3>You don't have any account. Create one!</h3>
+        </div>
+      )
+    }
+
     return (
       <div className={styles.mainContainer}>
       {!this.props.loaded
@@ -158,4 +162,5 @@ TransactionsList.propTypes = {
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,
+  selectedAccount: React.PropTypes.number,
 };

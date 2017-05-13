@@ -78,3 +78,65 @@ def get_accounts():
             'bic': account.bic
         })
     return jsonify(result=accountsList)
+
+
+@app.route("/api/accounts/create", methods=["POST"])
+@requires_auth
+def create_account():
+    incoming = request.get_json()
+    account = Account(
+        user=g.current_user,
+        label=incoming["label"],
+        bank=incoming["bank"],
+        iban=incoming["iban"],
+        bic=incoming["bic"]
+    )
+    db.session.add(account)
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Account with that IBAN already exists"), 409
+
+    return jsonify(
+        id=account.id
+    )
+
+
+@app.route("/api/accounts/edit", methods=["POST"])
+@requires_auth
+def edit_account():
+    incoming = request.get_json()
+    account = Account.query.filter_by(id=incoming["id"])
+    account.update({
+        'label': incoming["label"],
+        'bank': incoming["bank"],
+        'iban': incoming["iban"],
+        'bic': incoming["bic"]
+    })
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Account with that IBAN already exists"), 409
+
+    return jsonify(
+        id=account.first().id
+    )
+
+
+@app.route("/api/accounts/delete", methods=["POST"])
+@requires_auth
+def delete_account():
+    incoming = request.get_json()
+    account = Account.query.filter_by(id=incoming["id"]["id"])
+    account.delete()
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Failed to delete account."), 409
+
+    return jsonify(
+        status='ok'
+    )

@@ -32,9 +32,21 @@ class Account(db.Model):
     iban = db.Column(db.String(34), unique=True)
     bic = db.Column(db.String(12))
 
-    def __init__(self, email, password):
-        pass
+    def __init__(self, user, label, bank, iban, bic):
+        self.user = user['id']
+        self.label = label
+        self.bank = bank
+        self.iban = iban
+        self.bic = bic
 
     @staticmethod
     def get_accounts(user):
         return Account.query.filter_by(user=user['id']).all()
+
+    @staticmethod
+    def get_account_by_id(id):
+        account = Account.query.filter_by(id=id)
+        if account:
+            return account
+        else:
+            return None

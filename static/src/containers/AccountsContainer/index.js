@@ -1,9 +1,9 @@
 import React from 'react';
 
 /* components */
-import AccountsListView from '../../components/AccountsListView';
+import AccountsSideList from '../../components/AccountsSideList';
 
 export const AccountsContainer = () =>
     <section>
-        <AccountsListView />
+        <AccountsSideList />
     </section>;

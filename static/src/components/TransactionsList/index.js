@@ -35,6 +35,7 @@ function mapDispatchToProps(dispatch) {
 export default class TransactionsList extends React.Component {
   state = {
     selectedAccount: 0,
+    transactionsList: [],
     fixedHeader: true,
     fixedFooter: true,
     stripedRows: true,
@@ -44,7 +45,7 @@ export default class TransactionsList extends React.Component {
     enableSelectAll: false,
     deselectOnClickaway: false,
     showCheckboxes: false,
-    height: '300px',
+    height: '400px',
   };
 
   componentWillMount() {
@@ -61,18 +62,28 @@ export default class TransactionsList extends React.Component {
     this.setState({height: event.target.value});
   };
 
-  addRow() {
-    console.log('addRow called!')
+  addDraftRow(row) {
+    let draftRow = {
+      date: Date.now(),
+      label: '',
+      debit: 0,
+      credit: 0,
+      isDraft: true,
+      isRecurring: false,
+    }
+    this.setState((state) => ({
+      transactionsList: state.transactionsList.concat([draftRow])
+    }))
   }
 
   renderTransactionsList( transactions ) {
-    const rows = transactions.map((row) => {
+    const rows = transactions.map((row, index) => {
       return (
-        <TableRow>
-          <TableHeaderColumn className={styles.smallColumn}></TableHeaderColumn>
-          <TableHeaderColumn></TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}></TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}></TableHeaderColumn>
+        <TableRow key={index}>
+          <TableHeaderColumn className={styles.smallColumn}>{row.date.toString()}</TableHeaderColumn>
+          <TableHeaderColumn>{row.label}</TableHeaderColumn>
+          <TableHeaderColumn className={styles.smallColumn}>{row.credit ? row.credit : ''}</TableHeaderColumn>
+          <TableHeaderColumn className={styles.smallColumn}>{row.debit ? row.debit : ''}</TableHeaderColumn>
         </TableRow>
       )
     })
@@ -101,18 +112,23 @@ export default class TransactionsList extends React.Component {
               <TableRow>
                 <TableHeaderColumn className={styles.smallColumn}>Date</TableHeaderColumn>
                 <TableHeaderColumn>Label</TableHeaderColumn>
-                <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Credit</TableHeaderColumn>
+                <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {this.renderTransactionsList([])}
+            <TableBody
+              displayRowCheckbox={this.state.showCheckboxes}
+              deselectOnClickaway={this.state.deselectOnClickaway}
+              showRowHover={this.state.showRowHover}
+              stripedRows={this.state.stripedRows}
+            >
+              {this.renderTransactionsList(this.state.transactionsList)}
             </TableBody>
             <TableFooter
               adjustForCheckbox={this.state.showCheckboxes}
             >
               <TableRow>
-                <TableRowColumn onTouchTap={this.addRow} colSpan="4" style={{textAlign: 'center'}}>
+                <TableRowColumn onTouchTap={this.addDraftRow.bind(this)} colSpan="4" style={{textAlign: 'center'}}>
                   Click here to add a new transaction
                 </TableRowColumn>
               </TableRow>

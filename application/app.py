@@ -162,7 +162,7 @@ def get_transactions():
     return jsonify(result=transactionsList)
 
 
-@app.route("/api/accounts/create", methods=["POST"])
+@app.route("/api/transactions/create", methods=["POST"])
 @requires_auth
 def create_transaction():
     incoming = request.get_json()

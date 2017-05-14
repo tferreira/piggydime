@@ -25,10 +25,6 @@ or
 
 $ export DATABASE_URL="mysql+mysqlconnector://username:password@localhost/mydatabase"
 
-or
-
-$ export DATABASE_URL="sqlite:///your.db"
-
 More about connection strings in this [flask config guide](http://flask-sqlalchemy.pocoo.org/2.1/config/)
 
 $ python manage.py db upgrade

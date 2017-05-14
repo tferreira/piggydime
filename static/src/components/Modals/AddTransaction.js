@@ -2,7 +2,6 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 
 import styles from './styles.scss';
@@ -113,9 +112,7 @@ export default class AddTransaction extends React.Component {
 
     return (
       <div>
-      <RaisedButton label="Add transaction" fullWidth={true} primary={true} onTouchTap={this.handleOpen}>
-        <ContentAdd />
-      </RaisedButton>
+      <RaisedButton label="Add transaction" fullWidth={true} primary={true} onTouchTap={this.handleOpen} />
       <Dialog
         title="Add transaction"
         actions={actions}

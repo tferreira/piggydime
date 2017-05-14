@@ -50,3 +50,21 @@ class Account(db.Model):
             return account
         else:
             return None
+
+
+class Transaction(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    transaction_id = db.Column(db.String(38), unique=True)
+    account_id = db.Column(db.Integer())
+    label = db.Column(db.String(255))
+    amount = db.Column(db.DECIMAL(19, 4))
+    recurrent_group_id = db.Column(db.Integer())
+    date = db.Column(db.Date())
+
+    def __init__(self, transaction_id, account_id, label, amount, recurrent_group_id, date):
+        self.transaction_id = transaction_id
+        self.account_id = account_id
+        self.label = label
+        self.amount = amount
+        self.recurrent_group_id = recurrent_group_id
+        self.date = date

@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
   auth,
   user,
   accounts,
+  transactions,
 });
 
 export default rootReducer;

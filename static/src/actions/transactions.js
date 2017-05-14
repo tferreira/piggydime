@@ -38,11 +38,10 @@ export function createTransaction(token, transaction) {
   return (dispatch) => {
     create_transaction(
       token,
-      transaction.transaction_id,
-      transaction.account_id,
+      transaction.accountId,
       transaction.label,
       transaction.amount,
-      transaction.reccurent_group_id,
+      transaction.recurrentGroupId,
       transaction.date
       )
       .then(parseJSON)

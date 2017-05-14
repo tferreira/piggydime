@@ -83,6 +83,12 @@ export default class TransactionsList extends React.Component {
     }
   }
 
+  createTransaction( transaction ) {
+    const token = this.props.token;
+    this.props.createTransaction(token, transaction);
+    this.fetchData();
+  }
+
   renderTransactionsList( transactions ) {
     const rows = transactions.map((row, index) => {
       return (
@@ -146,7 +152,7 @@ export default class TransactionsList extends React.Component {
             >
               <TableRow>
                 <TableRowColumn colSpan="4">
-                  <AddTransaction />
+                  <AddTransaction selectedAccount={this.props.selectedAccount} createTransaction={this.createTransaction.bind(this)}/>
                 </TableRowColumn>
               </TableRow>
             </TableFooter>

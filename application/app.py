@@ -3,6 +3,7 @@ from .models import User, Account, Transaction
 from index import app, db
 from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_token, requires_auth, verify_token
+from uuid import uuid4
 
 
 @app.route('/', methods=['GET'])
@@ -159,6 +160,31 @@ def get_transactions():
             'date': transaction.date,
         })
     return jsonify(result=transactionsList)
+
+
+@app.route("/api/accounts/create", methods=["POST"])
+@requires_auth
+def create_transaction():
+    incoming = request.get_json()
+    transaction_id = str(uuid4())
+    transaction = Transaction(
+        transaction_id=transaction_id,
+        account_id=incoming["account_id"],
+        label=incoming["label"],
+        amount=incoming["amount"],
+        recurrent_group_id=incoming["recurrent_group_id"],
+        date=incoming["date"]
+    )
+    db.session.add(transaction)
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Account with that IBAN already exists"), 409
+
+    return jsonify(
+        id=transaction.id
+    )
 
 
 @app.route("/api/transactions/edit", methods=["POST"])

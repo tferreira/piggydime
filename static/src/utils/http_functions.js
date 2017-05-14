@@ -80,9 +80,8 @@ export function data_about_transactions(token, account_id) {
   )
 }
 
-export function create_transaction(token, transaction_id, account_id, label, amount, reccurent_group_id, date) {
+export function create_transaction(token, account_id, label, amount, reccurent_group_id, date) {
   return axios.post('api/transactions/create', {
-    transaction_id,
     account_id,
     label,
     amount,

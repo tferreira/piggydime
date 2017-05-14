@@ -167,12 +167,15 @@ def get_transactions():
 def create_transaction():
     incoming = request.get_json()
     transaction_id = str(uuid4())
+    recurrent_group_id = None
+    if "recurrent_group_id" in incoming:
+        recurrent_group_id = incoming["recurrent_group_id"]
     transaction = Transaction(
         transaction_id=transaction_id,
         account_id=incoming["account_id"],
         label=incoming["label"],
         amount=incoming["amount"],
-        recurrent_group_id=incoming["recurrent_group_id"],
+        recurrent_group_id=recurrent_group_id,
         date=incoming["date"]
     )
     db.session.add(transaction)

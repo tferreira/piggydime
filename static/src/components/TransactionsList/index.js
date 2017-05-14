@@ -1,7 +1,10 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators from '../../actions/accounts';
+import * as actionCreators from '../../actions/transactions';
+import AddTransaction from '../Modals/AddTransaction.js'
+import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
 import {
   Table,
   TableBody,
@@ -11,18 +14,16 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
 
 import styles from './styles.scss';
 
 
 function mapStateToProps(state) {
   return {
-    data: state.accounts.data,
+    data: state.transactions.data,
     token: state.auth.token,
-    loaded: state.accounts.loaded,
-    isFetching: state.accounts.isFetching,
+    loaded: state.transactions.loaded,
+    isFetching: state.transactions.isFetching,
     selectedAccount: state.accounts.selectedAccount,
   };
 }
@@ -48,6 +49,20 @@ export default class TransactionsList extends React.Component {
     height: '400px',
   };
 
+  fetchData(account_id=null) {
+    if (account_id === null) {
+      account_id = this.props.selectedAccount
+    }
+    const token = this.props.token
+    this.props.fetchTransactionsData(token, account_id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedAccount !== this.props.selectedAccount) {
+      this.fetchData(nextProps.selectedAccount)
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     this.scrollToBottom()
   }
@@ -61,20 +76,6 @@ export default class TransactionsList extends React.Component {
   handleChange = (event) => {
     this.setState({height: event.target.value});
   };
-
-  addDraftRow(row) {
-    let draftRow = {
-      date: Date.now(),
-      label: '',
-      debit: 0,
-      credit: 0,
-      isDraft: true,
-      isRecurring: false,
-    }
-    this.setState((state) => ({
-      transactionsList: state.transactionsList.concat([draftRow])
-    }))
-  }
 
   scrollToBottom() {
     if (this.refs.table !== undefined) {
@@ -144,8 +145,8 @@ export default class TransactionsList extends React.Component {
               adjustForCheckbox={this.state.showCheckboxes}
             >
               <TableRow>
-                <TableRowColumn onTouchTap={this.addDraftRow.bind(this)} colSpan="4" style={{textAlign: 'center'}}>
-                  Click here to add a new transaction
+                <TableRowColumn colSpan="4">
+                  <AddTransaction />
                 </TableRowColumn>
               </TableRow>
             </TableFooter>
@@ -158,7 +159,7 @@ export default class TransactionsList extends React.Component {
 }
 
 TransactionsList.propTypes = {
-  fetchAccountsData: React.PropTypes.func,
+  fetchTransactionsData: React.PropTypes.func,
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,

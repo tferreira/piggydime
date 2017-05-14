@@ -68,3 +68,7 @@ class Transaction(db.Model):
         self.amount = amount
         self.recurrent_group_id = recurrent_group_id
         self.date = date
+
+    @staticmethod
+    def get_transactions(account_id):
+        return Transaction.query.filter_by(account_id=account_id).all()

@@ -73,7 +73,11 @@ export function delete_account(token, id) {
 }
 
 export function data_about_transactions(token, account_id) {
-  return axios.get('api/transactions', tokenConfig(token))
+  return axios.get('api/transactions',
+    Object.assign({
+      params: {account_id: account_id}
+    }, tokenConfig(token))
+  )
 }
 
 export function create_transaction(token, transaction_id, account_id, label, amount, reccurent_group_id, date) {

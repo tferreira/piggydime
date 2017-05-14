@@ -146,8 +146,9 @@ def delete_account():
 @requires_auth
 def get_transactions():
     incoming = request.args
+    account_id = incoming["account_id"]
     transactionsList = []
-    transactionsObjects = Transaction(incoming["account_id"])
+    transactionsObjects = Transaction.get_transactions(account_id)
     for transaction in transactionsObjects:
         transactionsList.append({
             'transaction_id': transaction.transaction_id,

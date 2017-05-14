@@ -34,7 +34,6 @@ export default class AccountsSideList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      transactionsList: []
     }
   }
 

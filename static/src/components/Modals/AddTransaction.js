@@ -89,7 +89,7 @@ export default class AddTransaction extends React.Component {
     if (!this.state.disabled) {
       this.props.createTransaction({
         accountId: this.props.selectedAccount,
-        date: this.state.dateValue,
+        date: (new Date(this.state.dateValue)).toISOString().substring(0, 10),
         label: this.state.labelValue,
         amount: this.state.amountValue,
         recurrentGroupId: null

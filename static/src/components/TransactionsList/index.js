@@ -36,7 +36,6 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TransactionsList extends React.Component {
   state = {
-    transactionsList: [],
     fixedHeader: true,
     fixedFooter: true,
     stripedRows: true,
@@ -91,12 +90,14 @@ export default class TransactionsList extends React.Component {
 
   renderTransactionsList( transactions ) {
     const rows = transactions.map((row, index) => {
+      let credit = parseFloat(row.amount) < 0 ? '' : row.amount
+      let debit = parseFloat(row.amount) < 0 ? row.amount : ''
       return (
         <TableRow key={index}>
           <TableHeaderColumn className={styles.smallColumn}>{row.date.toString()}</TableHeaderColumn>
           <TableHeaderColumn>{row.label}</TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}>{row.credit ? row.credit : ''}</TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}>{row.debit ? row.debit : ''}</TableHeaderColumn>
+          <TableHeaderColumn className={styles.smallColumn}>{debit}</TableHeaderColumn>
+          <TableHeaderColumn className={styles.smallColumn}>{credit}</TableHeaderColumn>
         </TableRow>
       )
     })
@@ -134,8 +135,8 @@ export default class TransactionsList extends React.Component {
               <TableRow>
                 <TableHeaderColumn className={styles.smallColumn}>Date</TableHeaderColumn>
                 <TableHeaderColumn>Label</TableHeaderColumn>
-                <TableHeaderColumn className={styles.smallColumn}>Credit</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>
+                <TableHeaderColumn className={styles.smallColumn}>Credit</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -145,7 +146,7 @@ export default class TransactionsList extends React.Component {
               stripedRows={this.state.stripedRows}
               style={{height: '100%'}}
             >
-              {this.renderTransactionsList(this.state.transactionsList)}
+              {this.renderTransactionsList(this.props.data)}
             </TableBody>
             <TableFooter
               adjustForCheckbox={this.state.showCheckboxes}

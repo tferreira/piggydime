@@ -155,9 +155,9 @@ def get_transactions():
             'transaction_id': transaction.transaction_id,
             'account_id': transaction.account_id,
             'label': transaction.label,
-            'amount': str(transaction.amount),
+            'amount': str(transaction.amount),  # Decimal is not JSON serializable
             'recurrent_group_id': transaction.recurrent_group_id,
-            'date': transaction.date,
+            'date': transaction.date.strftime('%Y-%m-%d'),
         })
     return jsonify(result=transactionsList)
 

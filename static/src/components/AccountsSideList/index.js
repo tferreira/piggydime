@@ -44,7 +44,6 @@ export default class AccountsSideList extends React.Component {
   selectDefaultAccount() {
     if (this.props.data !== undefined && this.props.data !== null && this.props.data.length > 0) {
       for (var first in this.props.data) {
-        console.log(first.id);
         this.select(first.id);
         break;
       }

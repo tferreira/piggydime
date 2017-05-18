@@ -90,8 +90,8 @@ export default class TransactionsList extends React.Component {
 
   renderTransactionsList( transactions ) {
     const rows = transactions.map((row, index) => {
-      let credit = parseFloat(row.amount) < 0 ? '' : row.amount
-      let debit = parseFloat(row.amount) < 0 ? row.amount : ''
+      let credit = parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
+      let debit = parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
       return (
         <TableRow key={index}>
           <TableHeaderColumn className={styles.smallColumn}>{row.date.toString()}</TableHeaderColumn>

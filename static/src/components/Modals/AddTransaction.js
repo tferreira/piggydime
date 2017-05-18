@@ -44,6 +44,11 @@ export default class AddTransaction extends React.Component {
     });
   }
 
+  isCurrency(amount) {
+    let amountAsNum = +amount;
+    return !isNaN(amountAsNum)
+  }
+
   isDisabled() {
     let date_is_valid = false;
     let label_is_valid = false;
@@ -65,7 +70,11 @@ export default class AddTransaction extends React.Component {
 
     if (this.state.amountValue === '') {
       this.setState({
-        amount_error_text: 'Amount is mandatory',
+        amount_error_text: 'Amount is mandatory.',
+      });
+    } else if (!this.isCurrency(this.state.amountValue)) {
+      this.setState({
+        amount_error_text: 'Amount should be a number.',
       });
     } else {
       this.setState({
@@ -91,7 +100,7 @@ export default class AddTransaction extends React.Component {
         accountId: this.props.selectedAccount,
         date: (new Date(this.state.dateValue)).toISOString().substring(0, 10),
         label: this.state.labelValue,
-        amount: this.state.amountValue,
+        amount: Number(this.state.amountValue).toFixed(2),
         recurrentGroupId: null
       });
       this.handleClose();

@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/transactions';
 import AddTransaction from '../Modals/AddTransaction.js'
+import EditTransaction from '../Modals/EditTransaction.js'
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import {
@@ -88,6 +89,18 @@ export default class TransactionsList extends React.Component {
     this.fetchData();
   }
 
+  editTransaction( transaction ) {
+    const token = this.props.token;
+    this.props.editTransaction(token, transaction);
+    this.fetchData();
+  }
+
+  deleteTransaction( id ) {
+    const token = this.props.token;
+    this.props.deleteTransaction(token, id);
+    this.fetchData();
+  }
+
   renderTransactionsList( transactions ) {
     transactions.sort((a,b) => {
       return new Date(a.date) - new Date(b.date);
@@ -156,7 +169,9 @@ export default class TransactionsList extends React.Component {
             >
               <TableRow>
                 <TableRowColumn colSpan="4">
-                  <AddTransaction selectedAccount={this.props.selectedAccount} createTransaction={this.createTransaction.bind(this)}/>
+                  <AddTransaction
+                    selectedAccount={this.props.selectedAccount}
+                    createTransaction={this.createTransaction.bind(this)} />
                 </TableRowColumn>
               </TableRow>
             </TableFooter>

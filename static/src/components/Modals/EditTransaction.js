@@ -2,20 +2,23 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+import Edit from 'material-ui/svg-icons/image/edit';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 
 import styles from './styles.scss';
 
-export default class AddTransaction extends React.Component {
+export default class EditTransaction extends React.Component {
   state = {
     open: false,
     disabled: true,
     label_error_text: null,
     amount_error_text: null,
-    dateValue: null,
-    labelValue: '',
-    amountValue: '',
+    id: this.props.fields.id,
+    dateValue: this.props.fields.date,
+    labelValue: this.props.fields.label,
+    amountValue: this.props.fields.amount,
   };
 
   handleOpen = () => {
@@ -96,7 +99,8 @@ export default class AddTransaction extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
-      this.props.createTransaction({
+      this.props.editTransaction({
+        id: this.state.id,
         accountId: this.props.selectedAccount,
         date: (new Date(this.state.dateValue)).toISOString().substring(0, 10),
         label: this.state.labelValue,
@@ -107,8 +111,20 @@ export default class AddTransaction extends React.Component {
     }
   };
 
+  onDelete = () => {
+    this.props.deleteTransaction({
+      id: this.state.id
+    });
+    this.handleClose();
+  };
+
   render() {
     const actions = [
+      <RaisedButton
+      label="Delete"
+      secondary={true}
+      onTouchTap={this.onDelete}
+      />,
       <FlatButton
       label="Cancel"
       primary={true}
@@ -125,9 +141,9 @@ export default class AddTransaction extends React.Component {
 
     return (
       <div>
-      <RaisedButton label="Add transaction" fullWidth={true} primary={true} onTouchTap={this.handleOpen} />
+      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><Edit color="white" /></IconButton>
       <Dialog
-        title="Add transaction"
+        title="Edit transaction"
         actions={actions}
         modal={false}
         className={styles.dialog}
@@ -143,6 +159,7 @@ export default class AddTransaction extends React.Component {
           container="inline"
           errorText={this.state.date_error_text}
           onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
+          defaultValue={this.state.dateValue}
           />
           <br />
           <TextField
@@ -150,12 +167,14 @@ export default class AddTransaction extends React.Component {
           hintText="Enter description here"
           errorText={this.state.label_error_text}
           onChange={(e) => this.changeValue(e, 'labelValue')}
+          defaultValue={this.state.labelValue}
           /><br />
           <TextField
           floatingLabelText="Amount"
           hintText="Use -00.00 for debit transactions"
           errorText={this.state.amount_error_text}
           onChange={(e) => this.changeValue(e, 'amountValue')}
+          defaultValue={this.state.amountValue}
           /><br />
         </div>
       </Dialog>

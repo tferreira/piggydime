@@ -89,6 +89,9 @@ export default class TransactionsList extends React.Component {
   }
 
   renderTransactionsList( transactions ) {
+    transactions.sort((a,b) => {
+      return new Date(a.date) - new Date(b.date);
+    });
     const rows = transactions.map((row, index) => {
       let credit = parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
       let debit = parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''

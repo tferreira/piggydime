@@ -1,8 +1,9 @@
 from flask import request, render_template, jsonify, url_for, redirect, g
-from .models import User, Account
+from .models import User, Account, Transaction
 from index import app, db
 from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_token, requires_auth, verify_token
+from uuid import uuid4
 
 
 @app.route('/', methods=['GET'])
@@ -136,6 +137,94 @@ def delete_account():
         db.session.commit()
     except IntegrityError:
         return jsonify(message="Failed to delete account."), 409
+
+    return jsonify(
+        status='ok'
+    )
+
+
+@app.route("/api/transactions", methods=["GET"])
+@requires_auth
+def get_transactions():
+    incoming = request.args
+    account_id = incoming["account_id"]
+    transactionsList = []
+    transactionsObjects = Transaction.get_transactions(account_id)
+    for transaction in transactionsObjects:
+        transactionsList.append({
+            'transaction_id': transaction.transaction_id,
+            'account_id': transaction.account_id,
+            'label': transaction.label,
+            'amount': str(transaction.amount),  # Decimal is not JSON serializable
+            'recurrent_group_id': transaction.recurrent_group_id,
+            'date': transaction.date.strftime('%Y-%m-%d'),
+        })
+    return jsonify(result=transactionsList)
+
+
+@app.route("/api/transactions/create", methods=["POST"])
+@requires_auth
+def create_transaction():
+    incoming = request.get_json()
+    transaction_id = str(uuid4())
+    recurrent_group_id = None
+    if "recurrent_group_id" in incoming:
+        recurrent_group_id = incoming["recurrent_group_id"]
+    transaction = Transaction(
+        transaction_id=transaction_id,
+        account_id=incoming["account_id"],
+        label=incoming["label"],
+        amount=incoming["amount"],
+        recurrent_group_id=recurrent_group_id,
+        date=incoming["date"]
+    )
+    db.session.add(transaction)
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Account with that IBAN already exists"), 409
+
+    return jsonify(
+        id=transaction.id
+    )
+
+
+@app.route("/api/transactions/edit", methods=["POST"])
+@requires_auth
+def edit_transaction():
+    incoming = request.get_json()
+    transaction = Transaction.query.filter_by(transaction_id=incoming["transaction_id"])
+    transaction.update({
+        'transaction_id': transaction.transaction_id,
+        'account_id': transaction.account_id,
+        'label': transaction.label,
+        'amount': transaction.amount,
+        'recurrent_group_id': transaction.recurrent_group_id,
+        'date': transaction.date,
+    })
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="That unique transaction_id already exists."), 409
+
+    return jsonify(
+        id=transaction.first().id
+    )
+
+
+@app.route("/api/transactions/delete", methods=["POST"])
+@requires_auth
+def delete_transaction():
+    incoming = request.get_json()
+    transaction = Transaction.query.filter_by(transaction_id=incoming["transaction_id"])
+    transaction.delete()
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Failed to delete transaction."), 409
 
     return jsonify(
         status='ok'

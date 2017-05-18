@@ -1,9 +1,19 @@
 import React from 'react';
 
-/* components */
 import AccountsSideList from '../../components/AccountsSideList';
+import TransactionsList from '../../components/TransactionsList';
 
-export const AccountsContainer = () =>
-  <section>
-    <AccountsSideList />
-  </section>;
+import styles from './styles.scss';
+
+export default class AccountsContainer extends React.Component {
+  render() {
+    return (
+      <section>
+        <div className={styles.inRow}>
+          <AccountsSideList />
+          <TransactionsList />
+        </div>
+      </section>
+    )
+  }
+}

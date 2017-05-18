@@ -20,6 +20,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.accounts.loaded,
     isFetching: state.accounts.isFetching,
+    selectedAccount: state.accounts.selectedAccount,
   };
 }
 
@@ -30,6 +31,27 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class AccountsSideList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+    }
+  }
+
+  select = (id) => {
+    this.props.selectAccount(id)
+  }
+
+  selectDefaultAccount() {
+    if (this.props.data !== undefined && this.props.data !== null && this.props.data.length > 0) {
+      for (var first in this.props.data) {
+        this.select(first.id);
+        break;
+      }
+    } else {
+      this.select(null);
+    }
+  }
+
   componentDidMount() {
     this.fetchData();
   }
@@ -47,8 +69,9 @@ export default class AccountsSideList extends React.Component {
           title={row.label}
           subtitle={<span><b>{row.bank}</b></span>}
           actionIcon={<EditAccount fields={row} editAccount={this.editAccount.bind(this)} deleteAccount={this.deleteAccount.bind(this)} />}
-          className={styles.gridTile}
+          className={this.state.selectedAccount === row.id ? styles.gridTileSelected : styles.gridTile}
           cols={1}
+          onTouchTap={(e) => {e.stopPropagation(); this.select(row.id);}}
         >
         </GridTile>
       )
@@ -72,6 +95,7 @@ export default class AccountsSideList extends React.Component {
     const token = this.props.token;
     this.props.deleteAccount(token, id);
     this.fetchData();
+    this.selectDefaultAccount();
   }
 
   render() {
@@ -89,7 +113,7 @@ export default class AccountsSideList extends React.Component {
           className={styles.gridList}
           cols={1}
         >
-        {this.renderAccountsList(this.props.data)}
+          {this.renderAccountsList(this.props.data)}
         </GridList>
         </div>
       }
@@ -103,4 +127,6 @@ AccountsSideList.propTypes = {
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,
+  selectedAccount: React.PropTypes.number,
+  selectAccount: React.PropTypes.func,
 };

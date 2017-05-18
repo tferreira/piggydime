@@ -25,10 +25,7 @@ or
 
 $ export DATABASE_URL="mysql+mysqlconnector://username:password@localhost/mydatabase"
 
-or
-
-$ export DATABASE_URL="sqlite:///your.db"
-
+SQLite has been intentionally omitted as there is issues with Decimal types.
 More about connection strings in this [flask config guide](http://flask-sqlalchemy.pocoo.org/2.1/config/)
 
 $ python manage.py db upgrade
@@ -110,7 +107,7 @@ If you decide on MySQL, install the free community edition of [MySQL](https://de
 ```
 $ sudo pip install mysql-connector-python-rf
 $ export DATABASE_URL="mysql+mysqlconnector://username:password@localhost/mydatabase"
-$ python manage.py create_db
+$ python manage.py db upgrade
 ```
 
 Note: you do not need to run "python manage.py db upgrade" or "python manage.py db migrate" if its your first go at it

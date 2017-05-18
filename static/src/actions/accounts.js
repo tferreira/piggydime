@@ -1,4 +1,4 @@
-import { FETCH_ACCOUNTS_DATA_REQUEST, RECEIVE_ACCOUNTS_DATA } from '../constants/index';
+import { FETCH_ACCOUNTS_DATA_REQUEST, RECEIVE_ACCOUNTS_DATA, SELECT_ACCOUNT } from '../constants/index';
 import { parseJSON } from '../utils/misc';
 import { data_about_accounts, create_account, edit_account, delete_account } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
@@ -34,11 +34,19 @@ export function fetchAccountsData(token) {
   };
 }
 
+export function selectAccount(id) {
+  return {
+    type: SELECT_ACCOUNT,
+    payload: id,
+  };
+}
+
 export function createAccount(token, account) { 
   return (dispatch) => {
     create_account(token, account.label, account.bank, account.iban, account.bic)
       .then(parseJSON)
       .then(response => {
+        dispatch(selectAccount(response.id));
       })
       .catch(error => {
         if (error.status === 401) {

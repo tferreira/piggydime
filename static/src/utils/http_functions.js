@@ -71,3 +71,36 @@ export function delete_account(token, id) {
     id,
   }, tokenConfig(token));
 }
+
+export function data_about_transactions(token, account_id) {
+  return axios.get('api/transactions',
+    Object.assign({
+      params: {account_id: account_id}
+    }, tokenConfig(token))
+  )
+}
+
+export function create_transaction(token, account_id, label, amount, recurrent_group_id, date) {
+  return axios.post('api/transactions/create', {
+    account_id,
+    label,
+    amount,
+    recurrent_group_id,
+    date
+  }, tokenConfig(token));
+}
+
+export function edit_transaction(token, transaction_id, label, amount, date) {
+  return axios.post('api/transactions/edit', {
+    transaction_id,
+    label,
+    amount,
+    date,
+  }, tokenConfig(token));
+}
+
+export function delete_transaction(token, transaction_id) {
+  return axios.post('api/transactions/delete', {
+    transaction_id,
+  }, tokenConfig(token));
+}

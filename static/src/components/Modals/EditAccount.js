@@ -142,7 +142,7 @@ export default class EditAccount extends React.Component {
 
     return (
       <div>
-      <IconButton onTouchTap={this.handleOpen} ><Edit color="white" /></IconButton>
+      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><Edit color="white" /></IconButton>
       <Dialog
         title="Edit account"
         actions={actions}

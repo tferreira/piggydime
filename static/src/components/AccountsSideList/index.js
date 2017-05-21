@@ -60,13 +60,13 @@ export default class AccountsSideList extends React.Component {
     this.props.fetchAccountsData(token);
   }
 
-  renderAccountsList( accounts ) {
+  renderAccountsList( accounts, balances ) {
     const rows = accounts.map((row) => {
       return (
         <GridTile
           key={'account-' + row.id}
           title={row.label + ' (' + row.bank + ')'}
-          subtitle={<span><b>{Number(this.props.balances[row.id]).toFixed(2)}</b></span>}
+          subtitle={<span><b>{Number(balances[Number(row.id)]).toFixed(2)}</b></span>}
           actionIcon={<EditAccount fields={row} editAccount={this.editAccount.bind(this)} deleteAccount={this.deleteAccount.bind(this)} />}
           className={this.state.selectedAccount === row.id ? styles.gridTileSelected : styles.gridTile}
           cols={1}
@@ -112,7 +112,7 @@ export default class AccountsSideList extends React.Component {
           className={styles.gridList}
           cols={1}
         >
-          {this.renderAccountsList(this.props.data)}
+          {this.renderAccountsList(this.props.data, this.props.balances)}
         </GridList>
         </div>
       }

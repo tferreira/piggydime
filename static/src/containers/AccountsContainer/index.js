@@ -27,11 +27,10 @@ export default class AccountsContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      balances: [],
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.fetchData();
   }
 
@@ -40,23 +39,11 @@ export default class AccountsContainer extends React.Component {
     this.props.fetchBalancesData(token);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data !== this.props.data) {
-      nextProps.data.forEach((row) => {
-        let balances = this.state.balances
-        balances[row.account_id] = row.balance
-        this.setState({
-            balances: balances
-        })
-      })
-    }
-  }
-
   render() {
     return (
       <section>
         <div className={styles.inRow}>
-          <AccountsSideList balances={this.state.balances}/>
+          <AccountsSideList balances={this.props.data}/>
           <TransactionsList updateBalance={this.fetchData.bind(this)}/>
         </div>
       </section>

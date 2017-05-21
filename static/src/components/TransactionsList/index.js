@@ -88,18 +88,21 @@ export default class TransactionsList extends React.Component {
     const token = this.props.token;
     this.props.createTransaction(token, transaction);
     this.fetchData();
+    this.props.updateBalance();
   }
 
   editTransaction( transaction ) {
     const token = this.props.token;
     this.props.editTransaction(token, transaction);
     this.fetchData();
+    this.props.updateBalance();
   }
 
   deleteTransaction( id ) {
     const token = this.props.token;
     this.props.deleteTransaction(token, id);
     this.fetchData();
+    this.props.updateBalance();
   }
 
   renderTransactionsList( transactions ) {

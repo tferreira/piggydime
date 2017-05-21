@@ -66,20 +66,32 @@ def is_token_valid():
         return jsonify(token_is_valid=False), 403
 
 
+@app.route("/api/balances", methods=["GET"])
+@requires_auth
+def get_balances():
+    balancesList = []
+    accountsObjects = Account.get_accounts(g.current_user)
+    for account in accountsObjects:
+        balance = db.session.query(func.sum(Transaction.amount).label("balance")).filter_by(account_id=account.id).first()
+        balancesList.append({
+            'account_id': account.id,
+            'balance': str(balance.balance)
+        })
+    return jsonify(result=balancesList)
+
+
 @app.route("/api/accounts", methods=["GET"])
 @requires_auth
 def get_accounts():
     accountsList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
-        balance = db.session.query(func.sum(Transaction.amount).label("balance")).filter_by(account_id=account.id).first()
         accountsList.append({
             'id': account.id,
             'label': account.label,
             'bank': account.bank,
             'iban': account.iban,
             'bic': account.bic,
-            'balance': str(balance.balance)  # Decimal is not JSON serializable
         })
     return jsonify(result=accountsList)
 

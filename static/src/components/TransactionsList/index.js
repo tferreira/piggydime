@@ -177,7 +177,7 @@ export default class TransactionsList extends React.Component {
               adjustForCheckbox={this.state.showCheckboxes}
             >
               <TableRow>
-                <TableRowColumn colSpan="4">
+                <TableRowColumn colSpan="5">
                   <AddTransaction
                     selectedAccount={this.props.selectedAccount}
                     createTransaction={this.createTransaction.bind(this)} />

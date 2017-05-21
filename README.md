@@ -41,7 +41,8 @@ $ python manage.py db upgrade
 ### Install Front-End Requirements
 ```sh
 $ cd static
-$ npm install
+$ npm install -g yarn
+$ yarn
 ```
 
 ### Run Back-End

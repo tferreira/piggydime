@@ -196,12 +196,9 @@ def edit_transaction():
     incoming = request.get_json()
     transaction = Transaction.query.filter_by(transaction_id=incoming["transaction_id"])
     transaction.update({
-        'transaction_id': transaction.transaction_id,
-        'account_id': transaction.account_id,
-        'label': transaction.label,
-        'amount': transaction.amount,
-        'recurrent_group_id': transaction.recurrent_group_id,
-        'date': transaction.date,
+        'label': incoming["label"],
+        'amount': incoming["amount"],
+        'date': incoming["date"],
     })
 
     try:

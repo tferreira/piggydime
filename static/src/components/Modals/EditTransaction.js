@@ -4,18 +4,21 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
+import IconButton from 'material-ui/IconButton';
+import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 import styles from './styles.scss';
 
-export default class AddTransaction extends React.Component {
+export default class EditTransaction extends React.Component {
   state = {
     open: false,
     disabled: true,
     label_error_text: null,
     amount_error_text: null,
-    dateValue: null,
-    labelValue: '',
-    amountValue: '',
+    transaction_id: this.props.fields.transaction_id,
+    dateValue: this.props.fields.date,
+    labelValue: this.props.fields.label,
+    amountValue: this.props.fields.amount,
   };
 
   handleOpen = () => {
@@ -36,7 +39,7 @@ export default class AddTransaction extends React.Component {
   }
 
   changeDateValue(date, type) {
-    const value = date
+    const value = date;
     const next_state = {};
     next_state[type] = value;
     this.setState(next_state, () => {
@@ -98,26 +101,35 @@ export default class AddTransaction extends React.Component {
     if (!this.state.disabled) {
       var dateObject = this.state.dateValue;
       var date = new Date(dateObject.getTime() - (dateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
-      this.props.createTransaction({
-        accountId: this.props.selectedAccount,
-        date: date,
+      this.props.editTransaction({
+        transaction_id: this.state.transaction_id,
         label: this.state.labelValue,
         amount: Number(this.state.amountValue).toFixed(2),
-        recurrentGroupId: null
+        date: date,
       });
       this.handleClose();
     }
   };
 
+  onDelete = () => {
+    this.props.deleteTransaction(this.state.transaction_id);
+    this.handleClose();
+  };
+
   render() {
     const actions = [
+      <RaisedButton
+      label="Delete"
+      secondary={true}
+      onTouchTap={this.onDelete}
+      />,
       <FlatButton
       label="Cancel"
       primary={true}
       onTouchTap={this.handleClose}
       />,
       <FlatButton
-      label="Add"
+      label="Save"
       primary={true}
       keyboardFocused={true}
       onTouchTap={this.onSubmit}
@@ -127,9 +139,9 @@ export default class AddTransaction extends React.Component {
 
     return (
       <div>
-      <RaisedButton label="Add transaction" fullWidth={true} primary={true} onTouchTap={this.handleOpen} />
+      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><MoreHoriz color="grey" /></IconButton>
       <Dialog
-        title="Add transaction"
+        title="Edit transaction"
         actions={actions}
         modal={false}
         className={styles.dialog}
@@ -145,6 +157,7 @@ export default class AddTransaction extends React.Component {
           container="inline"
           errorText={this.state.date_error_text}
           onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
+          value={new Date(this.state.dateValue)}
           />
           <br />
           <TextField
@@ -152,12 +165,14 @@ export default class AddTransaction extends React.Component {
           hintText="Enter description here"
           errorText={this.state.label_error_text}
           onChange={(e) => this.changeValue(e, 'labelValue')}
+          defaultValue={this.state.labelValue}
           /><br />
           <TextField
           floatingLabelText="Amount"
           hintText="Use -00.00 for debit transactions"
           errorText={this.state.amount_error_text}
           onChange={(e) => this.changeValue(e, 'amountValue')}
+          defaultValue={this.state.amountValue}
           /><br />
         </div>
       </Dialog>

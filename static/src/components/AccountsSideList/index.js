@@ -7,7 +7,6 @@ import AddAccount from '../Modals/AddAccount.js'
 import EditAccount from '../Modals/EditAccount.js'
 
 import {GridList, GridTile} from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 
 /* component styles */

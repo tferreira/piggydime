@@ -3,8 +3,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/transactions';
 import AddTransaction from '../Modals/AddTransaction.js'
+import EditTransaction from '../Modals/EditTransaction.js'
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
+
 import {
   Table,
   TableBody,
@@ -88,6 +90,18 @@ export default class TransactionsList extends React.Component {
     this.fetchData();
   }
 
+  editTransaction( transaction ) {
+    const token = this.props.token;
+    this.props.editTransaction(token, transaction);
+    this.fetchData();
+  }
+
+  deleteTransaction( id ) {
+    const token = this.props.token;
+    this.props.deleteTransaction(token, id);
+    this.fetchData();
+  }
+
   renderTransactionsList( transactions ) {
     transactions.sort((a,b) => {
       return new Date(a.date) - new Date(b.date);
@@ -101,6 +115,13 @@ export default class TransactionsList extends React.Component {
           <TableHeaderColumn>{row.label}</TableHeaderColumn>
           <TableHeaderColumn className={styles.smallColumn}>{debit}</TableHeaderColumn>
           <TableHeaderColumn className={styles.smallColumn}>{credit}</TableHeaderColumn>
+          <TableHeaderColumn className={styles.smallColumn}>
+            <EditTransaction
+              fields={row}
+              editTransaction={this.editTransaction.bind(this)}
+              deleteTransaction={this.deleteTransaction.bind(this)}
+            />
+          </TableHeaderColumn>
         </TableRow>
       )
     })
@@ -140,6 +161,7 @@ export default class TransactionsList extends React.Component {
                 <TableHeaderColumn>Label</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Credit</TableHeaderColumn>
+                <TableHeaderColumn className={styles.smallColumn}></TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -156,7 +178,9 @@ export default class TransactionsList extends React.Component {
             >
               <TableRow>
                 <TableRowColumn colSpan="4">
-                  <AddTransaction selectedAccount={this.props.selectedAccount} createTransaction={this.createTransaction.bind(this)}/>
+                  <AddTransaction
+                    selectedAccount={this.props.selectedAccount}
+                    createTransaction={this.createTransaction.bind(this)} />
                 </TableRowColumn>
               </TableRow>
             </TableFooter>

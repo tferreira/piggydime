@@ -99,7 +99,7 @@ export default class EditTransaction extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
-      var dateObject = this.state.dateValue;
+      var dateObject = new Date(this.state.dateValue);
       var date = new Date(dateObject.getTime() - (dateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
       this.props.editTransaction({
         transaction_id: this.state.transaction_id,

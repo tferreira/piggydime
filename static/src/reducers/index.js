@@ -3,7 +3,8 @@ import { routerReducer } from 'react-router-redux';
 import auth from './auth';
 import user from './user';
 import accounts from './accounts';
-import transactions from './transactions'
+import balances from './balances';
+import transactions from './transactions';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   auth,
   user,
   accounts,
+  balances,
   transactions,
 });
 

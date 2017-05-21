@@ -2,6 +2,7 @@ from flask import request, render_template, jsonify, url_for, redirect, g
 from .models import User, Account, Transaction
 from index import app, db
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
 from uuid import uuid4
 
@@ -65,6 +66,20 @@ def is_token_valid():
         return jsonify(token_is_valid=False), 403
 
 
+@app.route("/api/balances", methods=["GET"])
+@requires_auth
+def get_balances():
+    balancesList = []
+    accountsObjects = Account.get_accounts(g.current_user)
+    for account in accountsObjects:
+        balance = db.session.query(func.sum(Transaction.amount).label("balance")).filter_by(account_id=account.id).first()
+        balancesList.append({
+            'account_id': account.id,
+            'balance': str(balance.balance)
+        })
+    return jsonify(result=balancesList)
+
+
 @app.route("/api/accounts", methods=["GET"])
 @requires_auth
 def get_accounts():
@@ -76,7 +91,7 @@ def get_accounts():
             'label': account.label,
             'bank': account.bank,
             'iban': account.iban,
-            'bic': account.bic
+            'bic': account.bic,
         })
     return jsonify(result=accountsList)
 

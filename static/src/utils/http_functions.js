@@ -47,6 +47,10 @@ export function data_about_accounts(token) {
   return axios.get('api/accounts', tokenConfig(token))
 }
 
+export function data_about_balances(token) {
+  return axios.get('api/balances', tokenConfig(token))
+}
+
 export function create_account(token, label, bank, iban, bic) {
   return axios.post('api/accounts/create', {
     label,

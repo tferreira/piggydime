@@ -2,10 +2,10 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import IconButton from 'material-ui/IconButton';
-import Edit from 'material-ui/svg-icons/image/edit';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
+import IconButton from 'material-ui/IconButton';
+import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 import styles from './styles.scss';
 
@@ -15,7 +15,7 @@ export default class EditTransaction extends React.Component {
     disabled: true,
     label_error_text: null,
     amount_error_text: null,
-    id: this.props.fields.id,
+    transaction_id: this.props.fields.transaction_id,
     dateValue: this.props.fields.date,
     labelValue: this.props.fields.label,
     amountValue: this.props.fields.amount,
@@ -39,7 +39,7 @@ export default class EditTransaction extends React.Component {
   }
 
   changeDateValue(date, type) {
-    const value = date
+    const value = date;
     const next_state = {};
     next_state[type] = value;
     this.setState(next_state, () => {
@@ -99,22 +99,20 @@ export default class EditTransaction extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
+      var dateObject = this.state.dateValue;
+      var date = new Date(dateObject.getTime() - (dateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
       this.props.editTransaction({
-        id: this.state.id,
-        accountId: this.props.selectedAccount,
-        date: (new Date(this.state.dateValue)).toISOString().substring(0, 10),
+        transaction_id: this.state.transaction_id,
         label: this.state.labelValue,
         amount: Number(this.state.amountValue).toFixed(2),
-        recurrentGroupId: null
+        date: date,
       });
       this.handleClose();
     }
   };
 
   onDelete = () => {
-    this.props.deleteTransaction({
-      id: this.state.id
-    });
+    this.props.deleteTransaction(this.state.transaction_id);
     this.handleClose();
   };
 
@@ -131,7 +129,7 @@ export default class EditTransaction extends React.Component {
       onTouchTap={this.handleClose}
       />,
       <FlatButton
-      label="Add"
+      label="Save"
       primary={true}
       keyboardFocused={true}
       onTouchTap={this.onSubmit}
@@ -141,7 +139,7 @@ export default class EditTransaction extends React.Component {
 
     return (
       <div>
-      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><Edit color="white" /></IconButton>
+      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><MoreHoriz color="grey" /></IconButton>
       <Dialog
         title="Edit transaction"
         actions={actions}
@@ -159,7 +157,7 @@ export default class EditTransaction extends React.Component {
           container="inline"
           errorText={this.state.date_error_text}
           onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
-          defaultValue={this.state.dateValue}
+          value={new Date(this.state.dateValue)}
           />
           <br />
           <TextField

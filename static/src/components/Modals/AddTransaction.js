@@ -96,9 +96,11 @@ export default class AddTransaction extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
+      var dateObject = this.state.dateValue;
+      var date = new Date(dateObject.getTime() - (dateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
       this.props.createTransaction({
         accountId: this.props.selectedAccount,
-        date: (new Date(this.state.dateValue)).toISOString().substring(0, 10),
+        date: date,
         label: this.state.labelValue,
         amount: Number(this.state.amountValue).toFixed(2),
         recurrentGroupId: null

@@ -6,6 +6,7 @@ import AddTransaction from '../Modals/AddTransaction.js'
 import EditTransaction from '../Modals/EditTransaction.js'
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
+
 import {
   Table,
   TableBody,
@@ -114,6 +115,13 @@ export default class TransactionsList extends React.Component {
           <TableHeaderColumn>{row.label}</TableHeaderColumn>
           <TableHeaderColumn className={styles.smallColumn}>{debit}</TableHeaderColumn>
           <TableHeaderColumn className={styles.smallColumn}>{credit}</TableHeaderColumn>
+          <TableHeaderColumn className={styles.smallColumn}>
+            <EditTransaction
+              fields={row}
+              editTransaction={this.editTransaction.bind(this)}
+              deleteTransaction={this.deleteTransaction.bind(this)}
+            />
+          </TableHeaderColumn>
         </TableRow>
       )
     })
@@ -153,6 +161,7 @@ export default class TransactionsList extends React.Component {
                 <TableHeaderColumn>Label</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Credit</TableHeaderColumn>
+                <TableHeaderColumn className={styles.smallColumn}></TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody

@@ -132,7 +132,7 @@ export default class EditAccount extends React.Component {
       onTouchTap={this.handleClose}
       />,
       <FlatButton
-      label="Submit"
+      label="Save"
       primary={true}
       keyboardFocused={true}
       onTouchTap={this.onSubmit}

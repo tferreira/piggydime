@@ -2,6 +2,7 @@ from flask import request, render_template, jsonify, url_for, redirect, g
 from .models import User, Account, Transaction
 from index import app, db
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
 from uuid import uuid4
 
@@ -71,12 +72,14 @@ def get_accounts():
     accountsList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
+        balance = db.session.query(func.sum(Transaction.amount).label("balance")).filter_by(account_id=account.id).first()
         accountsList.append({
             'id': account.id,
             'label': account.label,
             'bank': account.bank,
             'iban': account.iban,
-            'bic': account.bic
+            'bic': account.bic,
+            'balance': str(balance.balance)  # Decimal is not JSON serializable
         })
     return jsonify(result=accountsList)
 

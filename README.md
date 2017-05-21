@@ -5,7 +5,7 @@ This app allows you to keep track of your bank accounts balance.
 This project is a WIP. The basic features that needs to be implemented are the following:
 
  * [x] Be able to have multiple accounts
- * [ ] Quick menu for new transactions
+ * [x] Add and edit transactions easily
  * [ ] Recurring transactions
  * [ ] Previsional balance to a custom date
 

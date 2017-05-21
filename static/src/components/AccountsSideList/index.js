@@ -65,8 +65,8 @@ export default class AccountsSideList extends React.Component {
       return (
         <GridTile
           key={'account-' + row.id}
-          title={row.label}
-          subtitle={<span><b>{row.bank}</b></span>}
+          title={row.label + ' (' + row.bank + ')'}
+          subtitle={<span><b>{Number(row.balance).toFixed(2)}</b></span>}
           actionIcon={<EditAccount fields={row} editAccount={this.editAccount.bind(this)} deleteAccount={this.deleteAccount.bind(this)} />}
           className={this.state.selectedAccount === row.id ? styles.gridTileSelected : styles.gridTile}
           cols={1}

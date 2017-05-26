@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
 from uuid import uuid4
+from datetime import datetime
 
 
 @app.route('/', methods=['GET'])
@@ -183,15 +184,18 @@ def create_transaction():
     incoming = request.get_json()
     transaction_id = str(uuid4())
     recurrent_group_id = None
+    date = datetime.now()  # helpful for unit tests
     if "recurrent_group_id" in incoming:
         recurrent_group_id = incoming["recurrent_group_id"]
+    if "date" in incoming:
+        date = incoming["date"]
     transaction = Transaction(
         transaction_id=transaction_id,
         account_id=incoming["account_id"],
         label=incoming["label"],
         amount=incoming["amount"],
         recurrent_group_id=recurrent_group_id,
-        date=incoming["date"]
+        date=date
     )
     db.session.add(transaction)
 

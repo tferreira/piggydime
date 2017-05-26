@@ -1,5 +1,5 @@
 from testing_config import BaseTestConfig
-from application.models import User, Account
+from application.models import User, Account, Transaction
 
 
 class TestModels(BaseTestConfig):
@@ -15,4 +15,9 @@ class TestModels(BaseTestConfig):
         user = {'id': 1}
         self.assertTrue(
             len(Account.get_accounts(user))
+        )
+
+    def test_get_transactions_by_account_id(self):
+        self.assertTrue(
+            Transaction.get_transactions(1)
         )

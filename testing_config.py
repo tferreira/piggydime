@@ -31,8 +31,7 @@ class BaseTestConfig(TestCase):
     default_transaction = {
         "account_id": 1,
         "label": "some_transaction",
-        "amount": 10.33,
-        "date": datetime.now()
+        "amount": 10,
     }
 
     def create_app(self):
@@ -66,7 +65,7 @@ class BaseTestConfig(TestCase):
         # create transaction
         self.app.post(
             "/api/transactions/create",
-            data=self.default_transaction,
+            data=json.dumps(self.default_transaction),
             content_type='application/json',
             headers={'Authorization': self.token}
         )

@@ -41,7 +41,7 @@ export function createTransaction(token, transaction) {
       transaction.accountId,
       transaction.label,
       transaction.amount,
-      transaction.recurrentGroupId,
+      transaction.recurringGroupId,
       transaction.date
       )
       .then(parseJSON)

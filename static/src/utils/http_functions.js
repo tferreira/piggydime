@@ -84,12 +84,12 @@ export function data_about_transactions(token, account_id) {
   )
 }
 
-export function create_transaction(token, account_id, label, amount, recurrent_group_id, date) {
+export function create_transaction(token, account_id, label, amount, recurring_group_id, date) {
   return axios.post('api/transactions/create', {
     account_id,
     label,
     amount,
-    recurrent_group_id,
+    recurring_group_id,
     date
   }, tokenConfig(token));
 }

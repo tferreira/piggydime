@@ -28,14 +28,14 @@ $ export DATABASE_URL="mysql+mysqlconnector://username:password@localhost/mydata
 SQLite has been intentionally omitted as there is issues with Decimal types.
 More about connection strings in this [flask config guide](http://flask-sqlalchemy.pocoo.org/2.1/config/)
 
-$ python manage.py db upgrade
+$ python3.5 manage.py db upgrade
 ```
 
 To create new migrations, add your schema on `models.py` then use:
 
 ```sh
-$ python manage.py db revision --autogenerate
-$ python manage.py db upgrade
+$ python3.5 manage.py db revision --autogenerate
+$ python3.5 manage.py db upgrade
 ```
 
 ### Install Front-End Requirements
@@ -48,33 +48,35 @@ $ yarn
 ### Run Back-End
 
 ```sh
-$ python manage.py runserver
+$ python3.5 manage.py runserver
 ```
 
 ### Test Back-End
 
 ```sh
-$ python test.py --cov-report=term --cov-report=html --cov=application/ tests/
+$ python3.5 test.py tests/
+with code coverage:
+$ python3.5 test.py --cov-report=term --cov-report=html --cov=application/ tests/
 ```
 
 ### Run Front-End
 
 ```sh
 $ cd static
-$ npm start
+$ yarn start
 ```
 
 ### Build Front-End
 
 ```sh
-$ npm run build:production
+$ yarn run build:production
 ```
 
 ### New to Python?
 
 If you are approaching this demo as primarily a frontend dev with limited or no python experience, you may need to install a few things that a seasoned python dev would already have installed.
 
-Most Macs already have python 2.7 installed but you may not have pip install. You can check to see if you have them installed:
+Most Macs already have python installed but you may not have python 3.5 or pip install. You can check to see if you have them installed:
 
 ```
 $ python --version
@@ -83,10 +85,10 @@ $ pip --version
 
 If pip is not installed, you can follow this simple article to [get both homebrew and python](https://howchoo.com/g/mze4ntbknjk/install-pip-on-mac-os-x)
 
-After you install python, you can optionally also install python 3
+After you install python, you can optionally also install python 3.5
 
 ```
-$ brew install python3
+$ brew install python3.5
 ```
 
 Now you can check again to see if both python and pip are installed. Once pip is installed, you can download the required flask modules:
@@ -108,15 +110,13 @@ If you decide on MySQL, install the free community edition of [MySQL](https://de
 ```
 $ sudo pip install mysql-connector-python-rf
 $ export DATABASE_URL="mysql+mysqlconnector://username:password@localhost/mydatabase"
-$ python manage.py db upgrade
+$ python3.5 manage.py db upgrade
 ```
-
-Note: you do not need to run "python manage.py db upgrade" or "python manage.py db migrate" if its your first go at it
 
 4. Run Back-End
 
 ```
-$ python manage.py runserver
+$ python3.5 manage.py runserver
 ```
 
 If all goes well, you should see ```* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)``` followed by a few more lines in the terminal.
@@ -125,8 +125,8 @@ If all goes well, you should see ```* Running on http://127.0.0.1:5000/ (Press C
 
 ```
 $ cd static
-$ npm install
-$ npm start
+$ yarn
+$ yarn start
 ```
 
 6. open your browser to http://localhost:3000/register and setup your first account

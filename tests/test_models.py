@@ -1,5 +1,5 @@
 from testing_config import BaseTestConfig
-from application.models import User, Account, Transaction
+from application.models import User, Account, Transaction, RecurringGroup
 
 
 class TestModels(BaseTestConfig):
@@ -20,4 +20,9 @@ class TestModels(BaseTestConfig):
     def test_get_transactions_by_account_id(self):
         self.assertTrue(
             Transaction.get_transactions(1)
+        )
+
+    def test_get_recurring_group_by_account_id(self):
+        self.assertTrue(
+            RecurringGroup.get_groups(1)
         )

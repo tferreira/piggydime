@@ -43,7 +43,7 @@ export default class AccountsContainer extends React.Component {
     return (
       <section>
         <div className={styles.inRow}>
-          <AccountsSideList balances={this.props.data}/>
+          <AccountsSideList balances={this.props.data} updateBalance={this.fetchData.bind(this)}/>
           <TransactionsList updateBalance={this.fetchData.bind(this)}/>
         </div>
       </section>

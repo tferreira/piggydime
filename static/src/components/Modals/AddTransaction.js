@@ -103,7 +103,7 @@ export default class AddTransaction extends React.Component {
         date: date,
         label: this.state.labelValue,
         amount: Number(this.state.amountValue).toFixed(2),
-        recurrentGroupId: null
+        recurringGroupId: null
       });
       this.handleClose();
     }

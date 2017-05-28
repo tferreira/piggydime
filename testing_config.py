@@ -34,6 +34,14 @@ class BaseTestConfig(TestCase):
         "amount": 10,
     }
 
+    default_recurring_group = {
+        "account_id": 1,
+        "label": "that group",
+        "amount": 42,
+        "recurrence_day": 5,
+        "recurrence_period": "monthly",
+    }
+
     def create_app(self):
         app.config.from_object('config.TestingConfig')
         return app
@@ -66,6 +74,14 @@ class BaseTestConfig(TestCase):
         self.app.post(
             "/api/transactions/create",
             data=json.dumps(self.default_transaction),
+            content_type='application/json',
+            headers={'Authorization': self.token}
+        )
+
+        # create recurring group
+        self.app.post(
+            "/api/recurring/create",
+            data=json.dumps(self.default_recurring_group),
             content_type='application/json',
             headers={'Authorization': self.token}
         )

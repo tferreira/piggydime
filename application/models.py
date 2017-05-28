@@ -58,17 +58,41 @@ class Transaction(db.Model):
     account_id = db.Column(db.Integer())
     label = db.Column(db.String(255))
     amount = db.Column(db.DECIMAL(19, 4))
-    recurrent_group_id = db.Column(db.Integer())
+    recurring_group_id = db.Column(db.Integer())
     date = db.Column(db.Date())
 
-    def __init__(self, transaction_id, account_id, label, amount, recurrent_group_id, date):
+    def __init__(self, transaction_id, account_id, label, amount, recurring_group_id, date):
         self.transaction_id = transaction_id
         self.account_id = account_id
         self.label = label
         self.amount = amount
-        self.recurrent_group_id = recurrent_group_id
+        self.recurring_group_id = recurring_group_id
         self.date = date
 
     @staticmethod
     def get_transactions(account_id):
         return Transaction.query.filter_by(account_id=account_id).all()
+
+
+class RecurringGroup(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    account_id = db.Column(db.Integer())
+    label = db.Column(db.String(255))
+    amount = db.Column(db.DECIMAL(19, 4))
+    start_date = db.Column(db.Date())
+    end_date = db.Column(db.Date())
+    recurrence_day = db.Column(db.Integer())
+    recurrence_period = db.Column(db.String(10))
+
+    def __init__(self, account_id, label, amount, start_date, end_date, recurrence_day, recurrence_period):
+        self.account_id = account_id
+        self.label = label
+        self.amount = amount
+        self.start_date = start_date
+        self.end_date = end_date
+        self.recurrence_day = recurrence_day
+        self.recurrence_period = recurrence_period
+
+    @staticmethod
+    def get_groups(account_id):
+        return RecurringGroup.query.filter_by(account_id=account_id).all()

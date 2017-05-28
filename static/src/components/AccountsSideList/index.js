@@ -60,7 +60,14 @@ export default class AccountsSideList extends React.Component {
     this.props.fetchAccountsData(token);
   }
 
+  shouldComponentUpdate(nextProps) {
+      return this.props.data !== nextProps.data;
+  }
+
   renderAccountsList( accounts, balancesProp ) {
+    if (balancesProp === null) {
+      return
+    }
     const rows = accounts.map((row) => {
       var filtered = balancesProp.filter((element) => element.account_id === row.id)
       var balance = filtered[0].balance === 'None' ? 0 : filtered[0].balance
@@ -83,6 +90,7 @@ export default class AccountsSideList extends React.Component {
   createAccount( account ) {
     const token = this.props.token;
     this.props.createAccount(token, account);
+    this.props.updateBalance();
     this.fetchData();
   }
 

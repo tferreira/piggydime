@@ -54,8 +54,11 @@ export default class TransactionsList extends React.Component {
     if (account_id === null) {
       account_id = this.props.selectedAccount
     }
-    const token = this.props.token
-    this.props.fetchTransactionsData(token, account_id)
+    if (account_id !== null)
+    {
+      const token = this.props.token
+      this.props.fetchTransactionsData(token, account_id)
+    }
   }
 
   componentWillReceiveProps(nextProps) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import "babel-polyfill";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/transactions';
@@ -89,23 +90,35 @@ export default class TransactionsList extends React.Component {
 
   createTransaction( transaction ) {
     const token = this.props.token;
-    this.props.createTransaction(token, transaction);
-    this.fetchData();
-    this.props.updateBalance();
+    let call = async () =>
+      await (await this.props.createTransaction(token, transaction));
+    call()
+      .then(() => {
+        this.fetchData();
+        this.props.updateBalance();
+      })
   }
 
   editTransaction( transaction ) {
     const token = this.props.token;
-    this.props.editTransaction(token, transaction);
-    this.fetchData();
-    this.props.updateBalance();
+    let call = async () =>
+      await (await this.props.editTransaction(token, transaction));
+    call()
+      .then(() => {
+        this.fetchData();
+        this.props.updateBalance();
+      })
   }
 
   deleteTransaction( id ) {
     const token = this.props.token;
-    this.props.deleteTransaction(token, id);
-    this.fetchData();
-    this.props.updateBalance();
+    let call = async () =>
+      await (await this.props.deleteTransaction(token, id));
+    call()
+      .then(() => {
+        this.fetchData();
+        this.props.updateBalance();
+      })
   }
 
   renderTransactionsList( transactions ) {

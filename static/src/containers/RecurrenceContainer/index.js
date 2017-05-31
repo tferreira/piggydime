@@ -32,14 +32,14 @@ export default class RecurrenceContainer extends React.Component {
 
   fetchData() {
     const token = this.props.token;
-    //this.props.fetchRecurrenceData(token);
+    this.props.fetchRecurrenceData(token);
   }
 
   render() {
     return (
       <section>
         <div>
-          Hej Hej!
+
         </div>
       </section>
     )

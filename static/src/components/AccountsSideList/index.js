@@ -61,7 +61,8 @@ export default class AccountsSideList extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-      return this.props.data !== nextProps.data;
+    return (this.props.data !== nextProps.data
+      || this.props.balances !== nextProps.balances)
   }
 
   renderAccountsList( accounts, balancesProp ) {

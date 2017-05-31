@@ -1,6 +1,8 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import * as actionCreators from '../../actions/recurrence';
 
@@ -9,6 +11,7 @@ function mapStateToProps(state) {
     data: state.recurrence.data,
     token: state.auth.token,
     loaded: state.recurrence.loaded,
+    accounts: state.accounts.data,
     isFetching: state.recurrence.isFetching,
   };
 }
@@ -23,11 +26,17 @@ export default class RecurrenceContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      selectItems: [],
+      selected: null,
     }
   }
 
   componentWillMount() {
     this.fetchData();
+  }
+
+  handleAccountChange(event, index, selected) {
+    this.setState({ selected });
   }
 
   fetchData() {
@@ -66,10 +75,23 @@ export default class RecurrenceContainer extends React.Component {
   }
 
   render() {
+    const selectItems = this.props.accounts.map((account, key) => (
+      <MenuItem key={key} value={account.id} primaryText={account.label} />
+    ))
     return (
       <section>
         <div>
-
+          <h2>Recurring transactions</h2>
+          <hr />
+          Filter them by selecting account on the dropdown list
+          <br />
+          <SelectField
+            value={this.state.selected}
+            onChange={this.handleAccountChange.bind(this)}
+            floatingLabelText="Selected account"
+          >
+            {selectItems}
+          </SelectField>
         </div>
       </section>
     )

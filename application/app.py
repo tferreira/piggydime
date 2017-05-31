@@ -252,10 +252,13 @@ def delete_transaction():
 @app.route("/api/recurring", methods=["GET"])
 @requires_auth
 def get_recurring_groups():
-    incoming = request.args
-    account_id = incoming["account_id"]
+    accountsIds = []
+    accountsObjects = Account.get_accounts(g.current_user)
+    for account in accountsObjects:
+        accountsIds.append(account.id)
+
     groupList = []
-    groupObjects = RecurringGroup.get_groups(account_id)
+    groupObjects = RecurringGroup.get_groups(accountsIds)
     for group in groupObjects:
         groupList.append({
             'id': group.id,

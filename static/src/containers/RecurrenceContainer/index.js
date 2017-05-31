@@ -35,6 +35,36 @@ export default class RecurrenceContainer extends React.Component {
     this.props.fetchRecurrenceData(token);
   }
 
+  createRecurrence( recurring_group ) {
+    const token = this.props.token;
+    let call = async () =>
+      await (await this.props.createRecurrence(token, recurring_group));
+    call()
+      .then(() => {
+        this.fetchData();
+      })
+  }
+
+  editRecurrence( transaction ) {
+    const token = this.props.token;
+    let call = async () =>
+      await (await this.props.editRecurrence(token, recurring_group));
+    call()
+      .then(() => {
+        this.fetchData();
+      })
+  }
+
+  deleteRecurrence( id ) {
+    const token = this.props.token;
+    let call = async () =>
+      await (await this.props.deleteRecurrence(token, id));
+    call()
+      .then(() => {
+        this.fetchData();
+      })
+  }
+
   render() {
     return (
       <section>

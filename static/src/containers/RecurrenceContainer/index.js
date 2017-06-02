@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import RecurrenceList from '../../components/RecurrenceList';
+
 import * as actionCreators from '../../actions/recurrence';
 
 function mapStateToProps(state) {
@@ -92,6 +94,7 @@ export default class RecurrenceContainer extends React.Component {
           >
             {selectItems}
           </SelectField>
+          <RecurrenceList selectedAccount={this.state.selected} loaded={this.props.loaded} data={this.props.data} />
         </div>
       </section>
     )

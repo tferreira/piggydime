@@ -3,6 +3,7 @@ import { parseJSON } from '../utils/misc';
 import { data_about_recurrence, create_recurrence, edit_recurrence, delete_recurrence } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
 import { fetchAccountsData } from './accounts';
+import { fetchTransactionsData } from './transactions';
 
 export function receiveRecurrenceData(data) {
   return {
@@ -19,9 +20,10 @@ export function fetchRecurrenceDataRequest() {
   };
 }
 
-export function fetchRecurrenceData(token) {
+export function fetchRecurrenceData(token, account_id) {
   return (dispatch) => {
     dispatch((fetchAccountsData(token)));
+    dispatch((fetchTransactionsData(token, account_id)));
     dispatch(fetchRecurrenceDataRequest());
     data_about_recurrence(token)
       .then(parseJSON)

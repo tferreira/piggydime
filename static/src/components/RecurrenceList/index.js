@@ -94,7 +94,7 @@ export default class RecurrenceList extends React.Component {
   }
 
   renderTable( list ) {
-    const rows = list.map((row) => {
+    const rows = list.filter((group) => group.account_id === this.props.selectedAccount).map((row) => {
       if ( this.state.editing === row.id ) {
         return <TableRow key={ row.id }>
           <TableRowColumn>

@@ -14,6 +14,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.recurrence.loaded,
     accounts: state.accounts.data,
+    accountsLoaded: state.accounts.loaded,
     isFetching: state.recurrence.isFetching,
   };
 }
@@ -77,6 +78,9 @@ export default class RecurrenceContainer extends React.Component {
   }
 
   render() {
+    if (!this.props.accountsLoaded) {
+      return null;
+    }
     const selectItems = this.props.accounts.map((account, key) => (
       <MenuItem key={key} value={account.id} primaryText={account.label} />
     ))
@@ -105,5 +109,7 @@ RecurrenceContainer.propTypes = {
   fetchRecurrenceData: React.PropTypes.func,
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
+  accounts: React.PropTypes.any,
+  accountsLoaded: React.PropTypes.bool,
   token: React.PropTypes.string,
 };

@@ -17,6 +17,18 @@ This project is a WIP. The basic features that needs to be implemented are the f
 
 ## How to install
 
+### Install Python libraries
+You may want to create a virtualenv for this.
+If you're running this project on OSX, use the following commands:
+```sh
+$ pip3.5 install -r requirements-osx.txt
+$ pip3.5 mysql-connector-python-rf==2.2.2 --egg
+```
+On unix systems:
+```sh
+$ pip3.5 install -r requirements.txt
+```
+
 ### Create DB
 ```sh
 $ export DATABASE_URL="postgresql://username:password@localhost/mydatabase"

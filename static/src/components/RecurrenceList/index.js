@@ -31,10 +31,14 @@ export default class RecurrenceList extends React.Component {
     e.stopPropagation()
   }
 
-  toggleEditing( rowId ) {
-    this.setState({
-      editing: rowId,
-    })
+  handleCellClick(row, column, event) {
+    if (this.state.editing === null && column === 6) {  // delete
+      this.handleDeleteItem(this.props.data[row].id)
+    } else {
+      this.setState({
+        editing: this.props.data[row].id,
+      })
+    }
   }
 
   handleEditField(event) {
@@ -45,17 +49,6 @@ export default class RecurrenceList extends React.Component {
       update.id = this.state.editing
 
       let value = target.value
-
-      // if (target.name === 'tags') {
-      //   if (target.value === '') {
-      //     value = []
-      //   } else {
-      //     value = target.value.split(',')
-      //   }
-      // } else {
-      //   value = target.value
-      // }
-
       update[target.name] = value
 
       this.handleRecurrenceUpdate(update)
@@ -75,25 +68,31 @@ export default class RecurrenceList extends React.Component {
       start_date: this.refs[ `start_date_${ itemId }` ].value,
       end_date: this.refs[ `end_date_${ itemId }` ].value,
       amount: this.refs[ `amount_${ itemId }` ].value,
-      recurring_date: Number(this.refs[ `recurring_date_${ itemId }` ].value),
+      recurrence_day: Number(this.refs[ `recurrence_day_${ itemId }` ].value),
     })
   }
 
-  handleDeleteItem() {
-  }
-
-  handleRecurrenceUpdate(data) {
-    this.props.editRecurringGroup(data, (result) => {
+  handleDeleteItem(id) {
+    this.props.deleteRecurrence(id, (result) => {
       if (result) {
         this.setState({
-          editing: null,
-          selected: 0,
+          editing: null
         })
       }
     })
   }
 
-  renderTable( list ) {
+  handleRecurrenceUpdate(data) {
+    this.props.editRecurrence(data, (result) => {
+      if (result) {
+        this.setState({
+          editing: null
+        })
+      }
+    })
+  }
+
+  renderTable(list) {
     const rows = list.filter((group) => group.account_id === this.props.selectedAccount).map((row) => {
       if ( this.state.editing === row.id ) {
         return <TableRow key={ row.id }>
@@ -142,9 +141,9 @@ export default class RecurrenceList extends React.Component {
               onKeyDown={ this.handleEditField.bind(this) }
               type="text"
               className="form-control"
-              ref={ `recurring_date_${ row.id }` }
-              name="recurring_date"
-              defaultValue={ row.recurring_date }
+              ref={ `recurrence_day_${ row.id }` }
+              name="recurrence_day"
+              defaultValue={ row.recurrence_day }
             />
           </TableRowColumn>
           <TableRowColumn>
@@ -152,13 +151,13 @@ export default class RecurrenceList extends React.Component {
           </TableRowColumn>
         </TableRow>
       } else {
-        return <TableRow key={ row.id } onClick={ this.toggleEditing.bind(this, row.id) }>
+        return <TableRow key={ row.id }>
           <TableRowColumn>{row.label}</TableRowColumn>
           <TableRowColumn>{row.start_date}</TableRowColumn>
           <TableRowColumn>{row.end_date}</TableRowColumn>
           <TableRowColumn>{row.amount}</TableRowColumn>
-          <TableRowColumn>{row.recurring_date}</TableRowColumn>
-          <TableRowColumn onClick={this.stopClick.bind(this)}>(delete button here)</TableRowColumn>
+          <TableRowColumn>{row.recurrence_day}</TableRowColumn>
+          <TableRowColumn>(delete button here)</TableRowColumn>
         </TableRow>
       }
     })
@@ -187,6 +186,7 @@ export default class RecurrenceList extends React.Component {
             fixedFooter={this.state.fixedFooter}
             selectable={this.state.selectable}
             multiSelectable={this.state.multiSelectable}
+            onCellClick={this.handleCellClick.bind(this)}
           >
             <TableHeader
               displaySelectAll={this.state.showCheckboxes}

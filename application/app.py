@@ -6,7 +6,7 @@ from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
 import json
 from uuid import uuid4
-from datetime import datetime
+from datetime import time, datetime
 from dateutil.rrule import rrulestr
 
 
@@ -150,6 +150,10 @@ def delete_account():
     incoming = request.get_json()
     account = Account.query.filter_by(id=incoming["id"]["id"])
     account.delete()
+    transaction = Transaction.query.filter_by(account_id=incoming["id"]["id"])
+    transaction.delete()
+    group = RecurringGroup.query.filter_by(account_id=incoming["id"]["id"])
+    group.delete()
 
     try:
         db.session.commit()
@@ -279,25 +283,23 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
     # frequency = frequency_choices.get(incoming['recurrence_period'], 'MONTHLY')
     frequency = frequency_choices.get('monthly', 'MONTHLY')
     rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
-    rule = rrulestr(rule_string, dtstart=start_date)
+    rule = rrulestr(rule_string, dtstart=datetime.combine(start_date, time()))
     times = rule.between(
-        after=start_date,
-        before=end_date,
+        after=datetime.combine(start_date, time()),
+        before=datetime.combine(end_date, time()),
         inc=True)
 
     for occurence in times:
-        payload = {
-            'account_id': account_id,
-            'label': label,
-            'amount': amount,
-            'recurring_group_id': recurring_group_id,
-            'date': occurence
-        }
-        app.post(
-            "/api/transactions/create",
-            data=json.dumps(payload),
-            content_type='application/json'
+        transaction_id = str(uuid4())
+        transaction = Transaction(
+            transaction_id=transaction_id,
+            account_id=account_id,
+            label=label,
+            amount=amount,
+            recurring_group_id=recurring_group_id,
+            date=occurence
         )
+        db.session.add(transaction)
 
 
 @app.route("/api/recurring/create", methods=["POST"])
@@ -321,11 +323,6 @@ def create_recurring_group():
     )
     db.session.add(group)
 
-    try:
-        db.session.commit()
-    except IntegrityError:
-        return jsonify(message="Error while trying to create new recurring group."), 409
-
     # Create linked transactions
     generate_recurring(
         incoming['account_id'],
@@ -338,6 +335,11 @@ def create_recurring_group():
         incoming['recurrence_period']
     )
 
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Error while trying to create new recurring group."), 409
+
     return jsonify(
         id=group.id
     )
@@ -348,33 +350,26 @@ def create_recurring_group():
 def edit_recurring_group():
     incoming = request.get_json()
     group = RecurringGroup.query.filter_by(id=incoming["id"])
-    group.update({
-        'label': incoming["label"],
-        'amount': incoming["amount"],
-        'start_date': incoming["start_date"],
-        'end_date': incoming["end_date"],
-        'recurrence_day': incoming["recurrence_day"],
-        'recurrence_period': incoming["recurrence_period"],
-    })
-
-    try:
-        db.session.commit()
-    except IntegrityError:
-        return jsonify(message="Error while trying to update recurring group."), 409
+    group.update(incoming)
 
     # Regenerate linked transactions
     transactions = Transaction.query.filter_by(recurring_group_id=incoming["id"])
     transactions.delete()
     generate_recurring(
-        incoming['account_id'],
-        incoming['label'],
-        incoming['amount'],
-        incoming['start_date'],
-        incoming['end_date'],
-        group.id,
-        incoming['recurrence_day'],
-        incoming['recurrence_period']
+        group.first().account_id,
+        group.first().label,
+        group.first().amount,
+        group.first().start_date,
+        group.first().end_date,
+        group.first().id,
+        group.first().recurrence_day,
+        group.first().recurrence_period
     )
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Error while trying to update recurring group."), 409
 
     return jsonify(
         id=group.first().id
@@ -385,17 +380,17 @@ def edit_recurring_group():
 @requires_auth
 def delete_recurring_group():
     incoming = request.get_json()
-    group = Transaction.query.filter_by(id=incoming["id"])
+    group = RecurringGroup.query.filter_by(id=incoming["id"])
     group.delete()
+
+    # Delete linked transactions
+    transactions = Transaction.query.filter_by(recurring_group_id=incoming["id"])
+    transactions.delete()
 
     try:
         db.session.commit()
     except IntegrityError:
         return jsonify(message="Failed to delete recurring group."), 409
-
-    # Delete linked transactions
-    transactions = Transaction.query.filter_by(recurring_group_id=incoming["id"])
-    transactions.delete()
 
     return jsonify(
         status='ok'

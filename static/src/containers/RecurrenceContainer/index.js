@@ -47,32 +47,35 @@ export default class RecurrenceContainer extends React.Component {
     this.props.fetchRecurrenceData(token);
   }
 
-  createRecurrence( recurring_group ) {
+  createRecurrence(recurring_group, callback) {
     const token = this.props.token;
     let call = async () =>
       await (await this.props.createRecurrence(token, recurring_group));
     call()
       .then(() => {
+        callback(true);
         this.fetchData();
       })
   }
 
-  editRecurrence( transaction ) {
+  editRecurrence(recurring_group, callback) {
     const token = this.props.token;
     let call = async () =>
       await (await this.props.editRecurrence(token, recurring_group));
     call()
       .then(() => {
+        callback(true);
         this.fetchData();
       })
   }
 
-  deleteRecurrence( id ) {
+  deleteRecurrence(id, callback) {
     const token = this.props.token;
     let call = async () =>
       await (await this.props.deleteRecurrence(token, id));
     call()
       .then(() => {
+        callback(true);
         this.fetchData();
       })
   }
@@ -98,7 +101,14 @@ export default class RecurrenceContainer extends React.Component {
           >
             {selectItems}
           </SelectField>
-          <RecurrenceList selectedAccount={this.state.selected} loaded={this.props.loaded} data={this.props.data} />
+          <RecurrenceList
+            selectedAccount={this.state.selected}
+            loaded={this.props.loaded}
+            data={this.props.data}
+            createRecurrence={this.createRecurrence.bind(this)}
+            editRecurrence={this.editRecurrence.bind(this)}
+            deleteRecurrence={this.deleteRecurrence.bind(this)}
+          />
         </div>
       </section>
     )

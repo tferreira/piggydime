@@ -125,6 +125,11 @@ export default class TransactionsList extends React.Component {
     transactions.sort((a,b) => {
       return new Date(a.date) - new Date(b.date);
     });
+    // filter future recurring transactions
+    transactions = transactions.filter((element) => {
+      return element.recurring_group_id === null
+      || (element.recurring_group_id !== null && new Date(element.date) <= new Date)
+    })
     const rows = transactions.map((row, index) => {
       let credit = parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
       let debit = parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''

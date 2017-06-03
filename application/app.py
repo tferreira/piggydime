@@ -43,7 +43,7 @@ def create_user():
     new_user = User.query.filter_by(email=incoming["email"]).first()
 
     return jsonify(
-        id=user.id,
+        id=new_user.id,
         token=generate_token(new_user)
     )
 
@@ -72,13 +72,33 @@ def is_token_valid():
 @app.route("/api/balances", methods=["GET"])
 @requires_auth
 def get_balances():
+    incoming = request.args
+    projected_date = None
+    if 'projected_date' in incoming:
+        projected_date = parse(incoming['projected_date'])
     balancesList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
-        balance = db.session.query(func.sum(Transaction.amount).label("balance")).filter_by(account_id=account.id).first()
+        balance = db.session \
+            .query(func.sum(Transaction.amount).label("balance")) \
+            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date())) \
+            .first()
+
+        if projected_date:
+            projected_balance = db.session \
+                .query(func.sum(Transaction.amount).label("balance")) \
+                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= projected_date.date())) \
+                .first()
+        else:
+            class Object(object):
+                pass
+            projected_balance = Object()
+            projected_balance.balance = balance.balance
+
         balancesList.append({
             'account_id': account.id,
-            'balance': str(balance.balance)
+            'balance': 0 if balance.balance is None else str(balance.balance),
+            'projected_balance': 0 if projected_balance.balance is None else str(projected_balance.balance)
         })
     return jsonify(result=balancesList)
 
@@ -323,6 +343,11 @@ def create_recurring_group():
     )
     db.session.add(group)
 
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Error while trying to create new recurring group."), 409
+
     # Create linked transactions
     generate_recurring(
         incoming['account_id'],
@@ -338,7 +363,7 @@ def create_recurring_group():
     try:
         db.session.commit()
     except IntegrityError:
-        return jsonify(message="Error while trying to create new recurring group."), 409
+        return jsonify(message="Error while trying to create transactions for recurring group."), 409
 
     return jsonify(
         id=group.id

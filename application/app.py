@@ -4,10 +4,10 @@ from index import app, db
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
-import json
 from uuid import uuid4
 from datetime import time, datetime
 from dateutil.rrule import rrulestr
+from dateutil.parser import parse
 
 
 @app.route('/', methods=['GET'])
@@ -283,10 +283,10 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
     # frequency = frequency_choices.get(incoming['recurrence_period'], 'MONTHLY')
     frequency = frequency_choices.get('monthly', 'MONTHLY')
     rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
-    rule = rrulestr(rule_string, dtstart=datetime.combine(start_date, time()))
+    rule = rrulestr(rule_string, dtstart=datetime.combine(parse(start_date), time()))
     times = rule.between(
-        after=datetime.combine(start_date, time()),
-        before=datetime.combine(end_date, time()),
+        after=datetime.combine(parse(start_date), time()),
+        before=datetime.combine(parse(end_date), time()),
         inc=True)
 
     for occurence in times:

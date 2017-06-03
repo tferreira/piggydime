@@ -303,10 +303,14 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
     # frequency = frequency_choices.get(incoming['recurrence_period'], 'MONTHLY')
     frequency = frequency_choices.get('monthly', 'MONTHLY')
     rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
-    rule = rrulestr(rule_string, dtstart=datetime.combine(parse(start_date), time()))
+    if (isinstance(start_date, str)):
+        start_date = parse(start_date)
+    if (isinstance(end_date, str)):
+        end_date = parse(end_date)
+    rule = rrulestr(rule_string, dtstart=datetime.combine(start_date, time()))
     times = rule.between(
-        after=datetime.combine(parse(start_date), time()),
-        before=datetime.combine(parse(end_date), time()),
+        after=datetime.combine(start_date, time()),
+        before=datetime.combine(end_date, time()),
         inc=True)
 
     for occurence in times:

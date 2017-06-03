@@ -62,10 +62,10 @@ export default class AddRecurrence extends React.Component {
     let recurrence_day_is_valid = false;
 
     if (this.state.startDateValue !== null) {
-      date_is_valid = true;
+      start_date_is_valid = true;
     }
     if (this.state.endDateValue !== null) {
-      date_is_valid = true;
+      end_date_is_valid = true;
     }
     if (this.state.labelValue === '') {
       this.setState({
@@ -95,6 +95,10 @@ export default class AddRecurrence extends React.Component {
     if (this.state.recurrenceDay === '') {
       this.setState({
         recurrence_day_error_text: 'Day of month is mandatory.',
+      });
+    } else if (this.state.recurrenceDay < 1 || this.state.recurrenceDay > 31) {
+      this.setState({
+        recurrence_day_error_text: 'Day of month should be between 1 and 31.',
       });
     } else {
       this.setState({
@@ -138,6 +142,10 @@ export default class AddRecurrence extends React.Component {
   };
 
   render() {
+    if (this.props.selectedAccount === undefined || this.props.selectedAccount === null) {
+      return null
+    }
+
     const actions = [
       <FlatButton
       label="Cancel"
@@ -155,7 +163,7 @@ export default class AddRecurrence extends React.Component {
 
     return (
       <div>
-        <FloatingActionButton mini={true} className={styles.addButton} onTouchTap={this.handleOpen}>
+        <FloatingActionButton mini={true} className={styles.addRecurrenceButton} onTouchTap={this.handleOpen}>
           <ContentAdd />
         </FloatingActionButton>
         <Dialog

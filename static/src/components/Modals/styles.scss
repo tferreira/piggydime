@@ -1,6 +1,11 @@
-:local(.addButton) {
+:local(.addAccountButton) {
   margin-left: 160;
   margin-top: -50;
+}
+
+:local(.addRecurrenceButton) {
+  margin-left: 275;
+  margin-top: -55;
 }
 
 :local(.dialog) {

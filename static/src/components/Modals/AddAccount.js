@@ -127,7 +127,7 @@ export default class AddAccount extends React.Component {
 
     return (
       <div>
-      <FloatingActionButton mini={true} className={styles.addButton} onTouchTap={this.handleOpen}>
+      <FloatingActionButton mini={true} className={styles.addAccountButton} onTouchTap={this.handleOpen}>
         <ContentAdd />
       </FloatingActionButton>
       <Dialog

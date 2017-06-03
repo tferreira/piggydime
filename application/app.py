@@ -95,7 +95,7 @@ def get_balances():
             last_day_of_month = date(datetime.now().year, datetime.now().month, num_days)
             projected_balance = db.session \
                 .query(func.sum(Transaction.amount).label("balance")) \
-                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= last_day_of_month.date())) \
+                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= last_day_of_month)) \
                 .first()
 
         balancesList.append({

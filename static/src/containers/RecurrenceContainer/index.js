@@ -48,13 +48,12 @@ export default class RecurrenceContainer extends React.Component {
     this.props.fetchRecurrenceData(token, this.state.selected);
   }
 
-  createRecurrence(recurring_group, callback) {
+  createRecurrence(recurring_group) {
     const token = this.props.token;
     let call = async () =>
       await (await this.props.createRecurrence(token, recurring_group));
     call()
       .then(() => {
-        callback(true);
         this.fetchData();
       })
   }

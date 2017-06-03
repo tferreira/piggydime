@@ -1,4 +1,6 @@
 import React from 'react';
+import {red500} from 'material-ui/styles/colors';
+import DeleteForeverIcon from 'material-ui/svg-icons/action/delete-forever';
 import TextField from 'material-ui/TextField';
 import {
   Table,
@@ -33,7 +35,10 @@ export default class RecurrenceList extends React.Component {
 
   handleCellClick(row, column, event) {
     if (this.state.editing === null && column === 6) {  // delete
-      this.handleDeleteItem(this.props.data[row].id)
+      let choice = confirm("Do you really want to delete the recurring group: ".concat(this.props.data[row].label, "?"));
+      if (choice == true) {
+          this.handleDeleteItem(this.props.data[row].id)
+      }
     } else {
       this.setState({
         editing: this.props.data[row].id,
@@ -95,7 +100,7 @@ export default class RecurrenceList extends React.Component {
   renderTable(list) {
     const rows = list.filter((group) => group.account_id === this.props.selectedAccount).map((row) => {
       if ( this.state.editing === row.id ) {
-        return <TableRow key={ row.id }>
+        return <TableRow key={ row.id } className={styles.tableRow}>
           <TableRowColumn>
             <input
               onKeyDown={ this.handleEditField.bind(this) }
@@ -151,13 +156,15 @@ export default class RecurrenceList extends React.Component {
           </TableRowColumn>
         </TableRow>
       } else {
-        return <TableRow key={ row.id }>
+        return <TableRow key={ row.id } className={styles.tableRow}>
           <TableRowColumn>{row.label}</TableRowColumn>
           <TableRowColumn>{row.start_date}</TableRowColumn>
           <TableRowColumn>{row.end_date}</TableRowColumn>
           <TableRowColumn>{row.amount}</TableRowColumn>
           <TableRowColumn>{row.recurrence_day}</TableRowColumn>
-          <TableRowColumn>(delete button here)</TableRowColumn>
+          <TableRowColumn>
+            <DeleteForeverIcon hoverColor={red500}/>
+          </TableRowColumn>
         </TableRow>
       }
     })

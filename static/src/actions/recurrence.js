@@ -84,7 +84,7 @@ export function editRecurrence(token, recurring_group) {
   };
 }
 
-export function deleteTransaction(token, id) {
+export function deleteRecurrence(token, id) {
   return (dispatch) => {
     delete_recurrence(token, id)
       .then(parseJSON)

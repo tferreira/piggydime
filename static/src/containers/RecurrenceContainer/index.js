@@ -5,6 +5,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 import RecurrenceList from '../../components/RecurrenceList';
+import AddRecurrence from '../../components/Modals/AddRecurrence.js'
 
 import * as actionCreators from '../../actions/recurrence';
 
@@ -98,11 +99,14 @@ export default class RecurrenceContainer extends React.Component {
           >
             {selectItems}
           </SelectField>
+          <AddRecurrence 
+            selectedAccount={this.state.selected}
+            createRecurrence={this.createRecurrence.bind(this)}
+          />
           <RecurrenceList
             selectedAccount={this.state.selected}
             loaded={this.props.loaded}
             data={this.props.data}
-            createRecurrence={this.createRecurrence.bind(this)}
             editRecurrence={this.editRecurrence.bind(this)}
             deleteRecurrence={this.deleteRecurrence.bind(this)}
           />

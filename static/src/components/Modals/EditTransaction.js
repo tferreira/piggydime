@@ -155,7 +155,6 @@ export default class EditTransaction extends React.Component {
           mode="landscape"
           autoOk={true}
           container="inline"
-          errorText={this.state.date_error_text}
           onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
           value={new Date(this.state.dateValue)}
           />

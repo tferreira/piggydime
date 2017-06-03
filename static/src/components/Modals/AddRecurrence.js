@@ -1,21 +1,26 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 
 import styles from './styles.scss';
 
-export default class AddTransaction extends React.Component {
+export default class AddRecurrence extends React.Component {
   state = {
     open: false,
     disabled: true,
     label_error_text: null,
     amount_error_text: null,
-    dateValue: null,
+    recurrence_day_error_text: null,
     labelValue: '',
     amountValue: '',
+    startDateValue: null,
+    endDateValue: null,
+    recurrenceDayValue: null,
+    recurrencePeriodValue: 'monthly',
   };
 
   handleOpen = () => {
@@ -50,13 +55,18 @@ export default class AddTransaction extends React.Component {
   }
 
   isDisabled() {
-    let date_is_valid = false;
+    let start_date_is_valid = false;
+    let end_date_is_valid = false;
     let label_is_valid = false;
     let amount_is_valid = false;
-    if (this.state.dateValue !== null) {
+    let recurrence_day_is_valid = false;
+
+    if (this.state.startDateValue !== null) {
       date_is_valid = true;
     }
-
+    if (this.state.endDateValue !== null) {
+      date_is_valid = true;
+    }
     if (this.state.labelValue === '') {
       this.setState({
         label_error_text: 'Label is mandatory.',
@@ -67,7 +77,6 @@ export default class AddTransaction extends React.Component {
       });
       label_is_valid = true
     }
-
     if (this.state.amountValue === '') {
       this.setState({
         amount_error_text: 'Amount is mandatory.',
@@ -83,7 +92,22 @@ export default class AddTransaction extends React.Component {
       amount_is_valid = true
     }
 
-    if (date_is_valid && label_is_valid && amount_is_valid) {
+    if (this.state.recurrenceDay === '') {
+      this.setState({
+        recurrence_day_error_text: 'Day of month is mandatory.',
+      });
+    } else {
+      this.setState({
+        recurrence_day_error_text: null,
+      });
+      recurrence_day_is_valid = true
+    }
+
+    if (start_date_is_valid
+      && end_date_is_valid
+      && label_is_valid
+      && amount_is_valid
+      && recurrence_day_is_valid) {
       this.setState({
         disabled: false,
       });
@@ -96,14 +120,18 @@ export default class AddTransaction extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
-      var dateObject = new Date(this.state.dateValue);
-      var date = new Date(dateObject.getTime() - (dateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
-      this.props.createTransaction({
+      var startDateObject = new Date(this.state.startDateValue);
+      var endDateObject = new Date(this.state.endDateValue);
+      var startDate = new Date(startDateObject.getTime() - (startDateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+      var endDate = new Date(endDateObject.getTime() - (endDateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+      this.props.createRecurrence({
         accountId: this.props.selectedAccount,
-        date: date,
         label: this.state.labelValue,
+        start_date: startDate,
+        end_date: endDate,
         amount: Number(this.state.amountValue).toFixed(2),
-        recurringGroupId: null
+        recurrence_day: this.state.recurrenceDayValue,
+        recurrence_period: this.state.recurrencePeriodValue,
       });
       this.handleClose();
     }
@@ -127,23 +155,31 @@ export default class AddTransaction extends React.Component {
 
     return (
       <div>
-      <RaisedButton label="Add transaction" fullWidth={true} primary={true} onTouchTap={this.handleOpen} />
-      <Dialog
-        title="Add transaction"
-        actions={actions}
-        modal={false}
-        className={styles.dialog}
-        open={this.state.open}
-        onRequestClose={this.handleClose}
-      >
+        <FloatingActionButton mini={true} className={styles.addButton} onTouchTap={this.handleOpen}>
+          <ContentAdd />
+        </FloatingActionButton>
+        <Dialog
+          title="Add recurring transaction"
+          actions={actions}
+          modal={false}
+          className={styles.dialog}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
         <div>
           <DatePicker
-          floatingLabelText="Date"
-          hintText="Transaction date"
+          floatingLabelText="From"
           mode="landscape"
           autoOk={true}
           container="inline"
-          onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
+          onChange={(e, date) => this.changeDateValue(date, 'startDateValue')}
+          />
+          <DatePicker
+          floatingLabelText="Until"
+          mode="landscape"
+          autoOk={true}
+          container="inline"
+          onChange={(e, date) => this.changeDateValue(date, 'endDateValue')}
           />
           <br />
           <TextField
@@ -158,8 +194,14 @@ export default class AddTransaction extends React.Component {
           errorText={this.state.amount_error_text}
           onChange={(e) => this.changeValue(e, 'amountValue')}
           /><br />
+          <TextField
+          floatingLabelText="Day of month"
+          hintText="Between 1 and 31"
+          errorText={this.state.recurrence_day_error_text}
+          onChange={(e) => this.changeValue(e, 'recurrenceDayValue')}
+          /><br />
         </div>
-      </Dialog>
+        </Dialog>
       </div>
     );
   }

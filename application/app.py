@@ -93,7 +93,7 @@ def get_balances():
             class Object(object):
                 pass
             projected_balance = Object()
-            projected_balance.balance = None
+            projected_balance.balance = balance.balance
 
         balancesList.append({
             'account_id': account.id,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {red500} from 'material-ui/styles/colors';
+import {grey300, red500} from 'material-ui/styles/colors';
 import DeleteForeverIcon from 'material-ui/svg-icons/action/delete-forever';
 import TextField from 'material-ui/TextField';
 import {
@@ -170,7 +170,7 @@ export default class RecurrenceList extends React.Component {
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.amount}</TableRowColumn>
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.recurrence_day}</TableRowColumn>
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>
-            <DeleteForeverIcon hoverColor={red500}/>
+            <DeleteForeverIcon color={archived ? grey300 : ''} hoverColor={red500}/>
           </TableRowColumn>
         </TableRow>
       }

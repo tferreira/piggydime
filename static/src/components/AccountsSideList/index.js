@@ -71,7 +71,7 @@ export default class AccountsSideList extends React.Component {
     }
     const rows = accounts.map((row) => {
       var filtered = balancesProp.filter((element) => element.account_id === row.id)
-      var balance = filtered[0].balance === 'None' ? 0 : filtered[0].balance
+      var balance = filtered[0].balance
       return (
         <GridTile
           key={'account-' + row.id}

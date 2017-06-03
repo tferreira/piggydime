@@ -72,13 +72,33 @@ def is_token_valid():
 @app.route("/api/balances", methods=["GET"])
 @requires_auth
 def get_balances():
+    incoming = request.args
+    projected_date = None
+    if 'projected_date' in incoming:
+        projected_date = parse(incoming['projected_date'])
     balancesList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
-        balance = db.session.query(func.sum(Transaction.amount).label("balance")).filter_by(account_id=account.id).first()
+        balance = db.session \
+            .query(func.sum(Transaction.amount).label("balance")) \
+            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date())) \
+            .first()
+
+        if projected_date:
+            projected_balance = db.session \
+                .query(func.sum(Transaction.amount).label("balance")) \
+                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= projected_date.date())) \
+                .first()
+        else:
+            class Object(object):
+                pass
+            projected_balance = Object()
+            projected_balance.balance = None
+
         balancesList.append({
             'account_id': account.id,
-            'balance': str(balance.balance)
+            'balance': 0 if balance.balance is None else str(balance.balance),
+            'projected_balance': 0 if projected_balance.balance is None else str(projected_balance.balance)
         })
     return jsonify(result=balancesList)
 

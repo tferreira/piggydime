@@ -6,7 +6,7 @@ from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
 from uuid import uuid4
 import calendar
-from datetime import time, datetime
+from datetime import time, datetime, date
 from dateutil.rrule import rrulestr
 from dateutil.parser import parse
 
@@ -92,7 +92,7 @@ def get_balances():
                 .first()
         else:
             _, num_days = calendar.monthrange(datetime.now().year, datetime.now().month)
-            last_day_of_month = datetime.date(datetime.now().year, datetime.now().month, num_days)
+            last_day_of_month = date(datetime.now().year, datetime.now().month, num_days)
             projected_balance = db.session \
                 .query(func.sum(Transaction.amount).label("balance")) \
                 .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= last_day_of_month.date())) \

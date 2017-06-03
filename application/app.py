@@ -43,7 +43,7 @@ def create_user():
     new_user = User.query.filter_by(email=incoming["email"]).first()
 
     return jsonify(
-        id=user.id,
+        id=new_user.id,
         token=generate_token(new_user)
     )
 
@@ -323,6 +323,11 @@ def create_recurring_group():
     )
     db.session.add(group)
 
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Error while trying to create new recurring group."), 409
+
     # Create linked transactions
     generate_recurring(
         incoming['account_id'],
@@ -338,7 +343,7 @@ def create_recurring_group():
     try:
         db.session.commit()
     except IntegrityError:
-        return jsonify(message="Error while trying to create new recurring group."), 409
+        return jsonify(message="Error while trying to create transactions for recurring group."), 409
 
     return jsonify(
         id=group.id

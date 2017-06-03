@@ -91,9 +91,6 @@ export default class RecurrenceContainer extends React.Component {
       <section>
         <div>
           <h2>Recurring transactions</h2>
-          <hr />
-          Filter them by selecting account on the dropdown list
-          <br />
           <SelectField
             value={this.state.selected}
             onChange={this.handleAccountChange.bind(this)}

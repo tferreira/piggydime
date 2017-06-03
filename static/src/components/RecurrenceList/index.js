@@ -166,11 +166,7 @@ export default class RecurrenceList extends React.Component {
 
   render() {
     if (this.props.selectedAccount === undefined || this.props.selectedAccount === null) {
-      return (
-        <div className={styles.mainContainer}>
-          <h3>Select an account or create one.</h3>
-        </div>
-      )
+      return null
     }
 
     return (

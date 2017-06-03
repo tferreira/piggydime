@@ -23,7 +23,9 @@ export function fetchRecurrenceDataRequest() {
 export function fetchRecurrenceData(token, account_id) {
   return (dispatch) => {
     dispatch((fetchAccountsData(token)));
-    dispatch((fetchTransactionsData(token, account_id)));
+    if (account_id) {
+      dispatch((fetchTransactionsData(token, account_id)));
+    }
     dispatch(fetchRecurrenceDataRequest());
     data_about_recurrence(token)
       .then(parseJSON)

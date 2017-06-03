@@ -39,6 +39,8 @@ export default class RecurrenceList extends React.Component {
       if (choice == true) {
           this.handleDeleteItem(this.props.data[row].id)
       }
+    } else if (new Date(this.props.data[row].end_date) <= new Date) {
+      // if "archived" it is not editable!
     } else {
       this.setState({
         editing: this.props.data[row].id,
@@ -98,6 +100,10 @@ export default class RecurrenceList extends React.Component {
   }
 
   renderTable(list) {
+    // move "archived" (ended) recurring groups to the bottom of the list
+    list.sort((a,b) => {
+      return new Date(a.end_date) <= new Date;
+    });
     const rows = list.filter((group) => group.account_id === this.props.selectedAccount).map((row) => {
       if ( this.state.editing === row.id ) {
         return <TableRow key={ row.id } className={styles.tableRow}>
@@ -156,13 +162,14 @@ export default class RecurrenceList extends React.Component {
           </TableRowColumn>
         </TableRow>
       } else {
-        return <TableRow key={ row.id } className={styles.tableRow}>
-          <TableRowColumn>{row.label}</TableRowColumn>
-          <TableRowColumn>{row.start_date}</TableRowColumn>
-          <TableRowColumn>{row.end_date}</TableRowColumn>
-          <TableRowColumn>{row.amount}</TableRowColumn>
-          <TableRowColumn>{row.recurrence_day}</TableRowColumn>
-          <TableRowColumn>
+        const archived = new Date(row.end_date) < new Date
+        return <TableRow key={ row.id }>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{!archived ? row.label : row.label.concat(' (FINISHED)')}</TableRowColumn>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.start_date}</TableRowColumn>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.end_date}</TableRowColumn>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.amount}</TableRowColumn>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.recurrence_day}</TableRowColumn>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>
             <DeleteForeverIcon hoverColor={red500}/>
           </TableRowColumn>
         </TableRow>

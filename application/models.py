@@ -94,5 +94,7 @@ class RecurringGroup(db.Model):
         self.recurrence_period = recurrence_period
 
     @staticmethod
-    def get_groups(account_id):
-        return RecurringGroup.query.filter_by(account_id=account_id).all()
+    def get_groups(account_ids):
+        if not isinstance(account_ids, (list)):
+            account_ids = [account_ids]
+        return RecurringGroup.query.filter(RecurringGroup.account_id.in_(account_ids)).all()

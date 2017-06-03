@@ -147,6 +147,7 @@ export default class EditTransaction extends React.Component {
         className={styles.dialog}
         open={this.state.open}
         onRequestClose={this.handleClose}
+        autoScrollBodyContent={true}
       >
         <div>
           <DatePicker
@@ -155,7 +156,6 @@ export default class EditTransaction extends React.Component {
           mode="landscape"
           autoOk={true}
           container="inline"
-          errorText={this.state.date_error_text}
           onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
           value={new Date(this.state.dateValue)}
           />

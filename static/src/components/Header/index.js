@@ -81,6 +81,9 @@ export class Header extends Component {
                 <MenuItem onClick={() => this.dispatchNewRoute('/accounts')}>
                   Accounts
                 </MenuItem>
+                <MenuItem onClick={() => this.dispatchNewRoute('/recurrence')}>
+                  Recurring transactions
+                </MenuItem>
                 <Divider />
 
                 <MenuItem onClick={(e) => this.logout(e)}>

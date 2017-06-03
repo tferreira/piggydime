@@ -108,3 +108,37 @@ export function delete_transaction(token, transaction_id) {
     transaction_id,
   }, tokenConfig(token));
 }
+
+export function data_about_recurrence(token) {
+  return axios.get('api/recurring', tokenConfig(token));
+}
+
+export function create_recurrence(token, account_id, label, amount, start_date, end_date, recurrence_day, recurrence_period) {
+  return axios.post('api/recurring/create', {
+    account_id,
+    label,
+    amount,
+    start_date,
+    end_date,
+    recurrence_day,
+    recurrence_period,
+  }, tokenConfig(token));
+}
+
+export function edit_recurrence(token, id, label, amount, start_date, end_date, recurrence_day, recurrence_period) {
+  return axios.post('api/recurring/edit', {
+    id,
+    label,
+    amount,
+    start_date,
+    end_date,
+    recurrence_day,
+    recurrence_period,
+  }, tokenConfig(token));
+}
+
+export function delete_recurrence(token, id) {
+  return axios.post('api/recurring/delete', {
+    id,
+  }, tokenConfig(token));
+}

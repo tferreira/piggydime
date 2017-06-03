@@ -137,6 +137,7 @@ export default class AddAccount extends React.Component {
         className={styles.dialog}
         open={this.state.open}
         onRequestClose={this.handleClose}
+        autoScrollBodyContent={true}
       >
         <div>
           <TextField

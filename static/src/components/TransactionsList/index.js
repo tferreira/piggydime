@@ -135,17 +135,17 @@ export default class TransactionsList extends React.Component {
       let debit = parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
       return (
         <TableRow key={row.transaction_id}>
-          <TableHeaderColumn className={styles.smallColumn}>{row.date.toString()}</TableHeaderColumn>
-          <TableHeaderColumn>{row.label}</TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}>{debit}</TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}>{credit}</TableHeaderColumn>
-          <TableHeaderColumn className={styles.smallColumn}>
+          <TableRowColumn className={styles.smallColumn}>{row.date.toString()}</TableRowColumn>
+          <TableRowColumn>{row.label}</TableRowColumn>
+          <TableRowColumn className={styles.smallColumn}>{debit}</TableRowColumn>
+          <TableRowColumn className={styles.smallColumn}>{credit}</TableRowColumn>
+          <TableRowColumn className={styles.smallColumn}>
             <EditTransaction
               fields={row}
               editTransaction={this.editTransaction.bind(this)}
               deleteTransaction={this.deleteTransaction.bind(this)}
             />
-          </TableHeaderColumn>
+          </TableRowColumn>
         </TableRow>
       )
     })

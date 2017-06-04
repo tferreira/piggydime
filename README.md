@@ -18,6 +18,23 @@ The features that are implemented are the following:
  * [ ] Import transactions data from bank CSV exports
  * [ ] Backup/Restore feature
 
+This application has been build on top of the (React-Redux-Flask)[https://github.com/dternyak/React-Redux-Flask] boilerplate (Flask JWT Blackend and a React/Redux frontend with Material UI):
+
+* Python 3.5
+* Pytest
+* Flask
+* Alembic
+* SQLAlchemy
+* React
+* Redux
+* React-Router 2.0
+* React-Router-Redux
+* Babel 6
+* SCSS processing
+* Webpack
+
+![screenshot](http://i.imgur.com/j8y0E8g.png)
+
 ## How to install
 
 ### Install Python libraries

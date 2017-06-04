@@ -2,16 +2,19 @@
 
 This app allows you to keep track of your bank accounts balance.
 
-This project is a WIP. The basic features that needs to be implemented are the following:
+This project is still in development.
+The features that are implemented are the following:
 
  * [x] Be able to have multiple accounts
- * [x] Add and edit transactions easily
- * [ ] Recurring transactions
- * [ ] Previsional balance to a custom date
+ * [x] Monthly recurring transactions
+ * [x] Previsional balance at the end of the month
 
  In the future, we'd want to have:
 
+ * [ ] Being able to choose the previsional balance date
+ * [ ] View toggle button for recurring transactions
  * [ ] Statistics charts
+ * [ ] Currency symbol (choosen by the user)
  * [ ] Import transactions data from bank CSV exports
  * [ ] Backup/Restore feature
 
@@ -27,9 +30,14 @@ $ pip3.5 mysql-connector-python-rf==2.2.2 --egg
 On unix systems:
 ```sh
 $ pip3.5 install -r requirements.txt
+$ pip3.5 uninstall py-bcrypt && pip3.5 install py-bcrypt  # this need to be fixed
 ```
 
 ### Create DB
+SQLite has been intentionally omitted as there is issues with Decimal types.
+
+More about connection strings in this [flask config guide.](http://flask-sqlalchemy.pocoo.org/2.1/config/)
+
 ```sh
 $ export DATABASE_URL="postgresql://username:password@localhost/mydatabase"
 
@@ -37,16 +45,6 @@ or
 
 $ export DATABASE_URL="mysql+mysqlconnector://username:password@localhost/mydatabase"
 
-SQLite has been intentionally omitted as there is issues with Decimal types.
-More about connection strings in this [flask config guide](http://flask-sqlalchemy.pocoo.org/2.1/config/)
-
-$ python3.5 manage.py db upgrade
-```
-
-To create new migrations, add your schema on `models.py` then use:
-
-```sh
-$ python3.5 manage.py db revision --autogenerate
 $ python3.5 manage.py db upgrade
 ```
 
@@ -63,7 +61,13 @@ $ yarn
 $ python3.5 manage.py runserver
 ```
 
-### Test Back-End
+### Build Front-End
+
+```sh
+$ yarn run build:production
+```
+
+### FOR DEVELOPERS - Test Back-End
 
 ```sh
 $ python3.5 test.py tests/
@@ -71,22 +75,25 @@ with code coverage:
 $ python3.5 test.py --cov-report=term --cov-report=html --cov=application/ tests/
 ```
 
-### Run Front-End
+### FOR DEVELOPERS -  Run Front-End
 
 ```sh
 $ cd static
 $ yarn start
 ```
 
-### Build Front-End
+### FOR DEVELOPERS - DB Changes (Migration)
+
+To create new migrations, add your schema on `models.py` then use:
 
 ```sh
-$ yarn run build:production
+$ python3.5 manage.py db revision --autogenerate
+$ python3.5 manage.py db upgrade
 ```
 
 ### New to Python?
 
-If you are approaching this demo as primarily a frontend dev with limited or no python experience, you may need to install a few things that a seasoned python dev would already have installed.
+If you are approaching this code as primarily a frontend dev with limited or no python experience, you may need to install a few things that a seasoned python dev would already have installed.
 
 Most Macs already have python installed but you may not have python 3.5 or pip install. You can check to see if you have them installed:
 

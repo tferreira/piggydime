@@ -39,8 +39,6 @@ export default class RecurrenceList extends React.Component {
       if (choice == true) {
           this.handleDeleteItem(this.props.data[row].id)
       }
-    } else if (new Date(this.props.data[row].end_date) <= new Date) {
-      // if "archived" it is not editable!
     } else {
       this.setState({
         editing: this.props.data[row].id,

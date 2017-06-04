@@ -122,8 +122,12 @@ export default class TransactionsList extends React.Component {
   }
 
   renderTransactionsList( transactions ) {
-    transactions.sort((a,b) => {
-      return new Date(a.date) - new Date(b.date);
+    transactions.sort((a, b) => {
+      if (new Date(a.date) < new Date(b.date)) return -1
+      if (new Date(a.date) > new Date(b.date)) return 1
+      if (a.id < b.id) return -1
+      if (a.id > b.id) return 1
+      return 0
     });
     // filter future recurring transactions
     transactions = transactions.filter((element) => {

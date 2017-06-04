@@ -43,7 +43,7 @@ export function selectAccount(id) {
 
 export function createAccount(token, account) { 
   return (dispatch) => {
-    create_account(token, account.label, account.bank, account.iban, account.bic)
+    create_account(token, account.label, account.bank, account.iban, account.bic, account.projected_date)
       .then(parseJSON)
       .then(response => {
         dispatch(selectAccount(response.id));
@@ -58,7 +58,7 @@ export function createAccount(token, account) {
 
 export function editAccount(token, account) { 
   return (dispatch) => {
-    edit_account(token, account.id, account.label, account.bank, account.iban, account.bic)
+    edit_account(token, account.id, account.label, account.bank, account.iban, account.bic, account.projected_date)
       .then(parseJSON)
       .then(response => {
       })

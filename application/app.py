@@ -73,10 +73,6 @@ def is_token_valid():
 @app.route("/api/balances", methods=["GET"])
 @requires_auth
 def get_balances():
-    incoming = request.args
-    projected_date = None
-    if 'projected_date' in incoming:
-        projected_date = parse(incoming['projected_date'])
     balancesList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
@@ -85,10 +81,10 @@ def get_balances():
             .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date())) \
             .first()
 
-        if projected_date:
+        if account.projected_date is not None:
             projected_balance = db.session \
                 .query(func.sum(Transaction.amount).label("balance")) \
-                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= projected_date.date())) \
+                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= account.projected_date)) \
                 .first()
         else:
             _, num_days = calendar.monthrange(datetime.now().year, datetime.now().month)
@@ -118,6 +114,7 @@ def get_accounts():
             'bank': account.bank,
             'iban': account.iban,
             'bic': account.bic,
+            'projected_date': account.projected_date
         })
     return jsonify(result=accountsList)
 
@@ -131,7 +128,8 @@ def create_account():
         label=incoming["label"],
         bank=incoming["bank"],
         iban=incoming["iban"],
-        bic=incoming["bic"]
+        bic=incoming["bic"],
+        projected_date=incoming["projected_date"]
     )
     db.session.add(account)
 
@@ -154,7 +152,8 @@ def edit_account():
         'label': incoming["label"],
         'bank': incoming["bank"],
         'iban': incoming["iban"],
-        'bic': incoming["bic"]
+        'bic': incoming["bic"],
+        'projected_date': incoming["projected_date"]
     })
 
     try:

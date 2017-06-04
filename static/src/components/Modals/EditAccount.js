@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
+import DatePicker from 'material-ui/DatePicker';
 import Edit from 'material-ui/svg-icons/image/edit';
 import TextField from 'material-ui/TextField';
 
@@ -20,7 +21,8 @@ export default class EditAccount extends React.Component {
     labelValue: this.props.fields.label,
     bankValue: this.props.fields.bank,
     ibanValue: this.props.fields.iban,
-    bicValue: this.props.fields.bic
+    bicValue: this.props.fields.bic,
+    projectedDateValue: this.props.fields.projected_date,
   };
 
   handleOpen = () => {
@@ -40,11 +42,25 @@ export default class EditAccount extends React.Component {
     });
   }
 
+  changeDateValue(date, type) {
+    const value = date;
+    const next_state = {};
+    next_state[type] = value;
+    this.setState(next_state, () => {
+      this.isDisabled();
+    });
+  }
+
   isDisabled() {
     let label_is_valid = false;
     let bank_is_valid = false;
     let iban_is_valid = false;
     let bic_is_valid = false;
+    let projected_date_is_valid = false;
+
+    if (this.state.projectedDateValue !== null) {
+      projected_date_is_valid = true;
+    }
 
     if (this.state.labelValue === '') {
       this.setState({
@@ -88,7 +104,7 @@ export default class EditAccount extends React.Component {
       });
     }
 
-    if (label_is_valid && bank_is_valid && iban_is_valid && bic_is_valid) {
+    if (label_is_valid && bank_is_valid && iban_is_valid && bic_is_valid && projected_date_is_valid) {
       this.setState({
       disabled: false,
       });
@@ -101,12 +117,15 @@ export default class EditAccount extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
+      var projectedDateObject = new Date(this.state.projectedDateValue);
+      var projectedDate = new Date(projectedDateObject.getTime() - (projectedDateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
       this.props.editAccount({
       id: this.state.id,
       label: this.state.labelValue,
       bank: this.state.bankValue,
       iban: this.state.ibanValue,
-      bic: this.state.bicValue
+      bic: this.state.bicValue,
+      projected_date: projectedDate,
       });
       this.handleClose();
     }
@@ -176,6 +195,14 @@ export default class EditAccount extends React.Component {
           errorText={this.state.bic_error_text}
           onChange={(e) => this.changeValue(e, 'bicValue')}
           defaultValue={this.state.bicValue}
+          /><br />
+          <DatePicker
+          floatingLabelText="Projected balance date"
+          mode="landscape"
+          autoOk={true}
+          container="inline"
+          onChange={(e, date) => this.changeDateValue(date, 'projectedDateValue')}
+          value={new Date(this.state.projectedDateValue)}
           /><br />
         </div>
       </Dialog>

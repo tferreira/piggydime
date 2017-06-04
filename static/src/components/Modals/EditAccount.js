@@ -120,12 +120,12 @@ export default class EditAccount extends React.Component {
       var projectedDateObject = new Date(this.state.projectedDateValue);
       var projectedDate = new Date(projectedDateObject.getTime() - (projectedDateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
       this.props.editAccount({
-      id: this.state.id,
-      label: this.state.labelValue,
-      bank: this.state.bankValue,
-      iban: this.state.ibanValue,
-      bic: this.state.bicValue,
-      projected_date: projectedDate,
+        id: this.state.id,
+        label: this.state.labelValue,
+        bank: this.state.bankValue,
+        iban: this.state.ibanValue,
+        bic: this.state.bicValue,
+        projected_date: projectedDate,
       });
       this.handleClose();
     }

@@ -99,6 +99,7 @@ export default class AccountsSideList extends React.Component {
   editAccount( account ) {
     const token = this.props.token;
     this.props.editAccount(token, account);
+    this.props.updateBalance();
     this.fetchData();
   }
 

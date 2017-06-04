@@ -7,18 +7,17 @@ The features that are implemented are the following:
 
  * [x] Be able to have multiple accounts
  * [x] Monthly recurring transactions
- * [x] Previsional balance at the end of the month
+ * [x] Previsional balance at a custom date
 
  In the future, we'd want to have:
 
- * [ ] Being able to choose the previsional balance date
  * [ ] View toggle button for recurring transactions
  * [ ] Statistics charts
  * [ ] Currency symbol (choosen by the user)
  * [ ] Import transactions data from bank CSV exports
  * [ ] Backup/Restore feature
 
-This application has been build on top of the (React-Redux-Flask)[https://github.com/dternyak/React-Redux-Flask] boilerplate (Flask JWT Blackend and a React/Redux frontend with Material UI):
+This application has been build on top of the [React-Redux-Flask](https://github.com/dternyak/React-Redux-Flask) boilerplate (Flask JWT Blackend and a React/Redux frontend with Material UI):
 
 * Python 3.5
 * Pytest

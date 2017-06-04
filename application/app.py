@@ -118,6 +118,7 @@ def get_accounts():
             'bank': account.bank,
             'iban': account.iban,
             'bic': account.bic,
+            'projected_date': account.projected_date
         })
     return jsonify(result=accountsList)
 
@@ -131,7 +132,8 @@ def create_account():
         label=incoming["label"],
         bank=incoming["bank"],
         iban=incoming["iban"],
-        bic=incoming["bic"]
+        bic=incoming["bic"],
+        projected_date=incoming["projected_date"]
     )
     db.session.add(account)
 
@@ -154,7 +156,8 @@ def edit_account():
         'label': incoming["label"],
         'bank': incoming["bank"],
         'iban': incoming["iban"],
-        'bic': incoming["bic"]
+        'bic': incoming["bic"],
+        'projected_date': incoming["projected_date"]
     })
 
     try:

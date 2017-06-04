@@ -51,22 +51,24 @@ export function data_about_balances(token) {
   return axios.get('api/balances', tokenConfig(token))
 }
 
-export function create_account(token, label, bank, iban, bic) {
+export function create_account(token, label, bank, iban, bic, projected_date) {
   return axios.post('api/accounts/create', {
     label,
     bank,
     iban,
     bic,
+    projected_date,
   }, tokenConfig(token));
 }
 
-export function edit_account(token, id, label, bank, iban, bic) {
+export function edit_account(token, id, label, bank, iban, bic, projected_date) {
   return axios.post('api/accounts/edit', {
     id,
     label,
     bank,
     iban,
     bic,
+    projected_date,
   }, tokenConfig(token));
 }
 

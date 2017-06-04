@@ -59,7 +59,7 @@ class Transaction(db.Model):
     transaction_id = db.Column(db.String(38), unique=True)
     account_id = db.Column(db.Integer())
     label = db.Column(db.String(255))
-    amount = db.Column(db.DECIMAL(19, 4))
+    amount = db.Column(db.DECIMAL(19, 2))
     recurring_group_id = db.Column(db.Integer())
     date = db.Column(db.Date())
 
@@ -80,7 +80,7 @@ class RecurringGroup(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     account_id = db.Column(db.Integer())
     label = db.Column(db.String(255))
-    amount = db.Column(db.DECIMAL(19, 4))
+    amount = db.Column(db.DECIMAL(19, 2))
     start_date = db.Column(db.Date())
     end_date = db.Column(db.Date())
     recurrence_day = db.Column(db.Integer())

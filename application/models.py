@@ -31,13 +31,15 @@ class Account(db.Model):
     bank = db.Column(db.String(255))
     iban = db.Column(db.String(34), unique=True)
     bic = db.Column(db.String(12))
+    projected_date = db.Column(db.Date())
 
-    def __init__(self, user, label, bank, iban, bic):
+    def __init__(self, user, label, bank, iban, bic, projected_date):
         self.user = user['id']
         self.label = label
         self.bank = bank
         self.iban = iban
         self.bic = bic
+        self.projected_date = projected_date
 
     @staticmethod
     def get_accounts(user):

@@ -205,6 +205,7 @@ def get_transactions():
             'amount': str(transaction.amount),  # Decimal is not JSON serializable
             'recurring_group_id': transaction.recurring_group_id,
             'date': transaction.date.strftime('%Y-%m-%d'),
+            'tick': transaction.tick,
         })
     return jsonify(result=transactionsList)
 
@@ -226,7 +227,8 @@ def create_transaction():
         label=incoming["label"],
         amount=incoming["amount"],
         recurring_group_id=recurring_group_id,
-        date=date
+        date=date,
+        tick=incoming["tick"]
     )
     db.session.add(transaction)
 
@@ -249,6 +251,7 @@ def edit_transaction():
         'label': incoming["label"],
         'amount': incoming["amount"],
         'date': incoming["date"],
+        'tick': incoming["tick"],
     })
 
     try:
@@ -326,7 +329,8 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
             label=label,
             amount=amount,
             recurring_group_id=recurring_group_id,
-            date=occurence
+            date=occurence,
+            tick=0
         )
         db.session.add(transaction)
 

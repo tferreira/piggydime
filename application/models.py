@@ -62,14 +62,16 @@ class Transaction(db.Model):
     amount = db.Column(db.DECIMAL(19, 2))
     recurring_group_id = db.Column(db.Integer())
     date = db.Column(db.Date())
+    tick = db.Column(db.SmallInteger())
 
-    def __init__(self, transaction_id, account_id, label, amount, recurring_group_id, date):
+    def __init__(self, transaction_id, account_id, label, amount, recurring_group_id, date, tick):
         self.transaction_id = transaction_id
         self.account_id = account_id
         self.label = label
         self.amount = amount
         self.recurring_group_id = recurring_group_id
         self.date = date
+        self.tick = tick
 
     @staticmethod
     def get_transactions(account_id):

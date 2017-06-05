@@ -100,7 +100,11 @@ export default class AddRecurrence extends React.Component {
     }
 
 
-    if (this.state.recurrenceMonthValue < 1 || this.state.recurrenceMonthValue > 12) {
+    if (this.state.recurrenceMonthValue === null) {
+      stateToUpdate['recurrence_month_error_text'] = null
+      recurrence_month_is_valid = true
+    }
+    else if (this.state.recurrenceMonthValue < 1 || this.state.recurrenceMonthValue > 12) {
       stateToUpdate['recurrence_month_error_text'] = 'Month of year should be between 1 and 12.'
     } else {
       stateToUpdate['recurrence_month_error_text'] = null

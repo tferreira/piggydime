@@ -300,7 +300,7 @@ def get_recurring_groups():
 
 
 def generate_recurring(account_id, label, amount, start_date, end_date, recurring_group_id, recurrence_day, recurrence_month):
-    frequency = 'MONTHLY' if recurrence_month is not None else 'YEARLY'
+    frequency = 'MONTHLY' if recurrence_month is None else 'YEARLY'
     if frequency == 'MONTHLY':
         rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
     elif frequency == 'YEARLY':
@@ -334,6 +334,8 @@ def create_recurring_group():
     incoming = request.get_json()
     start_date = datetime.now()  # helpful for unit tests
     end_date = datetime.now()  # helpful for unit tests
+    if incoming["recurrence_month"] == '':
+        incoming["recurrence_month"] = None
     if "start_date" in incoming:
         start_date = incoming["start_date"]
     if "end_date" in incoming:
@@ -380,6 +382,8 @@ def create_recurring_group():
 @requires_auth
 def edit_recurring_group():
     incoming = request.get_json()
+    if "recurrence_month" not in incoming or incoming["recurrence_month"] == '':
+        incoming["recurrence_month"] = None
     group = RecurringGroup.query.filter_by(id=incoming["id"])
     group.update(incoming)
 

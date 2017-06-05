@@ -34,7 +34,7 @@ export default class RecurrenceList extends React.Component {
   }
 
   handleCellClick(row, column, event) {
-    if (this.state.editing === null && column === 6) {  // delete
+    if (this.state.editing === null && column === 7) {  // delete
       let choice = confirm("Do you really want to delete the recurring group: ".concat(this.props.data[row].label, "?"));
       if (choice == true) {
           this.handleDeleteItem(this.props.data[row].id)
@@ -156,6 +156,16 @@ export default class RecurrenceList extends React.Component {
             />
           </TableRowColumn>
           <TableRowColumn>
+            <input
+              onKeyDown={ this.handleEditField.bind(this) }
+              type="text"
+              className="form-control"
+              ref={ `recurrence_month_${ row.id }` }
+              name="recurrence_month"
+              defaultValue={ row.recurrence_month }
+            />
+          </TableRowColumn>
+          <TableRowColumn>
             <button type='submit' onClick={ this.handleEditItem.bind(this) }>Edit</button>
           </TableRowColumn>
         </TableRow>
@@ -167,6 +177,7 @@ export default class RecurrenceList extends React.Component {
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.end_date}</TableRowColumn>
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.amount}</TableRowColumn>
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.recurrence_day}</TableRowColumn>
+          <TableRowColumn className={archived ? styles.tableRowArchived : ''}>{row.recurrence_month}</TableRowColumn>
           <TableRowColumn className={archived ? styles.tableRowArchived : ''}>
             <DeleteForeverIcon color={archived ? grey300 : ''} hoverColor={red500}/>
           </TableRowColumn>
@@ -207,6 +218,7 @@ export default class RecurrenceList extends React.Component {
                 <TableHeaderColumn>Until</TableHeaderColumn>
                 <TableHeaderColumn>Amount</TableHeaderColumn>
                 <TableHeaderColumn>Day of month</TableHeaderColumn>
+                <TableHeaderColumn>Month of year</TableHeaderColumn>
                 <TableHeaderColumn>Actions</TableHeaderColumn>
               </TableRow>
             </TableHeader>

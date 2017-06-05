@@ -50,48 +50,38 @@ export default class AddTransaction extends React.Component {
   }
 
   isDisabled() {
+    let stateToUpdate = {}
     let date_is_valid = false;
     let label_is_valid = false;
     let amount_is_valid = false;
+
     if (this.state.dateValue !== null) {
       date_is_valid = true;
     }
 
     if (this.state.labelValue === '') {
-      this.setState({
-        label_error_text: 'Label is mandatory.',
-      })
+      stateToUpdate['label_error_text'] = 'Label is mandatory.'
     } else {
-      this.setState({
-        label_error_text: null,
-      });
+      stateToUpdate['label_error_text'] = null
       label_is_valid = true
     }
 
     if (this.state.amountValue === '') {
-      this.setState({
-        amount_error_text: 'Amount is mandatory.',
-      });
+      stateToUpdate['amount_error_text'] = 'Amount is mandatory.'
     } else if (!this.isCurrency(this.state.amountValue)) {
-      this.setState({
-        amount_error_text: 'Amount should be a number.',
-      });
+      stateToUpdate['amount_error_text'] = 'Amount should be a number.'
     } else {
-      this.setState({
-        amount_error_text: null,
-      });
+      stateToUpdate['amount_error_text'] = null
       amount_is_valid = true
     }
 
     if (date_is_valid && label_is_valid && amount_is_valid) {
-      this.setState({
-        disabled: false,
-      });
+      stateToUpdate['disabled'] = false
     } else {
-      this.setState({
-        disabled: true,
-      });
+      stateToUpdate['disabled'] = true
     }
+
+    this.setState(stateToUpdate)
   }
 
   onSubmit = () => {

@@ -39,7 +39,7 @@ class BaseTestConfig(TestCase):
         "label": "that group",
         "amount": 42,
         "recurrence_day": 5,
-        "recurrence_period": "monthly",
+        "recurrence_month": 12,
     }
 
     def create_app(self):

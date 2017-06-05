@@ -8,27 +8,33 @@ import DatePicker from 'material-ui/DatePicker';
 
 import styles from './styles.scss';
 
+const initialState = {
+  open: false,
+  disabled: true,
+  label_error_text: null,
+  amount_error_text: null,
+  recurrence_day_error_text: null,
+  recurrence_month_error_text: null,
+  labelValue: '',
+  amountValue: '',
+  startDateValue: null,
+  endDateValue: null,
+  recurrenceDayValue: null,
+  recurrenceMonthValue: null,
+};
+
 export default class AddRecurrence extends React.Component {
-  state = {
-    open: false,
-    disabled: true,
-    label_error_text: null,
-    amount_error_text: null,
-    recurrence_day_error_text: null,
-    labelValue: '',
-    amountValue: '',
-    startDateValue: null,
-    endDateValue: null,
-    recurrenceDayValue: null,
-    recurrencePeriodValue: 'monthly',
-  };
+  constructor (props){
+    super(props)
+    this.state = initialState
+  }
 
   handleOpen = () => {
     this.setState({open: true});
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState(initialState);
   };
 
   changeValue(e, type) {
@@ -61,6 +67,7 @@ export default class AddRecurrence extends React.Component {
     let label_is_valid = false;
     let amount_is_valid = false;
     let recurrence_day_is_valid = false;
+    let recurrence_month_is_valid = false;
 
     if (this.state.startDateValue !== null) {
       start_date_is_valid = true;
@@ -83,20 +90,29 @@ export default class AddRecurrence extends React.Component {
       amount_is_valid = true
     }
 
-    if (this.state.recurrenceDay === '') {
+    if (this.state.recurrenceDayValue === '') {
       stateToUpdate['recurrence_day_error_text'] = 'Day of month is mandatory.'
-    } else if (this.state.recurrenceDay < 1 || this.state.recurrenceDay > 31) {
+    } else if (this.state.recurrenceDayValue < 1 || this.state.recurrenceDayValue > 31) {
       stateToUpdate['recurrence_day_error_text'] = 'Day of month should be between 1 and 31.'
     } else {
       stateToUpdate['recurrence_day_error_text'] = null
       recurrence_day_is_valid = true
     }
 
+
+    if (this.state.recurrenceMonthValue < 1 || this.state.recurrenceMonthValue > 12) {
+      stateToUpdate['recurrence_month_error_text'] = 'Month of year should be between 1 and 12.'
+    } else {
+      stateToUpdate['recurrence_month_error_text'] = null
+      recurrence_month_is_valid = true
+    }
+
     if (start_date_is_valid
       && end_date_is_valid
       && label_is_valid
       && amount_is_valid
-      && recurrence_day_is_valid) {
+      && recurrence_day_is_valid
+      && recurrence_month_is_valid) {
       stateToUpdate['disabled'] = false
     } else {
       stateToUpdate['disabled'] = true
@@ -118,7 +134,7 @@ export default class AddRecurrence extends React.Component {
         end_date: endDate,
         amount: Number(this.state.amountValue).toFixed(2),
         recurrence_day: this.state.recurrenceDayValue,
-        recurrence_period: this.state.recurrencePeriodValue,
+        recurrence_month: this.state.recurrenceMonthValue,
       });
       this.handleClose();
     }
@@ -191,6 +207,13 @@ export default class AddRecurrence extends React.Component {
           hintText="Between 1 and 31"
           errorText={this.state.recurrence_day_error_text}
           onChange={(e) => this.changeValue(e, 'recurrenceDayValue')}
+          /><br />
+          <TextField
+          floatingLabelText="Month of year"
+          hintText="Leave blank if monthly."
+          errorText={this.state.recurrence_month_error_text}
+          onChange={(e) => this.changeValue(e, 'recurrenceMonthValue')}
+          multiLine={true}
           /><br />
         </div>
         </Dialog>

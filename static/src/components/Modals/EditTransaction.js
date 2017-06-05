@@ -9,24 +9,29 @@ import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 import styles from './styles.scss';
 
+const initialState = {
+  open: false,
+  disabled: true,
+  label_error_text: null,
+  amount_error_text: null,
+  transaction_id: this.props.fields.transaction_id,
+  dateValue: this.props.fields.date,
+  labelValue: this.props.fields.label,
+  amountValue: this.props.fields.amount,
+};
+
 export default class EditTransaction extends React.Component {
-  state = {
-    open: false,
-    disabled: true,
-    label_error_text: null,
-    amount_error_text: null,
-    transaction_id: this.props.fields.transaction_id,
-    dateValue: this.props.fields.date,
-    labelValue: this.props.fields.label,
-    amountValue: this.props.fields.amount,
-  };
+  constructor (props){
+    super(props)
+    this.state = initialState
+  }
 
   handleOpen = () => {
     this.setState({open: true});
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState(initialState);
   };
 
   changeValue(e, type) {

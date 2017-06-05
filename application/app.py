@@ -300,9 +300,11 @@ def get_recurring_groups():
 
 
 def generate_recurring(account_id, label, amount, start_date, end_date, recurring_group_id, recurrence_day, recurrence_month):
-    frequency_choices = {'yearly': 'YEARLY', 'monthly': 'MONTHLY'}
-    frequency = frequency_choices.get(recurrence_month, 'MONTHLY')
-    rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
+    frequency = 'MONTHLY' if recurrence_month is not None else 'YEARLY'
+    if frequency == 'MONTHLY':
+        rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
+    elif frequency == 'YEARLY':
+        rule_string = "RRULE:FREQ={};BYMONTH={};BYMONTHDAY={}".format(frequency, recurrence_month, recurrence_day)
     if (isinstance(start_date, str)):
         start_date = parse(start_date)
     if (isinstance(end_date, str)):

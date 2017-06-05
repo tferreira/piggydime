@@ -123,13 +123,16 @@ def get_accounts():
 @requires_auth
 def create_account():
     incoming = request.get_json()
+    projected_date = datetime.now()  # helpful for unit tests
+    if "projected_date" in incoming:
+        projected_date = incoming["projected_date"]
     account = Account(
         user=g.current_user,
         label=incoming["label"],
         bank=incoming["bank"],
         iban=incoming["iban"],
         bic=incoming["bic"],
-        projected_date=incoming["projected_date"]
+        projected_date=projected_date
     )
     db.session.add(account)
 

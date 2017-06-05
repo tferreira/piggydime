@@ -294,16 +294,14 @@ def get_recurring_groups():
             'start_date': group.start_date.strftime('%Y-%m-%d'),
             'end_date': group.end_date.strftime('%Y-%m-%d'),
             'recurrence_day': group.recurrence_day,
-            'recurrence_period': group.recurrence_period,
+            'recurrence_month': group.recurrence_month,
         })
     return jsonify(result=groupList)
 
 
-def generate_recurring(account_id, label, amount, start_date, end_date, recurring_group_id, recurrence_day, recurrence_period):
-    # for now recurrence_period allowed is only MONTHLY
-    frequency_choices = {'yearly': 'YEARLY', 'monthly': 'MONTHLY', 'weekly': 'WEEKLY', 'daily': 'DAILY'}
-    # frequency = frequency_choices.get(incoming['recurrence_period'], 'MONTHLY')
-    frequency = frequency_choices.get('monthly', 'MONTHLY')
+def generate_recurring(account_id, label, amount, start_date, end_date, recurring_group_id, recurrence_day, recurrence_month):
+    frequency_choices = {'yearly': 'YEARLY', 'monthly': 'MONTHLY'}
+    frequency = frequency_choices.get(recurrence_month, 'MONTHLY')
     rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
     if (isinstance(start_date, str)):
         start_date = parse(start_date)
@@ -345,7 +343,7 @@ def create_recurring_group():
         start_date=start_date,
         end_date=end_date,
         recurrence_day=incoming["recurrence_day"],
-        recurrence_period=incoming["recurrence_period"],
+        recurrence_month=incoming["recurrence_month"],
     )
     db.session.add(group)
 
@@ -363,7 +361,7 @@ def create_recurring_group():
         end_date,
         group.id,
         incoming['recurrence_day'],
-        incoming['recurrence_period']
+        incoming['recurrence_month']
     )
 
     try:
@@ -394,7 +392,7 @@ def edit_recurring_group():
         group.first().end_date,
         group.first().id,
         group.first().recurrence_day,
-        group.first().recurrence_period
+        group.first().recurrence_month
     )
 
     try:

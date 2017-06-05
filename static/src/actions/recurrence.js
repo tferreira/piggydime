@@ -50,7 +50,7 @@ export function createRecurrence(token, recurring_group) {
       recurring_group.start_date,
       recurring_group.end_date,
       recurring_group.recurrence_day,
-      recurring_group.recurrence_period
+      recurring_group.recurrence_month
       )
       .then(parseJSON)
       .then(response => {
@@ -73,7 +73,7 @@ export function editRecurrence(token, recurring_group) {
       recurring_group.start_date,
       recurring_group.end_date,
       recurring_group.recurrence_day,
-      recurring_group.recurrence_period
+      recurring_group.recurrence_month
       )
       .then(parseJSON)
       .then(response => {

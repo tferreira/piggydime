@@ -115,7 +115,7 @@ export function data_about_recurrence(token) {
   return axios.get('api/recurring', tokenConfig(token));
 }
 
-export function create_recurrence(token, account_id, label, amount, start_date, end_date, recurrence_day, recurrence_period) {
+export function create_recurrence(token, account_id, label, amount, start_date, end_date, recurrence_day, recurrence_month) {
   return axios.post('api/recurring/create', {
     account_id,
     label,
@@ -123,11 +123,11 @@ export function create_recurrence(token, account_id, label, amount, start_date, 
     start_date,
     end_date,
     recurrence_day,
-    recurrence_period,
+    recurrence_month,
   }, tokenConfig(token));
 }
 
-export function edit_recurrence(token, id, label, amount, start_date, end_date, recurrence_day, recurrence_period) {
+export function edit_recurrence(token, id, label, amount, start_date, end_date, recurrence_day, recurrence_month) {
   return axios.post('api/recurring/edit', {
     id,
     label,
@@ -135,7 +135,7 @@ export function edit_recurrence(token, id, label, amount, start_date, end_date, 
     start_date,
     end_date,
     recurrence_day,
-    recurrence_period,
+    recurrence_month,
   }, tokenConfig(token));
 }
 

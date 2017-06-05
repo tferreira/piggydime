@@ -52,6 +52,7 @@ export default class EditAccount extends React.Component {
   }
 
   isDisabled() {
+    let stateToUpdate = {}
     let label_is_valid = false;
     let bank_is_valid = false;
     let iban_is_valid = false;
@@ -63,56 +64,40 @@ export default class EditAccount extends React.Component {
     }
 
     if (this.state.labelValue === '') {
-      this.setState({
-      email_error_text: null,
-      });
+      stateToUpdate['email_error_text'] = null
     } else {
       label_is_valid = true;
     }
 
     if (this.state.bankValue === '') {
-      this.setState({
-      email_error_text: null,
-      });
+      stateToUpdate['bank_error_text'] = null
     } else {
       bank_is_valid = true;
     }
 
     if (this.state.ibanValue === '') {
-      this.setState({
-      iban_error_text: null,
-      });
+      stateToUpdate['iban_error_text'] = null
     } else if (this.state.ibanValue.length <= 34) {
       iban_is_valid = true;
-      this.setState({
-      iban_error_text: null,
-      });
+      stateToUpdate['iban_error_text'] = null
     } else {
-      this.setState({
-      iban_error_text: 'Your IBAN can have 34 characters max.',
-      });
+      stateToUpdate['iban_error_text'] = 'Your IBAN can have 34 characters max.'
     }
 
     if (this.state.bicValue.length <= 12) {
       bic_is_valid = true;
-      this.setState({
-      bic_error_text: null,
-      });
+      stateToUpdate['bic_error_text'] = null
     } else {
-      this.setState({
-      bic_error_text: 'Your BIC can have 12 characters max.',
-      });
+      stateToUpdate['bic_error_text'] = 'Your BIC can have 12 characters max.'
     }
 
     if (label_is_valid && bank_is_valid && iban_is_valid && bic_is_valid && projected_date_is_valid) {
-      this.setState({
-      disabled: false,
-      });
+      stateToUpdate['disabled'] = false
     } else {
-      this.setState({
-      disabled: true,
-      });
+      stateToUpdate['disabled'] = true
     }
+
+    this.setState(stateToUpdate)
   }
 
   onSubmit = () => {

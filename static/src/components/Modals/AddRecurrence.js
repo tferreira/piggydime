@@ -55,6 +55,7 @@ export default class AddRecurrence extends React.Component {
   }
 
   isDisabled() {
+    let stateToUpdate = {}
     let start_date_is_valid = false;
     let end_date_is_valid = false;
     let label_is_valid = false;
@@ -68,42 +69,26 @@ export default class AddRecurrence extends React.Component {
       end_date_is_valid = true;
     }
     if (this.state.labelValue === '') {
-      this.setState({
-        label_error_text: 'Label is mandatory.',
-      })
+      stateToUpdate['label_error_text'] = 'Label is mandatory.'
     } else {
-      this.setState({
-        label_error_text: null,
-      });
+      stateToUpdate['label_error_text'] = null
       label_is_valid = true
     }
     if (this.state.amountValue === '') {
-      this.setState({
-        amount_error_text: 'Amount is mandatory.',
-      });
+      stateToUpdate['amount_error_text'] = 'Amount is mandatory.'
     } else if (!this.isCurrency(this.state.amountValue)) {
-      this.setState({
-        amount_error_text: 'Amount should be a number.',
-      });
+      stateToUpdate['amount_error_text'] = 'Amount should be a number.'
     } else {
-      this.setState({
-        amount_error_text: null,
-      });
+      stateToUpdate['amount_error_text'] = null
       amount_is_valid = true
     }
 
     if (this.state.recurrenceDay === '') {
-      this.setState({
-        recurrence_day_error_text: 'Day of month is mandatory.',
-      });
+      stateToUpdate['recurrence_day_error_text'] = 'Day of month is mandatory.'
     } else if (this.state.recurrenceDay < 1 || this.state.recurrenceDay > 31) {
-      this.setState({
-        recurrence_day_error_text: 'Day of month should be between 1 and 31.',
-      });
+      stateToUpdate['recurrence_day_error_text'] = 'Day of month should be between 1 and 31.'
     } else {
-      this.setState({
-        recurrence_day_error_text: null,
-      });
+      stateToUpdate['recurrence_day_error_text'] = null
       recurrence_day_is_valid = true
     }
 
@@ -112,14 +97,12 @@ export default class AddRecurrence extends React.Component {
       && label_is_valid
       && amount_is_valid
       && recurrence_day_is_valid) {
-      this.setState({
-        disabled: false,
-      });
+      stateToUpdate['disabled'] = false
     } else {
-      this.setState({
-        disabled: true,
-      });
+      stateToUpdate['disabled'] = true
     }
+
+    this.setState(stateToUpdate)
   }
 
   onSubmit = () => {

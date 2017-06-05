@@ -7,23 +7,28 @@ import DatePicker from 'material-ui/DatePicker';
 
 import styles from './styles.scss';
 
+const initialState = {
+  open: false,
+  disabled: true,
+  label_error_text: null,
+  amount_error_text: null,
+  dateValue: null,
+  labelValue: '',
+  amountValue: '',
+};
+
 export default class AddTransaction extends React.Component {
-  state = {
-    open: false,
-    disabled: true,
-    label_error_text: null,
-    amount_error_text: null,
-    dateValue: null,
-    labelValue: '',
-    amountValue: '',
-  };
+  constructor (props){
+    super(props)
+    this.state = initialState
+  }
 
   handleOpen = () => {
     this.setState({open: true});
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState(initialState);
   };
 
   changeValue(e, type) {

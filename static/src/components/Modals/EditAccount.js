@@ -9,28 +9,33 @@ import TextField from 'material-ui/TextField';
 
 import styles from './styles.scss';
 
+const initialState = {
+  open: false,
+  disabled: true,
+  label_error_text: null,
+  bank_error_text: null,
+  iban_error_text: null,
+  bic_error_text: null,
+  id: this.props.fields.id,
+  labelValue: this.props.fields.label,
+  bankValue: this.props.fields.bank,
+  ibanValue: this.props.fields.iban,
+  bicValue: this.props.fields.bic,
+  projectedDateValue: this.props.fields.projected_date,
+};
+
 export default class EditAccount extends React.Component {
-  state = {
-    open: false,
-    disabled: true,
-    label_error_text: null,
-    bank_error_text: null,
-    iban_error_text: null,
-    bic_error_text: null,
-    id: this.props.fields.id,
-    labelValue: this.props.fields.label,
-    bankValue: this.props.fields.bank,
-    ibanValue: this.props.fields.iban,
-    bicValue: this.props.fields.bic,
-    projectedDateValue: this.props.fields.projected_date,
-  };
+  constructor (props){
+    super(props)
+    this.state = initialState
+  }
 
   handleOpen = () => {
     this.setState({open: true});
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState(initialState);
   };
 
   changeValue(e, type) {

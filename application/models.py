@@ -84,16 +84,16 @@ class RecurringGroup(db.Model):
     start_date = db.Column(db.Date())
     end_date = db.Column(db.Date())
     recurrence_day = db.Column(db.Integer())
-    recurrence_period = db.Column(db.String(10))
+    recurrence_month = db.Column(db.Integer())
 
-    def __init__(self, account_id, label, amount, start_date, end_date, recurrence_day, recurrence_period):
+    def __init__(self, account_id, label, amount, start_date, end_date, recurrence_day, recurrence_month):
         self.account_id = account_id
         self.label = label
         self.amount = amount
         self.start_date = start_date
         self.end_date = end_date
         self.recurrence_day = recurrence_day
-        self.recurrence_period = recurrence_period
+        self.recurrence_month = recurrence_month
 
     @staticmethod
     def get_groups(account_ids):

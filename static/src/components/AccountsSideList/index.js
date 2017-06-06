@@ -62,15 +62,16 @@ export default class AccountsSideList extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     return (this.props.data !== nextProps.data
-      || this.props.balances !== nextProps.balances)
+      || this.props.balances !== nextProps.balances
+      || this.props.selectedAccount !== nextProps.selectedAccount)
   }
 
-  renderAccountsList( accounts, balancesProp ) {
-    if (balancesProp === null) {
+  renderAccountsList() {
+    if (this.props.balances === null) {
       return
     }
-    const rows = accounts.map((row) => {
-      var filtered = balancesProp.filter((element) => element.account_id === row.id)
+    const rows = this.props.data.map((row) => {
+      var filtered = this.props.balances.filter((element) => element.account_id === row.id)
       var balance = filtered[0].balance
       var projectedBalance = filtered[0].projected_balance
       return (
@@ -79,7 +80,7 @@ export default class AccountsSideList extends React.Component {
           title={row.label.concat(' - ', row.bank)}
           subtitle={<span><b>{Number(balance).toFixed(2)}</b>{' (' + Number(projectedBalance).toFixed(2) + ')'}</span>}
           actionIcon={<EditAccount fields={row} editAccount={this.editAccount.bind(this)} deleteAccount={this.deleteAccount.bind(this)} />}
-          className={this.state.selectedAccount === row.id ? styles.gridTileSelected : styles.gridTile}
+          className={this.props.selectedAccount === row.id ? styles.gridTileSelected : styles.gridTile}
           cols={1}
           onTouchTap={(e) => {e.stopPropagation(); this.select(row.id);}}
         >
@@ -125,7 +126,7 @@ export default class AccountsSideList extends React.Component {
           className={styles.gridList}
           cols={1}
         >
-          {this.renderAccountsList(this.props.data, this.props.balances)}
+          {this.renderAccountsList()}
         </GridList>
         </div>
       }

@@ -15,9 +15,17 @@
 }
 
 :local(.gridTile) {
+  cursor: pointer;
   background-color: rgb(0, 188, 212);
 }
 
 :local(.gridTileSelected) {
+  cursor: pointer;
   background-color: rgb(0, 188, 212);
+  border-color: rgb(0, 188, 212);
+  box-shadow: 3px 3px 15px #666;
+  /*Opacity*/
+  zoom: 1;
+  filter: alpha(opacity=100);
+  opacity: 1;
 }

@@ -252,6 +252,7 @@ def edit_transaction():
         'amount': incoming["amount"],
         'date': incoming["date"],
         'tick': incoming["tick"],
+        'recurring_group_id': None,  # editing transaction unlinks it from any recurring group
     })
 
     try:

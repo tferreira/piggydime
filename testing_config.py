@@ -32,6 +32,7 @@ class BaseTestConfig(TestCase):
         "account_id": 1,
         "label": "some_transaction",
         "amount": 10,
+        "tick": 0,
     }
 
     default_recurring_group = {

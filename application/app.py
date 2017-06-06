@@ -76,9 +76,10 @@ def get_balances():
     balancesList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
+        # Basic balance only calculated on ticked transactions
         balance = db.session \
             .query(func.sum(Transaction.amount).label("balance")) \
-            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date())) \
+            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date()), (Transaction.tick == 1)) \
             .first()
 
         if account.projected_date is not None:
@@ -205,6 +206,7 @@ def get_transactions():
             'amount': str(transaction.amount),  # Decimal is not JSON serializable
             'recurring_group_id': transaction.recurring_group_id,
             'date': transaction.date.strftime('%Y-%m-%d'),
+            'tick': transaction.tick,
         })
     return jsonify(result=transactionsList)
 
@@ -226,7 +228,8 @@ def create_transaction():
         label=incoming["label"],
         amount=incoming["amount"],
         recurring_group_id=recurring_group_id,
-        date=date
+        date=date,
+        tick=0,
     )
     db.session.add(transaction)
 
@@ -259,6 +262,25 @@ def edit_transaction():
 
     return jsonify(
         id=transaction.first().id
+    )
+
+
+@app.route("/api/transactions/tick", methods=["POST"])
+@requires_auth
+def tick_transaction():
+    incoming = request.get_json()
+    transaction = Transaction.query.filter_by(transaction_id=incoming["transaction_id"])
+    transaction.update({
+        'tick': incoming["tick"],
+    })
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Failed to tick transaction."), 409
+
+    return jsonify(
+        status='ok'
     )
 
 
@@ -327,7 +349,8 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
             label=label,
             amount=amount,
             recurring_group_id=recurring_group_id,
-            date=occurence
+            date=occurence,
+            tick=0
         )
         db.session.add(transaction)
 

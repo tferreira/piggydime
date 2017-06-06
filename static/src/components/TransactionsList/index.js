@@ -7,6 +7,7 @@ import AddTransaction from '../Modals/AddTransaction.js'
 import EditTransaction from '../Modals/EditTransaction.js'
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
+import Checkbox from 'material-ui/Checkbox';
 
 import {
   Table,
@@ -121,6 +122,16 @@ export default class TransactionsList extends React.Component {
       })
   }
 
+  tickTransaction( id_transaction, isChecked ) {
+    const token = this.props.token;
+    let call = async () =>
+      await (await this.props.tickTransaction(token, id_transaction, isChecked));
+    call()
+      .then(() => {
+        this.props.updateBalance();
+      })
+  }
+
   renderTransactionsList( transactions ) {
     transactions.sort((a, b) => {
       if (new Date(a.date) < new Date(b.date)) return -1
@@ -139,6 +150,12 @@ export default class TransactionsList extends React.Component {
       let debit = parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
       return (
         <TableRow key={row.transaction_id}>
+          <TableRowColumn className={styles.tickColumn}>
+            <Checkbox
+              defaultChecked={Boolean(row.tick)}
+              onCheck={(e, isChecked) => this.tickTransaction(row.transaction_id, isChecked)}
+            />
+          </TableRowColumn>
           <TableRowColumn className={styles.smallColumn}>{row.date.toString()}</TableRowColumn>
           <TableRowColumn>{row.label}</TableRowColumn>
           <TableRowColumn className={styles.smallColumn}>{debit}</TableRowColumn>
@@ -185,6 +202,7 @@ export default class TransactionsList extends React.Component {
               enableSelectAll={this.state.enableSelectAll}
             >
               <TableRow>
+              <TableHeaderColumn className={styles.tickColumn}>Tick</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Date</TableHeaderColumn>
                 <TableHeaderColumn>Label</TableHeaderColumn>
                 <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>

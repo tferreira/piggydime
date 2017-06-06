@@ -105,6 +105,13 @@ export function edit_transaction(token, transaction_id, label, amount, date) {
   }, tokenConfig(token));
 }
 
+export function tick_transaction(token, transaction_id, isChecked) {
+  return axios.post('api/transactions/tick', {
+    transaction_id,
+    tick: isChecked,
+  }, tokenConfig(token));
+}
+
 export function delete_transaction(token, transaction_id) {
   return axios.post('api/transactions/delete', {
     transaction_id,

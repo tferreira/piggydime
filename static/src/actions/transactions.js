@@ -1,6 +1,6 @@
 import { FETCH_TRANSACTIONS_DATA_REQUEST, RECEIVE_TRANSACTIONS_DATA } from '../constants/index';
 import { parseJSON } from '../utils/misc';
-import { data_about_transactions, create_transaction, edit_transaction, delete_transaction } from '../utils/http_functions';
+import { data_about_transactions, create_transaction, edit_transaction, delete_transaction, tick_transaction } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
 
 export function receiveTransactionsData(data) {
@@ -63,6 +63,24 @@ export function editTransaction(token, transaction) {
       transaction.label,
       transaction.amount,
       transaction.date
+      )
+      .then(parseJSON)
+      .then(response => {
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          dispatch(logoutAndRedirect(error));
+        }
+      });
+  };
+}
+
+export function tickTransaction(token, transaction_id, isChecked) { 
+  return (dispatch) => {
+    tick_transaction(
+        token,
+        transaction_id,
+        isChecked
       )
       .then(parseJSON)
       .then(response => {

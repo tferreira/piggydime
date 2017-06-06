@@ -3,7 +3,11 @@
 }
 
 :local(.smallColumn) {
-  width: 14%;
+  width: 115px;
+}
+
+:local(.tickColumn) {
+  width: 50px;
 }
 
 :local(.mainTable) {}

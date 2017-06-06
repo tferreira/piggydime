@@ -228,7 +228,7 @@ def create_transaction():
         amount=incoming["amount"],
         recurring_group_id=recurring_group_id,
         date=date,
-        tick=incoming["tick"]
+        tick=0,
     )
     db.session.add(transaction)
 
@@ -251,7 +251,6 @@ def edit_transaction():
         'label': incoming["label"],
         'amount': incoming["amount"],
         'date': incoming["date"],
-        'tick': incoming["tick"],
         'recurring_group_id': None,  # editing transaction unlinks it from any recurring group
     })
 
@@ -262,6 +261,25 @@ def edit_transaction():
 
     return jsonify(
         id=transaction.first().id
+    )
+
+
+@app.route("/api/transactions/tick", methods=["POST"])
+@requires_auth
+def tick_transaction():
+    incoming = request.get_json()
+    transaction = Transaction.query.filter_by(transaction_id=incoming["transaction_id"])
+    transaction.update({
+        'tick': incoming["tick"],
+    })
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return jsonify(message="Failed to tick transaction."), 409
+
+    return jsonify(
+        status='ok'
     )
 
 

@@ -76,9 +76,10 @@ def get_balances():
     balancesList = []
     accountsObjects = Account.get_accounts(g.current_user)
     for account in accountsObjects:
+        # Basic balance only calculated on ticked transactions
         balance = db.session \
             .query(func.sum(Transaction.amount).label("balance")) \
-            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date())) \
+            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date()), (Transaction.tick == 1)) \
             .first()
 
         if account.projected_date is not None:

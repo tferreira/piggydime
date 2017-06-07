@@ -120,10 +120,13 @@ export default class EditAccount extends React.Component {
   };
 
   onDelete = () => {
-    this.props.deleteAccount({
-      id: this.state.id
-    });
-    this.handleClose();
+    let choice = confirm("Do you really want to delete this account?");
+    if (choice == true) {
+      this.props.deleteAccount({
+        id: this.state.id
+      });
+      this.handleClose();
+    }
   };
 
   render() {

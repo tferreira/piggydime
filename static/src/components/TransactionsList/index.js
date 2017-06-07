@@ -8,6 +8,7 @@ import EditTransaction from '../Modals/EditTransaction.js'
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
+import Snackbar from 'material-ui/Snackbar';
 
 import {
   Table,
@@ -50,6 +51,8 @@ export default class TransactionsList extends React.Component {
     deselectOnClickaway: false,
     showCheckboxes: false,
     height: '400px',
+    snackOpen: false,
+    snackMessage: '',
   };
 
   fetchData(account_id=null) {
@@ -61,6 +64,19 @@ export default class TransactionsList extends React.Component {
       const token = this.props.token
       this.props.fetchTransactionsData(token, account_id)
     }
+  }
+
+  showSnack(snackMessage) {
+    this.setState({
+      snackMessage,
+      snackOpen: true,
+    })
+  }
+
+  handleSnackClose() {
+    this.setState({
+      snackOpen: false,
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,6 +116,7 @@ export default class TransactionsList extends React.Component {
       .then(() => {
         this.fetchData();
         this.props.updateBalance();
+        this.showSnack('Transaction added to your account');
       })
   }
 
@@ -111,6 +128,7 @@ export default class TransactionsList extends React.Component {
       .then(() => {
         this.fetchData();
         this.props.updateBalance();
+        this.showSnack('Transaction edited');
       })
   }
 
@@ -122,6 +140,7 @@ export default class TransactionsList extends React.Component {
       .then(() => {
         this.fetchData();
         this.props.updateBalance();
+        this.showSnack('Transaction deleted');
       })
   }
 
@@ -234,6 +253,12 @@ export default class TransactionsList extends React.Component {
               </TableRow>
             </TableFooter>
           </Table>
+          <Snackbar
+            open={this.state.snackOpen}
+            message={this.state.snackMessage}
+            autoHideDuration={4000}
+            onRequestClose={this.handleSnackClose.bind(this)}
+          />
         </div>
       }
       </div>

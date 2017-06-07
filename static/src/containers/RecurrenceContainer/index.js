@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Snackbar from 'material-ui/Snackbar';
 
 import RecurrenceList from '../../components/RecurrenceList';
 import AddRecurrence from '../../components/Modals/AddRecurrence.js'
@@ -32,7 +33,22 @@ export default class RecurrenceContainer extends React.Component {
     this.state = {
       selectItems: [],
       selected: null,
+      snackOpen: false,
+      snackMessage: '',
     }
+  }
+
+  showSnack(snackMessage) {
+    this.setState({
+      snackMessage,
+      snackOpen: true,
+    })
+  }
+
+  handleSnackClose() {
+    this.setState({
+      snackOpen: false,
+    })
   }
 
   componentWillMount() {
@@ -55,6 +71,7 @@ export default class RecurrenceContainer extends React.Component {
     call()
       .then(() => {
         this.fetchData();
+        this.showSnack('Recurring transaction added to your account');
       })
   }
 
@@ -66,6 +83,7 @@ export default class RecurrenceContainer extends React.Component {
       .then(() => {
         callback(true);
         this.fetchData();
+        this.showSnack('Recurring transaction updated');
       })
   }
 
@@ -77,6 +95,7 @@ export default class RecurrenceContainer extends React.Component {
       .then(() => {
         callback(true);
         this.fetchData();
+        this.showSnack('Recurring transaction deleted');
       })
   }
 
@@ -108,6 +127,12 @@ export default class RecurrenceContainer extends React.Component {
             data={this.props.data}
             editRecurrence={this.editRecurrence.bind(this)}
             deleteRecurrence={this.deleteRecurrence.bind(this)}
+          />
+          <Snackbar
+            open={this.state.snackOpen}
+            message={this.state.snackMessage}
+            autoHideDuration={4000}
+            onRequestClose={this.handleSnackClose.bind(this)}
           />
         </div>
       </section>

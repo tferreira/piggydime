@@ -70,7 +70,10 @@ export default class TransactionsList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.scrollToBottom()
+    // Do not scroll on ticking
+    if (prevProps.data !== this.props.data) {
+      this.scrollToBottom()
+    }
   }
 
   handleToggle = (event, toggled) => {

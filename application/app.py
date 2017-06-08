@@ -1,6 +1,8 @@
 from flask import request, render_template, jsonify, g
 from .models import User, Account, Transaction, RecurringGroup
 from index import app, db
+from sqlalchemy import String as sqlalchemy_string
+from sqlalchemy.sql.expression import cast
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
@@ -457,3 +459,45 @@ def delete_recurring_group():
     return jsonify(
         status='ok'
     )
+
+
+@app.route("/api/charts", methods=["GET"])
+@requires_auth
+def get_charts():
+    incoming = request.args
+    year = date.today().year
+    if "year" in incoming:
+        year = incoming["year"]
+    chartsList = []
+
+    accountsObjects = Account.get_accounts(g.current_user)
+    for account in accountsObjects:
+        positive_result = db.session \
+            .query(cast(func.sum(Transaction.amount), sqlalchemy_string), func.month(Transaction.date)) \
+            .filter(Transaction.account_id == account.id,
+                    Transaction.amount > 0,
+                    db.func.date(Transaction.date) <= datetime.now().date(),
+                    func.year(Transaction.date) == year) \
+            .group_by(func.month(Transaction.date)) \
+            .all()
+        negative_result = db.session \
+            .query(cast(func.sum(Transaction.amount), sqlalchemy_string), func.month(Transaction.date)) \
+            .filter(Transaction.account_id == account.id,
+                    Transaction.amount < 0,
+                    db.func.date(Transaction.date) <= datetime.now().date(),
+                    func.year(Transaction.date) == year) \
+            .group_by(func.month(Transaction.date)) \
+            .all()
+
+        positive_data = []
+        negative_data = []
+        for positive_month in positive_result:
+            positive_data.append({'amount': positive_month[0], 'month': positive_month[1]})
+        for negative_month in negative_result:
+            negative_data.append({'amount': negative_month[0], 'month': negative_month[1]})
+        chartsList.append({
+            'account_id': account.id,
+            'positive_data': positive_data,
+            'negative_data': negative_data,
+        })
+    return jsonify(result=chartsList)

@@ -60,7 +60,6 @@ export default class RecurrenceContainer extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props)
     this.fetchData();
   }
 

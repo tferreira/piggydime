@@ -8,7 +8,9 @@ import Snackbar from 'material-ui/Snackbar';
 import RecurrenceList from '../../components/RecurrenceList';
 import AddRecurrence from '../../components/Modals/AddRecurrence.js'
 
-import * as actionCreators from '../../actions/recurrence';
+import * as recurrenceActions from '../../actions/recurrence';
+import * as accountsActions from '../../actions/accounts';
+import * as transactionsActions from '../../actions/transactions';
 
 function mapStateToProps(state) {
   return {
@@ -22,7 +24,13 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
+  return {
+    actions: {
+      recurrence: bindActionCreators(recurrenceActions, dispatch),
+      accounts: bindActionCreators(accountsActions, dispatch),
+      transactions: bindActionCreators(transactionsActions, dispatch),
+    }
+  };
 }
 
 
@@ -52,6 +60,7 @@ export default class RecurrenceContainer extends React.Component {
   }
 
   componentWillMount() {
+    console.log(this.props)
     this.fetchData();
   }
 
@@ -61,13 +70,17 @@ export default class RecurrenceContainer extends React.Component {
 
   fetchData() {
     const token = this.props.token;
-    this.props.fetchRecurrenceData(token, this.state.selected);
+    this.props.actions.accounts.fetchAccountsData(token);
+    this.props.actions.recurrence.fetchRecurrenceData(token);
+    if (this.state.selected) {
+      this.props.actions.transactions.fetchTransactionsData(token, this.state.selected);
+    }
   }
 
   createRecurrence(recurring_group) {
     const token = this.props.token;
     let call = async () =>
-      await (await this.props.createRecurrence(token, recurring_group));
+      await (await this.props.actions.recurrence.createRecurrence(token, recurring_group));
     call()
       .then(() => {
         this.fetchData();
@@ -78,7 +91,7 @@ export default class RecurrenceContainer extends React.Component {
   editRecurrence(recurring_group, callback) {
     const token = this.props.token;
     let call = async () =>
-      await (await this.props.editRecurrence(token, recurring_group));
+      await (await this.props.actions.recurrence.editRecurrence(token, recurring_group));
     call()
       .then(() => {
         callback(true);
@@ -90,7 +103,7 @@ export default class RecurrenceContainer extends React.Component {
   deleteRecurrence(id, callback) {
     const token = this.props.token;
     let call = async () =>
-      await (await this.props.deleteRecurrence(token, id));
+      await (await this.props.actions.recurrence.deleteRecurrence(token, id));
     call()
       .then(() => {
         callback(true);

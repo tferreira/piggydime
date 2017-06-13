@@ -99,7 +99,7 @@ export default class MiniChart extends React.Component {
     }
 
     return (
-      <Line data={chartData} options={chartOptions} width={220} height={100}/>
+      <Line data={chartData} options={chartOptions} width={220} height={100} redraw />
     )
   }
 

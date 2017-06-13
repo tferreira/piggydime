@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from 'react-chartjs';
+import { Line } from 'react-chartjs-2';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../actions/charts';
@@ -60,33 +60,51 @@ export default class MiniChart extends React.Component {
       }
     })
 
-      // bezierCurve: false, //remove curves from your plot
-      // scaleShowLabels : false, //remove labels
-      // tooltipEvents: [], //remove trigger from tooltips so they will'nt be show
-      // pointDot : false, //remove the points markers
-      // scaleShowGridLines: true //set to false to remove the grids background
-
     let chartOptions = {
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      responsive: true,
+      elements: { point: { radius: 0 } },
+      legend: {
+        display: false
+      },
+       tooltips: {
+        enabled: false
+      },
+      scales: {
+        yAxes: [{
+          display: false,
+        }],
+        yAxes: [{
+          display: false,
+        }],
+      },
     }
 
     let chartData = {
+      chart: 'line',
+      labels: ['', '', '', '', '', '', '', '', '', '', '', ''],
       datasets: [{
         label: 'positive',
         data: positiveDots,
+        backgroundColor: "#4575b5",
+        borderColor: "#1C57A8",
+        borderWidth: 1
       }, {
         label: 'negative',
         data: negativeDots,
+        backgroundColor: "#FF1717",
+        borderColor: "#da3e2f",
+        borderWidth: 1
       }]
     }
 
     return (
-      <Line data={chartData} width={220} height={100}/>
+      <Line data={chartData} options={chartOptions} width={220} height={100}/>
     )
   }
 
   render() {
-    if (!this.props.loaded && !this.props.isFetching) {
+    if (!this.props.loaded) {
       return null
     }
     return (

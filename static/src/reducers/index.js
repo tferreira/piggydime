@@ -6,6 +6,7 @@ import accounts from './accounts';
 import balances from './balances';
 import transactions from './transactions';
 import recurrence from './recurrence';
+import charts from './charts';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   balances,
   transactions,
   recurrence,
+  charts,
 });
 
 export default rootReducer;

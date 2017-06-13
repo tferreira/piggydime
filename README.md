@@ -32,7 +32,7 @@ This application has been build on top of the [React-Redux-Flask](https://github
 * SCSS processing
 * Webpack
 
-![screenshot](http://i.imgur.com/GF7fc57.jpg)
+![screenshot](http://i.imgur.com/lemwdQQ.png)
 
 ## How to install
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 /* components */
-import { Home } from '../../components/Home';
+import Home from '../../components/Home';
 
 export const HomeContainer = () =>
   <section>

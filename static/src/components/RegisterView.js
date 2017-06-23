@@ -118,7 +118,7 @@ export default class RegisterView extends React.Component {
       <div className="col-md-6 col-md-offset-3" onKeyPress={(e) => this._handleKeyPress(e)}>
         <Paper style={style}>
           <div className="text-center">
-            <h2>Register to view protected content!</h2>
+            <h2>Register to create your private space</h2>
             {
               this.props.registerStatusText &&
                 <div className="alert alert-info">

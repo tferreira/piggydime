@@ -71,7 +71,6 @@ export default class AccountsSideList extends React.Component {
     if (this.props.balances === null) {
       return
     }
-    console.log(this.props.balances)
     const rows = this.props.data.map((row) => {
       var filtered = this.props.balances.filter((element) => element.account_id === row.id)
       var balance = filtered[0].balance

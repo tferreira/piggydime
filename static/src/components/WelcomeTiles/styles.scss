@@ -1,0 +1,12 @@
+:local(.tilesContainer) {
+  display: flex;           /* establish flex container */
+  flex-direction: row;     /* make main axis horizontal (default setting) */
+  justify-content: center; /* center items horizontally, in this case */
+  align-items: center;     /* center items vertically, in this case */
+}
+
+:local(.paperBody) {
+  margin: 20;
+  font-weight: 400;
+  font-size: 1.5em;
+}

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions/user';
 
+import WelcomeTiles from './WelcomeTiles';
+
 function mapStateToProps(state) {
   return {
     data: state.user.data,
@@ -35,9 +37,10 @@ export default class ProtectedView extends React.Component {
         {!this.props.loaded
           ? <h1>Loading data...</h1>
           :
-          <div>
-            <h1>Welcome back, {this.props.userName}!</h1>
-          </div>
+            <div>
+              <h1>Welcome back, {this.props.userName}!</h1>
+              <WelcomeTiles />
+            </div>
         }
       </div>
     );

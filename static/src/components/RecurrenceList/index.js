@@ -34,14 +34,25 @@ export default class RecurrenceList extends React.Component {
   }
 
   handleCellClick(row, column, event) {
-    if (this.state.editing === null && column === 7) {  // delete
-      let choice = confirm("Do you really want to delete the recurring group: ".concat(this.props.data[row].label, "?"));
+    // Apply the same sort and filter that we do on render()
+    // to be able to retrieve the datas based on array indexes
+    let sortedData = this.props.data
+    sortedData.sort((a,b) => {
+      return new Date(a.end_date) <= new Date;
+    });
+    const filteredData = sortedData.filter((group) => group.account_id === this.props.selectedAccount)
+
+    if (column === 7) {  // delete
+      this.setState({
+        editing: null
+      })
+      let choice = confirm("Do you really want to delete the recurring group: ".concat(filteredData[row].label, "?"));
       if (choice == true) {
-          this.handleDeleteItem(this.props.data[row].id)
+          this.handleDeleteItem(filteredData[row].id)
       }
     } else {
       this.setState({
-        editing: this.props.data[row].id,
+        editing: filteredData[row].id,
       })
     }
   }

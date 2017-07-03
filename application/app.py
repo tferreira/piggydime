@@ -448,8 +448,11 @@ def delete_recurring_group():
     group.delete()
 
     # Delete linked transactions
-    transactions = Transaction.query.filter_by(recurring_group_id=incoming["id"])
-    transactions.delete()
+    transactions = db.session.query(Transaction.id) \
+        .filter(Transaction.recurring_group_id == incoming["id"],
+                Transaction.tick == 0,
+                db.func.date(Transaction.date) >= datetime.now().date())
+    transactions.delete(synchronize_session='fetch')
 
     try:
         db.session.commit()

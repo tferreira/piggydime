@@ -8,7 +8,7 @@ from sqlalchemy import func
 from .utils.auth import generate_token, requires_auth, verify_token
 from uuid import uuid4
 import calendar
-from datetime import time, datetime, date
+from datetime import time, timedelta, datetime, date
 from dateutil.rrule import rrulestr
 from dateutil.parser import parse
 
@@ -327,12 +327,14 @@ def get_recurring_groups():
     return jsonify(result=groupList)
 
 
-def generate_recurring(account_id, label, amount, start_date, end_date, recurring_group_id, recurrence_day, recurrence_month):
+def generate_recurring(account_id, label, amount, start_date, end_date, recurring_group_id, recurrence_day, recurrence_month, future_only=False):
     frequency = 'MONTHLY' if recurrence_month is None else 'YEARLY'
     if frequency == 'MONTHLY':
         rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
     elif frequency == 'YEARLY':
         rule_string = "RRULE:FREQ={};BYMONTH={};BYMONTHDAY={}".format(frequency, recurrence_month, recurrence_day)
+    if future_only:
+        start_date = datetime.today() + timedelta(days=1)
     if (isinstance(start_date, str)):
         start_date = parse(start_date)
     if (isinstance(end_date, str)):
@@ -417,8 +419,11 @@ def edit_recurring_group():
     group.update(incoming)
 
     # Regenerate linked transactions
-    transactions = Transaction.query.filter_by(recurring_group_id=incoming["id"])
-    transactions.delete()
+    transactions = db.session.query(Transaction.id) \
+        .filter(Transaction.recurring_group_id == incoming["id"],
+                Transaction.tick == 0,
+                db.func.date(Transaction.date) >= datetime.now().date())
+    transactions.delete(synchronize_session='fetch')
     generate_recurring(
         group.first().account_id,
         group.first().label,
@@ -427,7 +432,8 @@ def edit_recurring_group():
         group.first().end_date,
         group.first().id,
         group.first().recurrence_day,
-        group.first().recurrence_month
+        group.first().recurrence_month,
+        True
     )
 
     try:

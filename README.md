@@ -5,6 +5,7 @@ This app allows you to keep track of your bank accounts balance.
 This project is still in development but the main features are already implemented. It includes:
 
  * [x] Manage multiple bank accounts
+ * [x] Transactions ticking
  * [x] Create monthly and yearly recurring transactions
  * [x] Check your future account balance at a specific date
  * [x] Mini charts preview of debit vs credit by month

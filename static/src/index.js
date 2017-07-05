@@ -8,6 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import configureStore from './store/configureStore';
 import routes from './routes';
 import './style.scss';
+import './images/favicon.png';
 
 require('expose?$!expose?jQuery!jquery');
 require('bootstrap-webpack');

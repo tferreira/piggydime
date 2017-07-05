@@ -2,35 +2,20 @@
 
 This app allows you to keep track of your bank accounts balance.
 
-This project is still in development.
-The features that are implemented are the following:
+This project is still in development but the main features are already implemented. It includes:
 
- * [x] Be able to have multiple accounts
- * [x] Monthly recurring transactions
- * [x] Previsional balance at a custom date
+ * [x] Manage multiple bank accounts
+ * [x] Create monthly and yearly recurring transactions
+ * [x] Check your future account balance at a specific date
+ * [x] Mini charts preview of debit vs credit by month
 
- In the future, we'd want to have:
+ Upcoming features:
 
- * [ ] View toggle button for recurring transactions
- * [ ] Statistics charts
- * [ ] Currency symbol (choosen by the user)
- * [ ] Import transactions data from bank CSV exports
- * [ ] Backup/Restore feature
+ * [ ] Currency symbols
+ * [ ] Statistics charts on home page tiles
+ * [ ] Backup/Restore (CSV format)
 
-This application has been build on top of the [React-Redux-Flask](https://github.com/dternyak/React-Redux-Flask) boilerplate (Flask JWT Blackend and a React/Redux frontend with Material UI):
-
-* Python 3.5
-* Pytest
-* Flask
-* Alembic
-* SQLAlchemy
-* React
-* Redux
-* React-Router 2.0
-* React-Router-Redux
-* Babel 6
-* SCSS processing
-* Webpack
+This application has been build on top of the [React-Redux-Flask](https://github.com/dternyak/React-Redux-Flask) boilerplate (Flask JWT Blackend and a React/Redux frontend with Material UI).
 
 ![screenshot](http://i.imgur.com/lemwdQQ.png)
 
@@ -46,7 +31,7 @@ $ pip3.5 mysql-connector-python-rf==2.2.2 --egg
 On unix systems:
 ```sh
 $ pip3.5 install -r requirements.txt
-$ pip3.5 uninstall py-bcrypt && pip3.5 install py-bcrypt  # this need to be fixed
+$ pip3.5 uninstall py-bcrypt && pip3.5 install py-bcrypt  # this needs to be fixed
 ```
 
 ### Create DB

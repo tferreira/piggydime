@@ -1,0 +1,30 @@
+version: '2'
+services:
+
+  frontend:
+    build: static/.
+    ports:
+      - "80:3000"
+    links:
+      - api
+    depends_on:
+      - api
+
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    links:
+      - db
+    depends_on:
+      - db
+
+  db:
+    build: docker-mysql/.
+    ports:
+      - "3306:3306"
+    volumes:
+      - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecure
+      MYSQL_DATABASE: piggydime

@@ -2,7 +2,10 @@ version: '2'
 services:
 
   frontend:
-    build: static/.
+    build:
+      context: static/.
+      args:
+        API_PORT: "${API_PORT}"
     ports:
       - "${EXTERNAL_PORT}:3000"
     links:
@@ -12,7 +15,10 @@ services:
     image: tferreira/piggydime-frontend
 
   api:
-    build: .
+    build:
+      context: .
+      args:
+        API_PORT: "${API_PORT}"
     ports:
       - "${API_PORT}:5000"
     links:
@@ -20,8 +26,6 @@ services:
     depends_on:
       - mysql
     image: tferreira/piggydime-api
-    args:
-      - API_PORT: "${API_PORT}"
     restart: on-failure
 
   mysql:

@@ -96,3 +96,35 @@ To create new migrations, add your schema on `models.py` then use:
 $ python3.5 manage.py db revision --autogenerate
 $ python3.5 manage.py db upgrade
 ```
+
+## How to install with Docker
+
+### Requirements
+
+If you wish to install and run Piggydime using Docker, you will need Docker Compose.
+Full documentation is available on [Docker's website](https://docs.docker.com/compose/).
+
+### Running the application
+
+The latest images of Piggydime are available on the official Docker Hub, so you don't need to build them yourself.
+To pull these images and run the application, use:
+
+```sh
+$ docker-compose pull
+$ docker-compose up
+```
+
+By default, the port that will be exposed on your server to access the application from the web will be the port `80`.
+If you want to use another port, you need to set the `EXTERNAL_PORT` environment variable:
+
+```sh
+$ export EXTERNAL_PORT=8080
+$ docker-compose up
+```
+
+### Backups
+
+Your data is stored on a Docker Volume on the host server.
+On Linux, you can find the volumes used by the database container on the `/var/lib/docker/volumes` directory.
+More information about volumes can be found on [Docker's website](https://docs.docker.com/engine/tutorials/dockervolumes/).
+

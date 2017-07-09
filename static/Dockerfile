@@ -3,7 +3,8 @@ FROM node:7.3
 COPY . /opt/static
 WORKDIR /opt/static
 
-ENV API_URL "http://api:5000"
+ARG API_PORT
+ENV API_URL "http://api:$API_PORT"
 
 RUN npm install -g yarn
 RUN yarn install

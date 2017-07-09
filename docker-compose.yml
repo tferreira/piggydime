@@ -4,7 +4,7 @@ services:
   frontend:
     build: static/.
     ports:
-      - "80:3000"
+      - "${EXTERNAL_PORT}:3000"
     links:
       - api
     depends_on:
@@ -14,12 +14,14 @@ services:
   api:
     build: .
     ports:
-      - "5000:5000"
+      - "${API_PORT}:5000"
     links:
       - mysql
     depends_on:
       - mysql
     image: tferreira/piggydime-api
+    args:
+      - API_PORT: "${API_PORT}"
     restart: on-failure
 
   mysql:

@@ -9,6 +9,7 @@ services:
       - api
     depends_on:
       - api
+    image: tferreira/piggydime-frontend
 
   api:
     build: .
@@ -18,6 +19,7 @@ services:
       - mysql
     depends_on:
       - mysql
+    image: tferreira/piggydime-api
 
   mysql:
     image: mysql:5.7

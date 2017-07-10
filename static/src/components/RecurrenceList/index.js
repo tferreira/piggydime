@@ -36,23 +36,36 @@ export default class RecurrenceList extends React.Component {
   handleCellClick(row, column, event) {
     // Apply the same sort and filter that we do on render()
     // to be able to retrieve the datas based on array indexes
-    let sortedData = this.props.data
-    sortedData.sort((a,b) => {
-      return new Date(a.end_date) <= new Date;
+    let rawData = this.props.data
+    const filteredGroups = rawData.filter((group) => group.account_id === this.props.selectedAccount)
+    let activeGroups = []
+    let archivedGroups = []
+    filteredGroups.forEach((group) => {
+      if (new Date(group.end_date) <= new Date) {
+        archivedGroups.push(group)
+      } else {
+        activeGroups.push(group)
+      }
+    })
+    activeGroups.sort((a,b) => {
+      return a.label > b.label;
     });
-    const filteredData = sortedData.filter((group) => group.account_id === this.props.selectedAccount)
+    archivedGroups.sort((a,b) => {
+      return a.label > b.label;
+    });
+    let sortedGroups = activeGroups.concat(archivedGroups)
 
     if (column === 7) {  // delete
       this.setState({
         editing: null
       })
-      let choice = confirm("Do you really want to delete the recurring group: ".concat(filteredData[row].label, "?"));
+      let choice = confirm("Do you really want to delete the recurring group: ".concat(sortedGroups[row].label, "?"));
       if (choice == true) {
-          this.handleDeleteItem(filteredData[row].id)
+          this.handleDeleteItem(sortedGroups[row].id)
       }
     } else {
       this.setState({
-        editing: filteredData[row].id,
+        editing: sortedGroups[row].id,
       })
     }
   }
@@ -109,11 +122,25 @@ export default class RecurrenceList extends React.Component {
   }
 
   renderTable(list) {
-    // move "archived" (ended) recurring groups to the bottom of the list
-    list.sort((a,b) => {
-      return new Date(a.end_date) <= new Date;
+    // filter groups not belonging to current selected account
+    const filteredGroups = list.filter((group) => group.account_id === this.props.selectedAccount)
+    let activeGroups = []
+    let archivedGroups = []
+    filteredGroups.forEach((group) => {
+      if (new Date(group.end_date) <= new Date) {
+        archivedGroups.push(group)
+      } else {
+        activeGroups.push(group)
+      }
+    })
+    activeGroups.sort((a,b) => {
+      return a.label > b.label;
     });
-    const rows = list.filter((group) => group.account_id === this.props.selectedAccount).map((row) => {
+    archivedGroups.sort((a,b) => {
+      return a.label > b.label;
+    });
+    let sortedGroups = activeGroups.concat(archivedGroups)
+    const rows = sortedGroups.map((row) => {
       if ( this.state.editing === row.id ) {
         return <TableRow key={ row.id } className={styles.tableRow}>
           <TableRowColumn>

@@ -17,16 +17,36 @@
   },
   "rules": {
     "camelcase": 0,
+    "semi": [
+      "error",
+      "never"
+    ],
+    "max-len": [
+      "error",
+      120
+    ],
+    "func-names": [
+      "error",
+      "as-needed"
+    ],
     "indent": ["error", 2],
     "global-require": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-indent": ["error", 2],
+    "import/extensions": "off",
+    "import/no-dynamic-require": "off",
     "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 0,
+    "jsx-a11y/anchor-has-content": "off",
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
+    "react/self-closing-comp": "off",
+    "react/prefer-stateless-function": "off",
+    "react/no-multi-comp": "off",
+    "react/forbid-prop-types": "off",
+    "react/sort-comp": "off",
     "block-scoped-var": 0,
     "padded-blocks": 0,
     "no-console": 0,
@@ -36,31 +56,11 @@
     "no-underscore-dangle": "off",
     "arrow-parens": "off",
     "arrow-body-style": "off",
-    "func-names": [
-      "error",
-      "as-needed"
-    ],
     "linebreak-style": "off",
-    "max-len": [
-      "error",
-      120
-    ],
     "space-infix-ops": "off",
-    "jsx-a11y/anchor-has-content": "off",
-    "import/extensions": "off",
-    "import/no-dynamic-require": "off",
-    "react/self-closing-comp": "off",
-    "react/prefer-stateless-function": "off",
-    "react/no-multi-comp": "off",
-    "react/forbid-prop-types": "off",
-    "react/sort-comp": "off",
     "comma-dangle": "off",
     "class-methods-use-this": "off",
-    "no-mixed-operators": "off",
-    "semi": [
-      "error",
-      "never"
-    ]
+    "no-mixed-operators": "off"
   },
   "plugins": [
     "react"

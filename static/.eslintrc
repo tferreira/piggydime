@@ -2,10 +2,15 @@
   "root": true,
   "parser": "babel-eslint",
   "extends": "eslint-config-airbnb",
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "es6": true,
   },
   "globals": {
       "connect": true
@@ -27,6 +32,35 @@
     "no-console": 0,
     "id-length": 0,
     "no-unused-expressions": 0,
+    "no-plusplus": "off",
+    "no-underscore-dangle": "off",
+    "arrow-parens": "off",
+    "arrow-body-style": "off",
+    "func-names": [
+      "error",
+      "as-needed"
+    ],
+    "linebreak-style": "off",
+    "max-len": [
+      "error",
+      120
+    ],
+    "space-infix-ops": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "import/extensions": "off",
+    "import/no-dynamic-require": "off",
+    "react/self-closing-comp": "off",
+    "react/prefer-stateless-function": "off",
+    "react/no-multi-comp": "off",
+    "react/forbid-prop-types": "off",
+    "react/sort-comp": "off",
+    "comma-dangle": "off",
+    "class-methods-use-this": "off",
+    "no-mixed-operators": "off",
+    "semi": [
+      "error",
+      "never"
+    ]
   },
   "plugins": [
     "react"

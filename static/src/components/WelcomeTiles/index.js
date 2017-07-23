@@ -86,7 +86,7 @@ export default class WelcomeTiles extends React.Component {
     return (
       <div className={styles.tilesContainer}>
       {!this.props.loaded || !this.props.balancesLoaded
-        ? <h1>Loading data...</h1>
+        ? null
         :
         this.renderTiles()
       }

@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
 import Snackbar from 'material-ui/Snackbar';
+import { GridLoader } from 'halogen';
 
 import {
   Table,
@@ -207,7 +208,7 @@ export default class TransactionsList extends React.Component {
     return (
       <div className={styles.mainContainer}>
       {!this.props.loaded
-        ? <h1>Loading data...</h1>
+        ? <GridLoader color="#00BCD4" size="16px" margin="4px"/>
         :
         <div className={styles.mainTable}>
           <Table

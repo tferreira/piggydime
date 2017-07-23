@@ -11,6 +11,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import { GridLoader } from 'halogen';
 import styles from './styles.scss';
 
 export default class RecurrenceList extends React.Component {
@@ -233,7 +234,7 @@ export default class RecurrenceList extends React.Component {
     return (
       <div className={styles.mainContainer}>
       {!this.props.loaded
-        ? <h1>Loading data...</h1>
+        ? <GridLoader color="#00BCD4" size="16px" margin="4px"/>
         :
         <div className={styles.mainTable}>
           <Table

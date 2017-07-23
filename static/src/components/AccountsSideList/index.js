@@ -118,7 +118,7 @@ export default class AccountsSideList extends React.Component {
     return (
       <div className={styles.sidebar}>
       {!this.props.loaded
-        ? <h1>Loading data...</h1>
+        ? null
         :
         <div className={styles.root}>
         <Subheader>Your accounts

@@ -1,5 +1,9 @@
 :local(.mainContainer) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 50;
+  width: 100%;
 }
 
 :local(.smallColumn) {

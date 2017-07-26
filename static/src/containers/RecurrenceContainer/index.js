@@ -119,7 +119,7 @@ export default class RecurrenceContainer extends React.Component {
       <MenuItem key={key} value={account.id} primaryText={account.label} />
     ))
     // select first account automatically to avoid a blank page
-    if (this.state.selected === null) {
+    if (this.state.selected === null && this.props.accounts.length > 0) {
         this.setState({'selected': this.props.accounts[0].id})
     }
     return (

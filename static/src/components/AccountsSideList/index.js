@@ -53,12 +53,17 @@ export default class AccountsSideList extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(() => {
+      // select first account automatically to avoid a blank page
+      if (this.props.selectedAccount === null && this.props.data !== null && this.props.data.length > 0) {
+          this.select(this.props.data[0].id)
+      }
+    });
   }
 
-  fetchData() {
+  fetchData(callback=null) {
     const token = this.props.token;
-    this.props.fetchAccountsData(token);
+    this.props.fetchAccountsData(token, callback);
   }
 
   shouldComponentUpdate(nextProps) {

@@ -200,7 +200,7 @@ export default class TransactionsList extends React.Component {
     if (this.props.selectedAccount === undefined || this.props.selectedAccount === null) {
       return (
         <div className={styles.mainContainer}>
-          <h3>Select an account or create one.</h3>
+          <h3>Create an account if you don't have one yet.</h3>
         </div>
       )
     }

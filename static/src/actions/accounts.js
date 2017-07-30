@@ -18,13 +18,16 @@ export function fetchAccountsDataRequest() {
   };
 }
 
-export function fetchAccountsData(token) {
+export function fetchAccountsData(token, callback=null) {
   return (dispatch) => {
     dispatch(fetchAccountsDataRequest());
     data_about_accounts(token)
       .then(parseJSON)
       .then(response => {
         dispatch(receiveAccountsData(response.result));
+        if (callback !== null) {
+          callback()
+        }
       })
       .catch(error => {
         if (error.status === 401) {

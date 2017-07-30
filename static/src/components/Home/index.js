@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import {
   Step,
   Stepper,
@@ -32,11 +33,11 @@ class Home extends React.Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return 'Use the left menu to log in or register an account.';
+        return <FormattedMessage id="home.steps.one"/>;
       case 1:
-        return 'Once logged in, you will be able to create your first bank account using the "plus sign" round button.';
+        return <FormattedMessage id="home.steps.two"/>;
       case 2:
-        return 'There is a feature to schedule monthly or yearly transctions. Then edit your account projected date parameter to know your future account balance.';
+        return <FormattedMessage id="home.steps.three"/>;
       default:
         return 'I want to break free!';
     }

@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, Redirect, browserHistory } from 'react-router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import { syncHistoryWithStore } from 'react-router-redux';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { Router, Redirect, browserHistory } from 'react-router'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import { syncHistoryWithStore } from 'react-router-redux'
 
-import configureStore from './store/configureStore';
-import routes from './routes';
-import './style.scss';
-import './images/favicon.png';
+import configureStore from './store/configureStore'
+import routes from './routes'
+import './style.scss'
+import './images/favicon.png'
 
-require('expose?$!expose?jQuery!jquery');
-require('bootstrap-webpack');
+require('expose?$!expose?jQuery!jquery')
+require('bootstrap-webpack')
 
-injectTapEventPlugin();
-const store = configureStore();
-const history = syncHistoryWithStore(browserHistory, store);
+injectTapEventPlugin()
+const store = configureStore()
+const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
   <Provider store={store}>
@@ -25,4 +25,4 @@ ReactDOM.render(
     </Router>
   </Provider>,
   document.getElementById('root')
-);
+)

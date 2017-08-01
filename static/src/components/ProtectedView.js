@@ -1,34 +1,32 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actionCreators from '../actions/user';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actionCreators from '../actions/user'
 
-import WelcomeTiles from './WelcomeTiles';
+import WelcomeTiles from './WelcomeTiles'
 
 function mapStateToProps(state) {
   return {
     data: state.user.data,
     token: state.auth.token,
     loaded: state.user.loaded,
-    isFetching: state.user.isFetching,
-  };
+    isFetching: state.user.isFetching
+  }
 }
 
-
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
+  return bindActionCreators(actionCreators, dispatch)
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ProtectedView extends React.Component {
   componentDidMount() {
-    this.fetchData();
+    this.fetchData()
   }
 
-
   fetchData() {
-    const token = this.props.token;
-    this.props.fetchUserData(token);
+    const token = this.props.token
+    this.props.fetchUserData(token)
   }
 
   render() {
@@ -36,14 +34,14 @@ export default class ProtectedView extends React.Component {
       <div>
         {!this.props.loaded
           ? null
-          :
-            <div>
-              <h1>Welcome back, {this.props.userName}!</h1>
+          : <div>
+              <h1>
+                Welcome back, {this.props.userName}!
+              </h1>
               <WelcomeTiles />
-            </div>
-        }
+            </div>}
       </div>
-    );
+    )
   }
 }
 
@@ -52,5 +50,5 @@ ProtectedView.propTypes = {
   loaded: React.PropTypes.bool,
   userName: React.PropTypes.string,
   data: React.PropTypes.any,
-  token: React.PropTypes.string,
-};
+  token: React.PropTypes.string
+}

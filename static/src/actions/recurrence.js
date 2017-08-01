@@ -1,43 +1,51 @@
-import { FETCH_RECURRENCE_DATA_REQUEST, RECEIVE_RECURRENCE_DATA } from '../constants/index';
-import { parseJSON } from '../utils/misc';
-import { data_about_recurrence, create_recurrence, edit_recurrence, delete_recurrence } from '../utils/http_functions';
-import { logoutAndRedirect } from './auth';
-import { fetchAccountsData } from './accounts';
-import { fetchTransactionsData } from './transactions';
+import {
+  FETCH_RECURRENCE_DATA_REQUEST,
+  RECEIVE_RECURRENCE_DATA
+} from '../constants/index'
+import { parseJSON } from '../utils/misc'
+import {
+  data_about_recurrence,
+  create_recurrence,
+  edit_recurrence,
+  delete_recurrence
+} from '../utils/http_functions'
+import { logoutAndRedirect } from './auth'
+import { fetchAccountsData } from './accounts'
+import { fetchTransactionsData } from './transactions'
 
 export function receiveRecurrenceData(data) {
   return {
     type: RECEIVE_RECURRENCE_DATA,
     payload: {
-      data,
-    },
-  };
+      data
+    }
+  }
 }
 
 export function fetchRecurrenceDataRequest() {
   return {
-    type: FETCH_RECURRENCE_DATA_REQUEST,
-  };
+    type: FETCH_RECURRENCE_DATA_REQUEST
+  }
 }
 
 export function fetchRecurrenceData(token) {
-  return (dispatch) => {
-    dispatch(fetchRecurrenceDataRequest());
+  return dispatch => {
+    dispatch(fetchRecurrenceDataRequest())
     data_about_recurrence(token)
       .then(parseJSON)
       .then(response => {
-        dispatch(receiveRecurrenceData(response.result));
+        dispatch(receiveRecurrenceData(response.result))
       })
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }
 
 export function createRecurrence(token, recurring_group) {
-  return (dispatch) => {
+  return dispatch => {
     create_recurrence(
       token,
       recurring_group.accountId,
@@ -47,20 +55,19 @@ export function createRecurrence(token, recurring_group) {
       recurring_group.end_date,
       recurring_group.recurrence_day,
       recurring_group.recurrence_month
-      )
+    )
       .then(parseJSON)
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }
 
 export function editRecurrence(token, recurring_group) {
-  return (dispatch) => {
+  return dispatch => {
     edit_recurrence(
       token,
       recurring_group.id,
@@ -70,28 +77,26 @@ export function editRecurrence(token, recurring_group) {
       recurring_group.end_date,
       recurring_group.recurrence_day,
       recurring_group.recurrence_month
-      )
+    )
       .then(parseJSON)
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }
 
 export function deleteRecurrence(token, id) {
-  return (dispatch) => {
+  return dispatch => {
     delete_recurrence(token, id)
       .then(parseJSON)
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }

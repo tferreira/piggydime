@@ -15,4 +15,4 @@ pip_install:
 	. $(VIRTUALENV)bin/activate; pip3.5 install -r requirements.txt
 
 pretty:
-	$(PRETTIER) --single-quote --no-semi --write "src/**/*.js"
+	$(PRETTIER) --single-quote --no-semi --write "static/src/**/*.js"

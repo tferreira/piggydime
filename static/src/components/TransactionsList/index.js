@@ -1,15 +1,15 @@
-import React from 'react';
-import "babel-polyfill";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actionCreators from '../../actions/transactions';
+import React from 'react'
+import 'babel-polyfill'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as actionCreators from '../../actions/transactions'
 import AddTransaction from '../Modals/AddTransaction.js'
 import EditTransaction from '../Modals/EditTransaction.js'
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-import Checkbox from 'material-ui/Checkbox';
-import Snackbar from 'material-ui/Snackbar';
-import { GridLoader } from 'halogen';
+import TextField from 'material-ui/TextField'
+import Toggle from 'material-ui/Toggle'
+import Checkbox from 'material-ui/Checkbox'
+import Snackbar from 'material-ui/Snackbar'
+import { GridLoader } from 'halogen'
 
 import {
   Table,
@@ -18,11 +18,10 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+  TableRowColumn
+} from 'material-ui/Table'
 
-import styles from './styles.scss';
-
+import styles from './styles.scss'
 
 function mapStateToProps(state) {
   return {
@@ -30,14 +29,13 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.transactions.loaded,
     isFetching: state.transactions.isFetching,
-    selectedAccount: state.accounts.selectedAccount,
-  };
+    selectedAccount: state.accounts.selectedAccount
+  }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
+  return bindActionCreators(actionCreators, dispatch)
 }
-
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TransactionsList extends React.Component {
@@ -53,15 +51,14 @@ export default class TransactionsList extends React.Component {
     showCheckboxes: false,
     height: '400px',
     snackOpen: false,
-    snackMessage: '',
-  };
+    snackMessage: ''
+  }
 
-  fetchData(account_id=null) {
+  fetchData(account_id = null) {
     if (account_id === null) {
       account_id = this.props.selectedAccount
     }
-    if (account_id !== null)
-    {
+    if (account_id !== null) {
       const token = this.props.token
       this.props.fetchTransactionsData(token, account_id)
     }
@@ -70,13 +67,13 @@ export default class TransactionsList extends React.Component {
   showSnack(snackMessage) {
     this.setState({
       snackMessage,
-      snackOpen: true,
+      snackOpen: true
     })
   }
 
   handleSnackClose() {
     this.setState({
-      snackOpen: false,
+      snackOpen: false
     })
   }
 
@@ -95,13 +92,13 @@ export default class TransactionsList extends React.Component {
 
   handleToggle = (event, toggled) => {
     this.setState({
-      [event.target.name]: toggled,
-    });
-  };
+      [event.target.name]: toggled
+    })
+  }
 
-  handleChange = (event) => {
-    this.setState({height: event.target.value});
-  };
+  handleChange = event => {
+    this.setState({ height: event.target.value })
+  }
 
   scrollToBottom() {
     if (this.refs.table !== undefined) {
@@ -109,80 +106,89 @@ export default class TransactionsList extends React.Component {
     }
   }
 
-  createTransaction( transaction ) {
-    const token = this.props.token;
+  createTransaction(transaction) {
+    const token = this.props.token
     let call = async () =>
-      await (await this.props.createTransaction(token, transaction));
-    call()
-      .then(() => {
-        this.fetchData();
-        this.props.updateBalance();
-        this.showSnack('Transaction added to your account');
-      })
+      await await this.props.createTransaction(token, transaction)
+    call().then(() => {
+      this.fetchData()
+      this.props.updateBalance()
+      this.showSnack('Transaction added to your account')
+    })
   }
 
-  editTransaction( transaction ) {
-    const token = this.props.token;
+  editTransaction(transaction) {
+    const token = this.props.token
     let call = async () =>
-      await (await this.props.editTransaction(token, transaction));
-    call()
-      .then(() => {
-        this.fetchData();
-        this.props.updateBalance();
-        this.showSnack('Transaction edited');
-      })
+      await await this.props.editTransaction(token, transaction)
+    call().then(() => {
+      this.fetchData()
+      this.props.updateBalance()
+      this.showSnack('Transaction edited')
+    })
   }
 
-  deleteTransaction( id ) {
-    const token = this.props.token;
-    let call = async () =>
-      await (await this.props.deleteTransaction(token, id));
-    call()
-      .then(() => {
-        this.fetchData();
-        this.props.updateBalance();
-        this.showSnack('Transaction deleted');
-      })
+  deleteTransaction(id) {
+    const token = this.props.token
+    let call = async () => await await this.props.deleteTransaction(token, id)
+    call().then(() => {
+      this.fetchData()
+      this.props.updateBalance()
+      this.showSnack('Transaction deleted')
+    })
   }
 
-  tickTransaction( id_transaction, isChecked ) {
-    const token = this.props.token;
+  tickTransaction(id_transaction, isChecked) {
+    const token = this.props.token
     let call = async () =>
-      await (await this.props.tickTransaction(token, id_transaction, isChecked));
-    call()
-      .then(() => {
-        this.props.updateBalance();
-      })
+      await await this.props.tickTransaction(token, id_transaction, isChecked)
+    call().then(() => {
+      this.props.updateBalance()
+    })
   }
 
-  renderTransactionsList( transactions ) {
+  renderTransactionsList(transactions) {
     transactions.sort((a, b) => {
       if (new Date(a.date) < new Date(b.date)) return -1
       if (new Date(a.date) > new Date(b.date)) return 1
       if (a.id < b.id) return -1
       if (a.id > b.id) return 1
       return 0
-    });
+    })
     // filter future recurring transactions
-    transactions = transactions.filter((element) => {
-      return element.recurring_group_id === null
-      || (element.recurring_group_id !== null && new Date(element.date) <= new Date)
+    transactions = transactions.filter(element => {
+      return (
+        element.recurring_group_id === null ||
+        (element.recurring_group_id !== null &&
+          new Date(element.date) <= new Date())
+      )
     })
     const rows = transactions.map((row, index) => {
-      let credit = parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
-      let debit = parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
+      let credit =
+        parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
+      let debit =
+        parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
       return (
         <TableRow key={row.transaction_id}>
           <TableRowColumn className={styles.tickColumn}>
             <Checkbox
               defaultChecked={Boolean(row.tick)}
-              onCheck={(e, isChecked) => this.tickTransaction(row.transaction_id, isChecked)}
+              onCheck={(e, isChecked) =>
+                this.tickTransaction(row.transaction_id, isChecked)}
             />
           </TableRowColumn>
-          <TableRowColumn className={styles.smallColumn}>{row.date.toString()}</TableRowColumn>
-          <TableRowColumn>{row.label}</TableRowColumn>
-          <TableRowColumn className={styles.smallColumn}>{debit}</TableRowColumn>
-          <TableRowColumn className={styles.smallColumn}>{credit}</TableRowColumn>
+          <TableRowColumn className={styles.smallColumn}>
+            {row.date.toString()}
+          </TableRowColumn>
+          <TableRowColumn>
+            {row.label}
+          </TableRowColumn>
+          <TableRowColumn className={styles.smallColumn}>
+            {debit}
+          </TableRowColumn>
+          <TableRowColumn className={styles.smallColumn}>
+            {credit}
+          </TableRowColumn>
           <TableRowColumn className={styles.smallColumn}>
             <EditTransaction
               fields={row}
@@ -197,7 +203,10 @@ export default class TransactionsList extends React.Component {
   }
 
   render() {
-    if (this.props.selectedAccount === undefined || this.props.selectedAccount === null) {
+    if (
+      this.props.selectedAccount === undefined ||
+      this.props.selectedAccount === null
+    ) {
       return (
         <div className={styles.mainContainer}>
           <h3>Create an account if you don't have one yet.</h3>
@@ -207,63 +216,68 @@ export default class TransactionsList extends React.Component {
 
     return (
       <div className={styles.mainContainer}>
-      {!this.props.loaded
-        ? <GridLoader color="#00BCD4" size="16px" margin="4px"/>
-        :
-        <div className={styles.mainTable}>
-          <Table
-            ref='table'
-            height={this.state.height}
-            fixedHeader={this.state.fixedHeader}
-            fixedFooter={this.state.fixedFooter}
-            selectable={this.state.selectable}
-            multiSelectable={this.state.multiSelectable}
-          >
-            <TableHeader
-              displaySelectAll={this.state.showCheckboxes}
-              adjustForCheckbox={this.state.showCheckboxes}
-              enableSelectAll={this.state.enableSelectAll}
-            >
-              <TableRow>
-              <TableHeaderColumn className={styles.tickColumn}>Tick</TableHeaderColumn>
-                <TableHeaderColumn className={styles.smallColumn}>Date</TableHeaderColumn>
-                <TableHeaderColumn>Label</TableHeaderColumn>
-                <TableHeaderColumn className={styles.smallColumn}>Debit</TableHeaderColumn>
-                <TableHeaderColumn className={styles.smallColumn}>Credit</TableHeaderColumn>
-                <TableHeaderColumn className={styles.smallColumn}></TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              displayRowCheckbox={this.state.showCheckboxes}
-              deselectOnClickaway={this.state.deselectOnClickaway}
-              showRowHover={this.state.showRowHover}
-              stripedRows={this.state.stripedRows}
-              style={{height: '100%'}}
-            >
-              {this.renderTransactionsList(this.props.data)}
-            </TableBody>
-            <TableFooter
-              adjustForCheckbox={this.state.showCheckboxes}
-            >
-              <TableRow>
-                <TableRowColumn colSpan="5">
-                  <AddTransaction
-                    selectedAccount={this.props.selectedAccount}
-                    createTransaction={this.createTransaction.bind(this)} />
-                </TableRowColumn>
-              </TableRow>
-            </TableFooter>
-          </Table>
-          <Snackbar
-            open={this.state.snackOpen}
-            message={this.state.snackMessage}
-            autoHideDuration={4000}
-            onRequestClose={this.handleSnackClose.bind(this)}
-          />
-        </div>
-      }
+        {!this.props.loaded
+          ? <GridLoader color="#00BCD4" size="16px" margin="4px" />
+          : <div className={styles.mainTable}>
+              <Table
+                ref="table"
+                height={this.state.height}
+                fixedHeader={this.state.fixedHeader}
+                fixedFooter={this.state.fixedFooter}
+                selectable={this.state.selectable}
+                multiSelectable={this.state.multiSelectable}
+              >
+                <TableHeader
+                  displaySelectAll={this.state.showCheckboxes}
+                  adjustForCheckbox={this.state.showCheckboxes}
+                  enableSelectAll={this.state.enableSelectAll}
+                >
+                  <TableRow>
+                    <TableHeaderColumn className={styles.tickColumn}>
+                      Tick
+                    </TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
+                      Date
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>Label</TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
+                      Debit
+                    </TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
+                      Credit
+                    </TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn} />
+                  </TableRow>
+                </TableHeader>
+                <TableBody
+                  displayRowCheckbox={this.state.showCheckboxes}
+                  deselectOnClickaway={this.state.deselectOnClickaway}
+                  showRowHover={this.state.showRowHover}
+                  stripedRows={this.state.stripedRows}
+                  style={{ height: '100%' }}
+                >
+                  {this.renderTransactionsList(this.props.data)}
+                </TableBody>
+                <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
+                  <TableRow>
+                    <TableRowColumn colSpan="5">
+                      <AddTransaction
+                        selectedAccount={this.props.selectedAccount}
+                        createTransaction={this.createTransaction.bind(this)}
+                      />
+                    </TableRowColumn>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+              <Snackbar
+                open={this.state.snackOpen}
+                message={this.state.snackMessage}
+                autoHideDuration={4000}
+                onRequestClose={this.handleSnackClose.bind(this)}
+              />
+            </div>}
       </div>
-    );
+    )
   }
 }
 
@@ -272,5 +286,5 @@ TransactionsList.propTypes = {
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,
-  selectedAccount: React.PropTypes.number,
-};
+  selectedAccount: React.PropTypes.number
+}

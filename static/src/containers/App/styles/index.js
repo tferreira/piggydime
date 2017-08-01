@@ -1,2 +1,2 @@
-import 'style!./styles.scss';
-export default require('./styles.scss').locals.styles;
+import 'style!./styles.scss'
+export default require('./styles.scss').locals.styles

@@ -1,16 +1,16 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import Snackbar from 'material-ui/Snackbar';
+import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+import Snackbar from 'material-ui/Snackbar'
 
-import RecurrenceList from '../../components/RecurrenceList';
+import RecurrenceList from '../../components/RecurrenceList'
 import AddRecurrence from '../../components/Modals/AddRecurrence.js'
 
-import * as recurrenceActions from '../../actions/recurrence';
-import * as accountsActions from '../../actions/accounts';
-import * as transactionsActions from '../../actions/transactions';
+import * as recurrenceActions from '../../actions/recurrence'
+import * as accountsActions from '../../actions/accounts'
+import * as transactionsActions from '../../actions/transactions'
 
 function mapStateToProps(state) {
   return {
@@ -19,8 +19,8 @@ function mapStateToProps(state) {
     loaded: state.recurrence.loaded,
     accounts: state.accounts.data,
     accountsLoaded: state.accounts.loaded,
-    isFetching: state.recurrence.isFetching,
-  };
+    isFetching: state.recurrence.isFetching
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -28,11 +28,10 @@ function mapDispatchToProps(dispatch) {
     actions: {
       recurrence: bindActionCreators(recurrenceActions, dispatch),
       accounts: bindActionCreators(accountsActions, dispatch),
-      transactions: bindActionCreators(transactionsActions, dispatch),
+      transactions: bindActionCreators(transactionsActions, dispatch)
     }
-  };
+  }
 }
-
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class RecurrenceContainer extends React.Component {
@@ -42,86 +41,92 @@ export default class RecurrenceContainer extends React.Component {
       selectItems: [],
       selected: null,
       snackOpen: false,
-      snackMessage: '',
+      snackMessage: ''
     }
   }
 
   showSnack(snackMessage) {
     this.setState({
       snackMessage,
-      snackOpen: true,
+      snackOpen: true
     })
   }
 
   handleSnackClose() {
     this.setState({
-      snackOpen: false,
+      snackOpen: false
     })
   }
 
   componentWillMount() {
-    this.fetchData();
+    this.fetchData()
     // select first account automatically to avoid a blank page
     if (this.state.selected === null && this.props.accounts.length > 0) {
-        this.setState({'selected': this.props.accounts[0].id})
+      this.setState({ selected: this.props.accounts[0].id })
     }
   }
 
   handleAccountChange(event, index, selected) {
-    this.setState({ selected });
+    this.setState({ selected })
   }
 
   fetchData() {
-    const token = this.props.token;
-    this.props.actions.accounts.fetchAccountsData(token);
-    this.props.actions.recurrence.fetchRecurrenceData(token);
+    const token = this.props.token
+    this.props.actions.accounts.fetchAccountsData(token)
+    this.props.actions.recurrence.fetchRecurrenceData(token)
     if (this.state.selected) {
-      this.props.actions.transactions.fetchTransactionsData(token, this.state.selected);
+      this.props.actions.transactions.fetchTransactionsData(
+        token,
+        this.state.selected
+      )
     }
   }
 
   createRecurrence(recurring_group) {
-    const token = this.props.token;
+    const token = this.props.token
     let call = async () =>
-      await (await this.props.actions.recurrence.createRecurrence(token, recurring_group));
-    call()
-      .then(() => {
-        this.fetchData();
-        this.showSnack('Recurring transaction added to your account');
-      })
+      await await this.props.actions.recurrence.createRecurrence(
+        token,
+        recurring_group
+      )
+    call().then(() => {
+      this.fetchData()
+      this.showSnack('Recurring transaction added to your account')
+    })
   }
 
   editRecurrence(recurring_group, callback) {
-    const token = this.props.token;
+    const token = this.props.token
     let call = async () =>
-      await (await this.props.actions.recurrence.editRecurrence(token, recurring_group));
-    call()
-      .then(() => {
-        callback(true);
-        this.fetchData();
-        this.showSnack('Recurring transaction updated');
-      })
+      await await this.props.actions.recurrence.editRecurrence(
+        token,
+        recurring_group
+      )
+    call().then(() => {
+      callback(true)
+      this.fetchData()
+      this.showSnack('Recurring transaction updated')
+    })
   }
 
   deleteRecurrence(id, callback) {
-    const token = this.props.token;
+    const token = this.props.token
     let call = async () =>
-      await (await this.props.actions.recurrence.deleteRecurrence(token, id));
-    call()
-      .then(() => {
-        callback(true);
-        this.fetchData();
-        this.showSnack('Recurring transaction deleted');
-      })
+      await await this.props.actions.recurrence.deleteRecurrence(token, id)
+    call().then(() => {
+      callback(true)
+      this.fetchData()
+      this.showSnack('Recurring transaction deleted')
+    })
   }
 
   render() {
     if (!this.props.accountsLoaded) {
-      return null;
+      return null
     }
-    const selectItems = this.props.accounts.map((account, key) => (
+    const selectItems = this.props.accounts.map((account, key) =>
       <MenuItem key={key} value={account.id} primaryText={account.label} />
-    ))
+    )
     return (
       <section>
         <div>
@@ -133,7 +138,7 @@ export default class RecurrenceContainer extends React.Component {
           >
             {selectItems}
           </SelectField>
-          <AddRecurrence 
+          <AddRecurrence
             selectedAccount={this.state.selected}
             createRecurrence={this.createRecurrence.bind(this)}
           />
@@ -162,5 +167,5 @@ RecurrenceContainer.propTypes = {
   data: React.PropTypes.any,
   accounts: React.PropTypes.any,
   accountsLoaded: React.PropTypes.bool,
-  token: React.PropTypes.string,
-};
+  token: React.PropTypes.string
+}

@@ -83,7 +83,7 @@
     "morgan": "^1.6.1",
     "node-sass": "^3.4.2",
     "postcss-import": "^9.0.0",
-    "postcss-loader": "^1.1.1",
+    "postcss-loader": "^2.0.6",
     "prettier": "^1.5.3",
     "q": "^1.4.1",
     "qs": "^6.1.0",

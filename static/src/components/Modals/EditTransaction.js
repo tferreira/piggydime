@@ -1,16 +1,16 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import DatePicker from 'material-ui/DatePicker';
-import IconButton from 'material-ui/IconButton';
-import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
+import React from 'react'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
+import DatePicker from 'material-ui/DatePicker'
+import IconButton from 'material-ui/IconButton'
+import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz'
 
-import styles from './styles.scss';
+import styles from './styles.scss'
 
 export default class EditTransaction extends React.Component {
-  constructor (props){
+  constructor(props) {
     super(props)
     this.state = {
       open: false,
@@ -20,49 +20,49 @@ export default class EditTransaction extends React.Component {
       transaction_id: this.props.fields.transaction_id,
       dateValue: this.props.fields.date,
       labelValue: this.props.fields.label,
-      amountValue: this.props.fields.amount,
+      amountValue: this.props.fields.amount
     }
   }
 
   handleOpen = () => {
-    this.setState({open: true});
-  };
+    this.setState({ open: true })
+  }
 
   handleClose = () => {
-    this.setState({open: false});
-  };
+    this.setState({ open: false })
+  }
 
   changeValue(e, type) {
-    const value = e.target.value;
-    const next_state = {};
-    next_state[type] = value;
+    const value = e.target.value
+    const next_state = {}
+    next_state[type] = value
     this.setState(next_state, () => {
-      this.isDisabled();
-    });
+      this.isDisabled()
+    })
   }
 
   changeDateValue(date, type) {
-    const value = date;
-    const next_state = {};
-    next_state[type] = value;
+    const value = date
+    const next_state = {}
+    next_state[type] = value
     this.setState(next_state, () => {
-      this.isDisabled();
-    });
+      this.isDisabled()
+    })
   }
 
   isCurrency(amount) {
-    let amountAsNum = +amount;
+    let amountAsNum = +amount
     return !isNaN(amountAsNum)
   }
 
   isDisabled() {
     let stateToUpdate = {}
-    let date_is_valid = false;
-    let label_is_valid = false;
-    let amount_is_valid = false;
+    let date_is_valid = false
+    let label_is_valid = false
+    let amount_is_valid = false
 
     if (this.state.dateValue !== null) {
-      date_is_valid = true;
+      date_is_valid = true
     }
 
     if (this.state.labelValue === '') {
@@ -92,84 +92,97 @@ export default class EditTransaction extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
-      var dateObject = new Date(this.state.dateValue);
-      var date = new Date(dateObject.getTime() - (dateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+      var dateObject = new Date(this.state.dateValue)
+      var date = new Date(
+        dateObject.getTime() - dateObject.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substring(0, 10)
       this.props.editTransaction({
         transaction_id: this.state.transaction_id,
         label: this.state.labelValue,
         amount: Number(this.state.amountValue).toFixed(2),
-        date: date,
-      });
-      this.handleClose();
+        date: date
+      })
+      this.handleClose()
     }
-  };
+  }
 
   onDelete = () => {
-    this.props.deleteTransaction(this.state.transaction_id);
-    this.handleClose();
-  };
+    this.props.deleteTransaction(this.state.transaction_id)
+    this.handleClose()
+  }
 
   render() {
     const actions = [
       <RaisedButton
-      label="Delete"
-      secondary={true}
-      onTouchTap={this.onDelete}
+        label="Delete"
+        secondary={true}
+        onTouchTap={this.onDelete}
       />,
       <FlatButton
-      label="Cancel"
-      primary={true}
-      onTouchTap={this.handleClose}
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleClose}
       />,
       <FlatButton
-      label="Save"
-      primary={true}
-      keyboardFocused={true}
-      onTouchTap={this.onSubmit}
-      disabled={this.state.disabled}
-      />,
-    ];
+        label="Save"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.onSubmit}
+        disabled={this.state.disabled}
+      />
+    ]
 
     return (
       <div>
-      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><MoreHoriz color="grey" /></IconButton>
-      <Dialog
-        title="Edit transaction"
-        actions={actions}
-        modal={false}
-        className={styles.dialog}
-        open={this.state.open}
-        onRequestClose={this.handleClose}
-        autoScrollBodyContent={true}
-      >
-        <div>
-          <DatePicker
-          floatingLabelText="Date"
-          hintText="Transaction date"
-          mode="landscape"
-          autoOk={true}
-          container="inline"
-          onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
-          value={new Date(this.state.dateValue)}
-          />
-          <br />
-          <TextField
-          floatingLabelText="Label"
-          hintText="Enter description here"
-          errorText={this.state.label_error_text}
-          onChange={(e) => this.changeValue(e, 'labelValue')}
-          defaultValue={this.state.labelValue}
-          /><br />
-          <TextField
-          floatingLabelText="Amount"
-          hintText="Use -00.00 for debit transactions"
-          errorText={this.state.amount_error_text}
-          onChange={(e) => this.changeValue(e, 'amountValue')}
-          defaultValue={this.state.amountValue}
-          /><br />
-        </div>
-      </Dialog>
+        <IconButton
+          onTouchTap={e => {
+            e.stopPropagation()
+            this.handleOpen()
+          }}
+        >
+          <MoreHoriz color="grey" />
+        </IconButton>
+        <Dialog
+          title="Edit transaction"
+          actions={actions}
+          modal={false}
+          className={styles.dialog}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent={true}
+        >
+          <div>
+            <DatePicker
+              floatingLabelText="Date"
+              hintText="Transaction date"
+              mode="landscape"
+              autoOk={true}
+              container="inline"
+              onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
+              value={new Date(this.state.dateValue)}
+            />
+            <br />
+            <TextField
+              floatingLabelText="Label"
+              hintText="Enter description here"
+              errorText={this.state.label_error_text}
+              onChange={e => this.changeValue(e, 'labelValue')}
+              defaultValue={this.state.labelValue}
+            />
+            <br />
+            <TextField
+              floatingLabelText="Amount"
+              hintText="Use -00.00 for debit transactions"
+              errorText={this.state.amount_error_text}
+              onChange={e => this.changeValue(e, 'amountValue')}
+              defaultValue={this.state.amountValue}
+            />
+            <br />
+          </div>
+        </Dialog>
       </div>
-    );
+    )
   }
 }

@@ -1,16 +1,16 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import IconButton from 'material-ui/IconButton';
-import DatePicker from 'material-ui/DatePicker';
-import Edit from 'material-ui/svg-icons/image/edit';
-import TextField from 'material-ui/TextField';
+import React from 'react'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from 'material-ui/IconButton'
+import DatePicker from 'material-ui/DatePicker'
+import Edit from 'material-ui/svg-icons/image/edit'
+import TextField from 'material-ui/TextField'
 
-import styles from './styles.scss';
+import styles from './styles.scss'
 
 export default class EditAccount extends React.Component {
-  constructor (props){
+  constructor(props) {
     super(props)
     this.state = {
       open: false,
@@ -24,77 +24,83 @@ export default class EditAccount extends React.Component {
       bankValue: this.props.fields.bank,
       ibanValue: this.props.fields.iban,
       bicValue: this.props.fields.bic,
-      projectedDateValue: this.props.fields.projected_date,
+      projectedDateValue: this.props.fields.projected_date
     }
   }
 
   handleOpen = () => {
-    this.setState({open: true});
-  };
+    this.setState({ open: true })
+  }
 
   handleClose = () => {
-    this.setState({open: false});
-  };
+    this.setState({ open: false })
+  }
 
   changeValue(e, type) {
-    const value = e.target.value;
-    const next_state = {};
-    next_state[type] = value;
+    const value = e.target.value
+    const next_state = {}
+    next_state[type] = value
     this.setState(next_state, () => {
-      this.isDisabled();
-    });
+      this.isDisabled()
+    })
   }
 
   changeDateValue(date, type) {
-    const value = date;
-    const next_state = {};
-    next_state[type] = value;
+    const value = date
+    const next_state = {}
+    next_state[type] = value
     this.setState(next_state, () => {
-      this.isDisabled();
-    });
+      this.isDisabled()
+    })
   }
 
   isDisabled() {
     let stateToUpdate = {}
-    let label_is_valid = false;
-    let bank_is_valid = false;
-    let iban_is_valid = false;
-    let bic_is_valid = false;
-    let projected_date_is_valid = false;
+    let label_is_valid = false
+    let bank_is_valid = false
+    let iban_is_valid = false
+    let bic_is_valid = false
+    let projected_date_is_valid = false
 
     if (this.state.projectedDateValue !== null) {
-      projected_date_is_valid = true;
+      projected_date_is_valid = true
     }
 
     if (this.state.labelValue === '') {
       stateToUpdate['email_error_text'] = null
     } else {
-      label_is_valid = true;
+      label_is_valid = true
     }
 
     if (this.state.bankValue === '') {
       stateToUpdate['bank_error_text'] = null
     } else {
-      bank_is_valid = true;
+      bank_is_valid = true
     }
 
     if (this.state.ibanValue === '') {
       stateToUpdate['iban_error_text'] = null
     } else if (this.state.ibanValue.length <= 34) {
-      iban_is_valid = true;
+      iban_is_valid = true
       stateToUpdate['iban_error_text'] = null
     } else {
       stateToUpdate['iban_error_text'] = 'Your IBAN can have 34 characters max.'
     }
 
     if (this.state.bicValue.length <= 12) {
-      bic_is_valid = true;
+      bic_is_valid = true
       stateToUpdate['bic_error_text'] = null
     } else {
       stateToUpdate['bic_error_text'] = 'Your BIC can have 12 characters max.'
     }
 
-    if (label_is_valid && bank_is_valid && iban_is_valid && bic_is_valid && projected_date_is_valid) {
+    if (
+      label_is_valid &&
+      bank_is_valid &&
+      iban_is_valid &&
+      bic_is_valid &&
+      projected_date_is_valid
+    ) {
       stateToUpdate['disabled'] = false
     } else {
       stateToUpdate['disabled'] = true
@@ -105,99 +111,117 @@ export default class EditAccount extends React.Component {
 
   onSubmit = () => {
     if (!this.state.disabled) {
-      var projectedDateObject = new Date(this.state.projectedDateValue);
-      var projectedDate = new Date(projectedDateObject.getTime() - (projectedDateObject.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+      var projectedDateObject = new Date(this.state.projectedDateValue)
+      var projectedDate = new Date(
+        projectedDateObject.getTime() -
+          projectedDateObject.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .substring(0, 10)
       this.props.editAccount({
         id: this.state.id,
         label: this.state.labelValue,
         bank: this.state.bankValue,
         iban: this.state.ibanValue,
         bic: this.state.bicValue,
-        projected_date: projectedDate,
-      });
-      this.handleClose();
+        projected_date: projectedDate
+      })
+      this.handleClose()
     }
-  };
+  }
 
   onDelete = () => {
-    let choice = confirm("Do you really want to delete this account?");
+    let choice = confirm('Do you really want to delete this account?')
     if (choice == true) {
       this.props.deleteAccount({
         id: this.state.id
-      });
-      this.handleClose();
+      })
+      this.handleClose()
     }
-  };
+  }
 
   render() {
     const actions = [
       <RaisedButton
-      label="Delete"
-      secondary={true}
-      onTouchTap={this.onDelete}
+        label="Delete"
+        secondary={true}
+        onTouchTap={this.onDelete}
       />,
       <FlatButton
-      label="Cancel"
-      primary={true}
-      onTouchTap={this.handleClose}
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleClose}
       />,
       <FlatButton
-      label="Save"
-      primary={true}
-      keyboardFocused={true}
-      onTouchTap={this.onSubmit}
-      disabled={this.state.disabled}
-      />,
-    ];
+        label="Save"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.onSubmit}
+        disabled={this.state.disabled}
+      />
+    ]
 
     return (
       <div>
-      <IconButton onTouchTap={(e) => {e.stopPropagation(); this.handleOpen();}}><Edit color="white" /></IconButton>
-      <Dialog
-        title="Edit account"
-        actions={actions}
-        modal={false}
-        className={styles.dialog}
-        open={this.state.open}
-        onRequestClose={this.handleClose}
-        autoScrollBodyContent={true}
-      >
-        <div>
-          <TextField
-          floatingLabelText="Label"
-          errorText={this.state.email_error_text}
-          onChange={(e) => this.changeValue(e, 'labelValue')}
-          defaultValue={this.state.labelValue}
-          /><br />
-          <TextField
-          floatingLabelText="Bank"
-          errorText={this.state.email_error_text}
-          onChange={(e) => this.changeValue(e, 'bankValue')}
-          defaultValue={this.state.bankValue}
-          /><br />
-          <TextField
-          floatingLabelText="IBAN"
-          errorText={this.state.iban_error_text}
-          onChange={(e) => this.changeValue(e, 'ibanValue')}
-          defaultValue={this.state.ibanValue}
-          /><br />
-          <TextField
-          floatingLabelText="BIC"
-          errorText={this.state.bic_error_text}
-          onChange={(e) => this.changeValue(e, 'bicValue')}
-          defaultValue={this.state.bicValue}
-          /><br />
-          <DatePicker
-          floatingLabelText="Projected balance date"
-          mode="landscape"
-          autoOk={true}
-          container="inline"
-          onChange={(e, date) => this.changeDateValue(date, 'projectedDateValue')}
-          value={new Date(this.state.projectedDateValue)}
-          /><br />
-        </div>
-      </Dialog>
+        <IconButton
+          onTouchTap={e => {
+            e.stopPropagation()
+            this.handleOpen()
+          }}
+        >
+          <Edit color="white" />
+        </IconButton>
+        <Dialog
+          title="Edit account"
+          actions={actions}
+          modal={false}
+          className={styles.dialog}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          autoScrollBodyContent={true}
+        >
+          <div>
+            <TextField
+              floatingLabelText="Label"
+              errorText={this.state.email_error_text}
+              onChange={e => this.changeValue(e, 'labelValue')}
+              defaultValue={this.state.labelValue}
+            />
+            <br />
+            <TextField
+              floatingLabelText="Bank"
+              errorText={this.state.email_error_text}
+              onChange={e => this.changeValue(e, 'bankValue')}
+              defaultValue={this.state.bankValue}
+            />
+            <br />
+            <TextField
+              floatingLabelText="IBAN"
+              errorText={this.state.iban_error_text}
+              onChange={e => this.changeValue(e, 'ibanValue')}
+              defaultValue={this.state.ibanValue}
+            />
+            <br />
+            <TextField
+              floatingLabelText="BIC"
+              errorText={this.state.bic_error_text}
+              onChange={e => this.changeValue(e, 'bicValue')}
+              defaultValue={this.state.bicValue}
+            />
+            <br />
+            <DatePicker
+              floatingLabelText="Projected balance date"
+              mode="landscape"
+              autoOk={true}
+              container="inline"
+              onChange={(e, date) =>
+                this.changeDateValue(date, 'projectedDateValue')}
+              value={new Date(this.state.projectedDateValue)}
+            />
+            <br />
+          </div>
+        </Dialog>
       </div>
-    );
+    )
   }
 }

@@ -1,88 +1,110 @@
-import { FETCH_ACCOUNTS_DATA_REQUEST, RECEIVE_ACCOUNTS_DATA, SELECT_ACCOUNT } from '../constants/index';
-import { parseJSON } from '../utils/misc';
-import { data_about_accounts, create_account, edit_account, delete_account } from '../utils/http_functions';
-import { logoutAndRedirect } from './auth';
+import {
+  FETCH_ACCOUNTS_DATA_REQUEST,
+  RECEIVE_ACCOUNTS_DATA,
+  SELECT_ACCOUNT
+} from '../constants/index'
+import { parseJSON } from '../utils/misc'
+import {
+  data_about_accounts,
+  create_account,
+  edit_account,
+  delete_account
+} from '../utils/http_functions'
+import { logoutAndRedirect } from './auth'
 
 export function receiveAccountsData(data) {
   return {
     type: RECEIVE_ACCOUNTS_DATA,
     payload: {
-      data,
-    },
-  };
+      data
+    }
+  }
 }
 
 export function fetchAccountsDataRequest() {
   return {
-    type: FETCH_ACCOUNTS_DATA_REQUEST,
-  };
+    type: FETCH_ACCOUNTS_DATA_REQUEST
+  }
 }
 
-export function fetchAccountsData(token, callback=null) {
-  return (dispatch) => {
-    dispatch(fetchAccountsDataRequest());
+export function fetchAccountsData(token, callback = null) {
+  return dispatch => {
+    dispatch(fetchAccountsDataRequest())
     data_about_accounts(token)
       .then(parseJSON)
       .then(response => {
-        dispatch(receiveAccountsData(response.result));
+        dispatch(receiveAccountsData(response.result))
         if (callback !== null) {
           callback()
         }
       })
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }
 
 export function selectAccount(id) {
   return {
     type: SELECT_ACCOUNT,
-    payload: id,
-  };
+    payload: id
+  }
 }
 
-export function createAccount(token, account) { 
-  return (dispatch) => {
-    create_account(token, account.label, account.bank, account.iban, account.bic, account.projected_date)
+export function createAccount(token, account) {
+  return dispatch => {
+    create_account(
+      token,
+      account.label,
+      account.bank,
+      account.iban,
+      account.bic,
+      account.projected_date
+    )
       .then(parseJSON)
       .then(response => {
-        dispatch(selectAccount(response.id));
+        dispatch(selectAccount(response.id))
       })
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }
 
-export function editAccount(token, account) { 
-  return (dispatch) => {
-    edit_account(token, account.id, account.label, account.bank, account.iban, account.bic, account.projected_date)
+export function editAccount(token, account) {
+  return dispatch => {
+    edit_account(
+      token,
+      account.id,
+      account.label,
+      account.bank,
+      account.iban,
+      account.bic,
+      account.projected_date
+    )
       .then(parseJSON)
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }
 
-export function deleteAccount(token, id) { 
-  return (dispatch) => {
+export function deleteAccount(token, id) {
+  return dispatch => {
     delete_account(token, id)
       .then(parseJSON)
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         if (error.status === 401) {
-          dispatch(logoutAndRedirect(error));
+          dispatch(logoutAndRedirect(error))
         }
-      });
-  };
+      })
+  }
 }

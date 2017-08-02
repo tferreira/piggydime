@@ -1,6 +1,7 @@
 # Makefile
 
 VIRTUALENV = venv/
+PRETTIER = ./static/node_modules/.bin/prettier
 
 launch:
 	. $(VIRTUALENV)bin/activate; python3.5 manage.py runserver
@@ -12,3 +13,6 @@ create_virtualenv:
 
 pip_install:
 	. $(VIRTUALENV)bin/activate; pip3.5 install -r requirements.txt
+
+pretty:
+	$(PRETTIER) --single-quote --no-semi --write "static/src/**/*.js"

@@ -28,11 +28,11 @@ class Home extends React.Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return <FormattedMessage id="home.steps.one"/>
+        return <FormattedMessage id="home.steps.one" />
       case 1:
-        return <FormattedMessage id="home.steps.two"/>
+        return <FormattedMessage id="home.steps.two" />
       case 2:
-        return <FormattedMessage id="home.steps.three"/>
+        return <FormattedMessage id="home.steps.three" />
       default:
         return 'I want to break free!'
     }

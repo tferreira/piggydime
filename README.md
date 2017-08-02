@@ -12,6 +12,7 @@ This project is still in development but the main features are already implement
 
  Upcoming features:
 
+ * [ ] French translation (currently in progress)
  * [ ] Currency symbols
  * [ ] Statistics charts on home page tiles
  * [ ] Backup/Restore (CSV format)
@@ -71,6 +72,17 @@ $ python3.5 manage.py runserver
 
 ```sh
 $ yarn run build:production
+```
+
+### FOR DEVELOPERS -  Prettify
+
+This project uses the Prettify library in order to have a consistent coding style.
+Options are the following: `--single-quote --no-semi`
+
+Before commiting and opening a pull request, please run at the root of the repository:
+
+```sh
+$ make pretty
 ```
 
 ### FOR DEVELOPERS - Test Back-End

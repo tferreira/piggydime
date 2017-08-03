@@ -1,5 +1,4 @@
 import jwtDecode from 'jwt-decode'
-
 import { createReducer } from '../utils/misc'
 import {
   LOGIN_USER_SUCCESS,
@@ -26,6 +25,7 @@ export default createReducer(initialState, {
   [LOGIN_USER_REQUEST]: state =>
     Object.assign({}, state, {
       isAuthenticating: true,
+      statusIntlId: null,
       statusText: null
     }),
   [LOGIN_USER_SUCCESS]: (state, payload) =>
@@ -34,7 +34,8 @@ export default createReducer(initialState, {
       isAuthenticated: true,
       token: payload.token,
       userName: jwtDecode(payload.token).email,
-      statusText: 'You have been successfully logged in.'
+      statusIntlId: 'login.success',
+      statusText: null
     }),
   [LOGIN_USER_FAILURE]: (state, payload) =>
     Object.assign({}, state, {
@@ -42,14 +43,16 @@ export default createReducer(initialState, {
       isAuthenticated: false,
       token: null,
       userName: null,
-      statusText: `Authentication Error: ${payload.status} ${payload.statusText}`
+      statusIntlId: 'login.error',
+      statusText: `${payload.status} ${payload.statusText}`
     }),
   [LOGOUT_USER]: state =>
     Object.assign({}, state, {
       isAuthenticated: false,
       token: null,
       userName: null,
-      statusText: 'You have been successfully logged out.'
+      statusIntlId: 'logout.success',
+      statusText: null
     }),
   [REGISTER_USER_SUCCESS]: (state, payload) =>
     Object.assign({}, state, {

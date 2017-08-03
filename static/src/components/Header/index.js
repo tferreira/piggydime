@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { FormattedMessage } from 'react-intl'
 import AppBar from 'material-ui/AppBar'
 import LeftNav from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
@@ -65,30 +66,32 @@ export class Header extends Component {
           {!this.props.isAuthenticated
             ? <div>
                 <MenuItem onClick={() => this.dispatchNewRoute('/login')}>
-                  Login
+                  <FormattedMessage id="header.leftnav.login" />
                 </MenuItem>
                 <MenuItem onClick={() => this.dispatchNewRoute('/register')}>
-                  Register
+                  <FormattedMessage id="header.leftnav.register" />
                 </MenuItem>
               </div>
             : <div>
                 <MenuItem onClick={() => this.dispatchNewRoute('/accounts')}>
-                  Accounts
+                  <FormattedMessage id="header.leftnav.accounts" />
                 </MenuItem>
                 <MenuItem onClick={() => this.dispatchNewRoute('/recurrence')}>
-                  Recurring transactions
+                  <FormattedMessage id="header.leftnav.recurrence" />
                 </MenuItem>
                 <Divider />
 
-                <MenuItem onClick={e => this.logout(e)}>Logout</MenuItem>
+                <MenuItem onClick={e => this.logout(e)}>
+                  <FormattedMessage id="header.leftnav.logout" />
+                </MenuItem>
               </div>}
         </LeftNav>
         <AppBar
-          title="Piggydime"
+          title={<FormattedMessage id="header.title" />}
           onLeftIconButtonTouchTap={() => this.openNav()}
           iconElementRight={
             <FlatButton
-              label="Home"
+              label={<FormattedMessage id="header.home" />}
               onClick={() => this.dispatchNewRoute('/')}
             />
           }

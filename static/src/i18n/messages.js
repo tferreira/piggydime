@@ -1,5 +1,8 @@
 export default {
   en: {
+    buttons: {
+      submit: 'Submit'
+    },
     stepper: {
       next: 'Next',
       back: 'Back',
@@ -25,9 +28,35 @@ export default {
         }
       },
       welcome: 'Hello, welcome on Piggydime.'
+    },
+    header: {
+      leftnav: {
+        login: 'Login',
+        register: 'Register',
+        accounts: 'Accounts',
+        recurrence: 'Recurring transactions',
+        logout: 'Logout'
+      },
+      home: 'Home',
+      title: 'Piggydime'
+    },
+    login: {
+      title: 'Login to access your accounts',
+      success: 'You have been successfully logged in.',
+      error: 'Authentication Error: {statusText}',
+      email_error_text: 'Sorry, this is not a valid email',
+      password_error_text: 'Your password must be at least 6 characters',
+      email_label: 'Email',
+      password_label: 'Password'
+    },
+    logout: {
+      success: 'You have been successfully logged out.'
     }
   },
   fr: {
+    buttons: {
+      submit: 'Envoyer'
+    },
     stepper: {
       next: 'Suivant',
       back: 'Précédent',
@@ -53,6 +82,30 @@ export default {
         }
       },
       welcome: 'Bienvenue sur Piggydime !'
+    },
+    header: {
+      leftnav: {
+        login: 'Se connecter',
+        register: 'Créer un compte',
+        accounts: 'Mes comptes',
+        recurrence: 'Transactions récurrentes',
+        logout: 'Se déconnecter'
+      },
+      home: 'Accueil',
+      title: 'Piggydime'
+    },
+    login: {
+      title: 'Identifiez-vous',
+      success: 'Connection réussie !',
+      error: 'Erreur : {statusText}',
+      email_error_text: 'Adresse e-mail invalide',
+      password_error_text:
+        'Votre mot de passe doit comprendre au minimum 6 caractères',
+      email_label: 'E-mail',
+      password_label: 'Mot de passe'
+    },
+    logout: {
+      success: 'Vous avez bien été déconnecté.'
     }
   }
 }

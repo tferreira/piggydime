@@ -2,7 +2,7 @@ import React from 'react'
 import Paper from 'material-ui/Paper'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import * as accountsActions from '../../actions/accounts'
 import * as balancesActions from '../../actions/balances'
 
@@ -70,13 +70,25 @@ export default class WelcomeTiles extends React.Component {
       var projectedBalance = filtered[0].projected_balance
       const content = (
         <div className={styles.paperBody}>
-          {row.label.concat(' - ', row.bank)} has a current balance of{' '}
-          <mark>{Number(balance).toFixed(2)}</mark>
+          <FormattedHTMLMessage
+            id="tiles.currentBalance"
+            values={{
+              bankLabel: row.label,
+              bankName: row.bank,
+              accountBalance: Number(balance).toFixed(2)
+            }}
+          />
           <br />
           <br />
-          Projected balance at{' '}
-          {new Date(row.projected_date).toISOString().slice(0, 10)}:{' '}
-          <mark>{Number(projectedBalance).toFixed(2)}</mark>
+          <FormattedHTMLMessage
+            id="tiles.projectedBalance"
+            values={{
+              projectedDate: new Date(row.projected_date)
+                .toISOString()
+                .slice(0, 10),
+              projectedBalance: Number(projectedBalance).toFixed(2)
+            }}
+          />
         </div>
       )
       return <Paper style={paperStyle} zDepth={3} children={content} />

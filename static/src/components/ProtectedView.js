@@ -40,7 +40,7 @@ export default class ProtectedView extends React.Component {
                 {
                   <FormattedMessage
                     id="home.welcomeBack"
-                    values={{userName: this.props.userName}}
+                    values={{ userName: this.props.userName }}
                   />
                 }
               </h1>

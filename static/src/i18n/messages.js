@@ -61,6 +61,12 @@ export default {
       password_error_text: 'Your password must be at least 6 characters',
       email_label: 'Email',
       password_label: 'Password'
+    },
+    tiles: {
+      currentBalance:
+        '{bankLabel} - {bankName} has a current balance of <mark>{accountBalance}</mark>',
+      projectedBalance:
+        'Projected balance at {projectedDate}: <mark>{projectedBalance}</mark>'
     }
   },
   fr: {
@@ -127,6 +133,12 @@ export default {
         'Votre mot de passe doit comprendre au minimum 6 caractères',
       email_label: 'E-mail',
       password_label: 'Mot de passe'
+    },
+    tiles: {
+      currentBalance:
+        '{bankLabel} - {bankName} présente un solde de <mark>{accountBalance}</mark>',
+      projectedBalance:
+        'Solde prévisionnel au {projectedDate}: <mark>{projectedBalance}</mark>'
     }
   }
 }

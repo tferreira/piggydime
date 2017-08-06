@@ -125,7 +125,9 @@ class RegisterView extends React.Component {
       >
         <Paper style={style}>
           <div className="text-center">
-            <h2><FormattedMessage id="register.title" /></h2>
+            <h2>
+              <FormattedMessage id="register.title" />
+            </h2>
             {this.props.statusIntlId &&
               <div className="alert alert-info">
                 <FormattedMessage

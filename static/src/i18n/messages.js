@@ -27,7 +27,8 @@ export default {
             'There is a feature to schedule monthly or yearly transctions. Then edit your account projected date parameter to know your future account balance.'
         }
       },
-      welcome: 'Hello, welcome on Piggydime.'
+      welcome: 'Hello, welcome on Piggydime.',
+      welcomeBack: 'Welcome back, {userName}!'
     },
     header: {
       leftnav: {
@@ -90,7 +91,8 @@ export default {
             'Planifiez des transactions mensuelles ou annuelles. Editez les options de votre compte et définissez la date de solde prévisionnel.'
         }
       },
-      welcome: 'Bienvenue sur Piggydime !'
+      welcome: 'Bienvenue sur Piggydime !',
+      welcomeBack: 'Bonjour, {userName} !'
     },
     header: {
       leftnav: {

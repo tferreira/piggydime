@@ -61,7 +61,8 @@ export default createReducer(initialState, {
       isRegistering: false,
       token: payload.token,
       userName: jwtDecode(payload.token).email,
-      registerStatusText: 'You have been successfully logged in.'
+      statusIntlId: 'register.success',
+      statusText: null
     }),
   [REGISTER_USER_REQUEST]: state =>
     Object.assign({}, state, {
@@ -72,6 +73,7 @@ export default createReducer(initialState, {
       isAuthenticated: false,
       token: null,
       userName: null,
-      registerStatusText: `Register Error: ${payload.status} ${payload.statusText}`
+      statusIntlId: 'register.error',
+      statusText: `${payload.status} ${payload.statusText}`
     })
 })

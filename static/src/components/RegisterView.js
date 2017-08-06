@@ -3,6 +3,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper'
@@ -14,7 +15,7 @@ import { validateEmail } from '../utils/misc'
 function mapStateToProps(state) {
   return {
     isRegistering: state.auth.isRegistering,
-    registerStatusText: state.auth.registerStatusText
+    statusText: state.auth.statusText
   }
 }
 
@@ -32,7 +33,7 @@ const style = {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class RegisterView extends React.Component {
+class RegisterView extends React.Component {
   constructor(props) {
     super(props)
     const redirectRoute = '/login'
@@ -61,10 +62,11 @@ export default class RegisterView extends React.Component {
       })
     } else {
       this.setState({
-        email_error_text: 'Sorry, this is not a valid email'
+        email_error_text: this.props.intl.formatMessage({
+          id: 'register.email_error_text'
+        })
       })
     }
-
     if (this.state.password === '' || !this.state.password) {
       this.setState({
         password_error_text: null
@@ -76,7 +78,9 @@ export default class RegisterView extends React.Component {
       })
     } else {
       this.setState({
-        password_error_text: 'Your password must be at least 6 characters'
+        password_error_text: this.props.intl.formatMessage({
+          id: 'register.password_error_text'
+        })
       })
     }
 
@@ -121,16 +125,21 @@ export default class RegisterView extends React.Component {
       >
         <Paper style={style}>
           <div className="text-center">
-            <h2>Register to create your private space</h2>
-            {this.props.registerStatusText &&
+            <h2><FormattedMessage id="register.title" /></h2>
+            {this.props.statusIntlId &&
               <div className="alert alert-info">
-                {this.props.registerStatusText}
+                <FormattedMessage
+                  id={this.props.statusIntlId}
+                  values={{ statusText: this.props.statusText }}
+                />
               </div>}
 
             <div className="col-md-12">
               <TextField
-                hintText="Email"
-                floatingLabelText="Email"
+                hintText={<FormattedMessage id="register.email_label" />}
+                floatingLabelText={
+                  <FormattedMessage id="register.email_label" />
+                }
                 type="email"
                 errorText={this.state.email_error_text}
                 onChange={e => this.changeValue(e, 'email')}
@@ -138,8 +147,10 @@ export default class RegisterView extends React.Component {
             </div>
             <div className="col-md-12">
               <TextField
-                hintText="Password"
-                floatingLabelText="Password"
+                hintText={<FormattedMessage id="register.password_label" />}
+                floatingLabelText={
+                  <FormattedMessage id="register.password_label" />
+                }
                 type="password"
                 errorText={this.state.password_error_text}
                 onChange={e => this.changeValue(e, 'password')}
@@ -149,7 +160,7 @@ export default class RegisterView extends React.Component {
             <RaisedButton
               disabled={this.state.disabled}
               style={{ marginTop: 50 }}
-              label="Submit"
+              label={<FormattedMessage id="buttons.submit" />}
               onClick={e => this.login(e)}
             />
           </div>
@@ -161,5 +172,9 @@ export default class RegisterView extends React.Component {
 
 RegisterView.propTypes = {
   registerUser: React.PropTypes.func,
-  registerStatusText: React.PropTypes.string
+  statusIntlId: React.PropTypes.string,
+  statusText: React.PropTypes.string,
+  intl: React.PropTypes.object.isRequired
 }
+
+export default injectIntl(RegisterView)

@@ -51,6 +51,15 @@ export default {
     },
     logout: {
       success: 'You have been successfully logged out.'
+    },
+    register: {
+      title: 'Register to create your private space',
+      success: 'You have been successfully logged in.',
+      error: 'Register Error: {statusText}',
+      email_error_text: 'Sorry, this is not a valid email',
+      password_error_text: 'Your password must be at least 6 characters',
+      email_label: 'Email',
+      password_label: 'Password'
     }
   },
   fr: {
@@ -95,7 +104,7 @@ export default {
       title: 'Piggydime'
     },
     login: {
-      title: 'Identifiez-vous',
+      title: 'Identifiez-vous pour accéder à votre espace privé',
       success: 'Connection réussie !',
       error: 'Erreur : {statusText}',
       email_error_text: 'Adresse e-mail invalide',
@@ -106,6 +115,16 @@ export default {
     },
     logout: {
       success: 'Vous avez bien été déconnecté.'
+    },
+    register: {
+      title: 'Enregistrez-vous pour accéder à votre espace privé',
+      success: 'Connection réussie !',
+      error: 'Erreur : {statusText}',
+      email_error_text: 'Adresse e-mail invalide',
+      password_error_text:
+        'Votre mot de passe doit comprendre au minimum 6 caractères',
+      email_label: 'E-mail',
+      password_label: 'Mot de passe'
     }
   }
 }

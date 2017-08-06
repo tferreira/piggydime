@@ -3,7 +3,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper'
@@ -32,7 +32,7 @@ const style = {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class LoginView extends React.Component {
+class LoginView extends React.Component {
   constructor(props) {
     super(props)
     const redirectRoute = '/login'
@@ -61,7 +61,7 @@ export default class LoginView extends React.Component {
       })
     } else {
       this.setState({
-        email_error_text: this.context.intl.formatMessage({
+        email_error_text: this.props.intl.formatMessage({
           id: 'login.email_error_text'
         })
       })
@@ -78,7 +78,7 @@ export default class LoginView extends React.Component {
       })
     } else {
       this.setState({
-        password_error_text: this.context.intl.formatMessage({
+        password_error_text: this.props.intl.formatMessage({
           id: 'login.password_error_text'
         })
       })
@@ -180,3 +180,5 @@ LoginView.propTypes = {
   statusText: React.PropTypes.string,
   intl: React.PropTypes.object.isRequired
 }
+
+export default injectIntl(LoginView)

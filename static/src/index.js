@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Redirect, browserHistory } from 'react-router'
-import injectTapEventPlugin from 'react-tap-event-plugin'
+//import injectTapEventPlugin from 'react-tap-event-plugin'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import configureStore from './store/configureStore'
@@ -13,7 +13,7 @@ import './images/favicon.png'
 require('expose?$!expose?jQuery!jquery')
 require('bootstrap-webpack')
 
-injectTapEventPlugin()
+//injectTapEventPlugin()
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)
 

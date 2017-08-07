@@ -1,12 +1,10 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
+import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 import DatePicker from 'material-ui/DatePicker'
-import IconButton from 'material-ui/IconButton'
-import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz'
+import MoreHoriz from 'material-ui-icons/MoreHoriz'
 
 import styles from './styles.scss'
 
@@ -122,17 +120,20 @@ class EditTransaction extends React.Component {
 
   render() {
     const actions = [
-      <RaisedButton
+      <Button
+        raised
         label={<FormattedMessage id="buttons.delete" />}
         secondary={true}
         onTouchTap={this.onDelete}
       />,
-      <FlatButton
+      <Button
+        flat
         label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
+        flat
         label={<FormattedMessage id="buttons.submit" />}
         primary={true}
         keyboardFocused={true}
@@ -143,14 +144,15 @@ class EditTransaction extends React.Component {
 
     return (
       <div>
-        <IconButton
+        <Button
+          icon
           onTouchTap={e => {
             e.stopPropagation()
             this.handleOpen()
           }}
         >
           <MoreHoriz color="grey" />
-        </IconButton>
+        </Button>
         <Dialog
           title={this.props.intl.formatMessage({
             id: 'editTransaction.modal.title'

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import createMuiTheme from 'material-ui/styles/theme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 /* application components */
@@ -39,7 +39,7 @@ class App extends React.Component {
         locale={locale}
         messages={flattenMessages(messages[locale.substring(0, 2)])}
       >
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
+        <MuiThemeProvider muiTheme={createMuiTheme()}>
           <section>
             <Header />
             <div

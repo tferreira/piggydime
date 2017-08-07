@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import Button from 'material-ui/Button'
 import Paper from 'material-ui/Paper'
 
 import * as actionCreators from '../actions/auth'
@@ -159,7 +159,8 @@ class RegisterView extends React.Component {
               />
             </div>
 
-            <RaisedButton
+            <Button
+              raised
               disabled={this.state.disabled}
               style={{ marginTop: 50 }}
               label={<FormattedMessage id="buttons.submit" />}

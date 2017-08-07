@@ -1,10 +1,9 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
+import Button from 'material-ui/Button'
 import DatePicker from 'material-ui/DatePicker'
-import ContentAdd from 'material-ui/svg-icons/content/add'
+import ContentAdd from 'material-ui-icons/ContentAdd'
 import TextField from 'material-ui/TextField'
 
 import styles from './styles.scss'
@@ -136,12 +135,14 @@ class AddAccount extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
+        flat
         label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
+        flat
         label={<FormattedMessage id="buttons.add" />}
         primary={true}
         keyboardFocused={true}
@@ -152,13 +153,14 @@ class AddAccount extends React.Component {
 
     return (
       <div>
-        <FloatingActionButton
+        <Button
+          fab
           mini={true}
           className={styles.addAccountButton}
           onTouchTap={this.handleOpen}
         >
           <ContentAdd />
-        </FloatingActionButton>
+        </Button>
         <Dialog
           title={this.props.intl.formatMessage({
             id: 'addAccount.modal.title'

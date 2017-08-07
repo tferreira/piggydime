@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { grey300, red500 } from 'material-ui/styles/colors'
-import DeleteForeverIcon from 'material-ui/svg-icons/action/delete-forever'
+import DeleteForeverIcon from 'material-ui-icons/DeleteForeverIcon'
 import TextField from 'material-ui/TextField'
 import {
   Table,

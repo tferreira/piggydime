@@ -27,8 +27,8 @@ This application has been build on top of the [React-Redux-Flask](https://github
 You may want to create a virtualenv for this.
 If you're running this project on OSX, use the following commands:
 ```sh
-$ pip3.5 install -r requirements-osx.txt
 $ pip3.5 mysql-connector-python-rf==2.2.2 --egg
+$ pip3.5 install -r requirements.txt
 ```
 On unix systems:
 ```sh

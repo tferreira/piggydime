@@ -58,7 +58,7 @@ export default class RecurrenceList extends React.Component {
     })
     let sortedGroups = activeGroups.concat(archivedGroups)
 
-    if (column === 7) {
+    if (column === 7 && this.state.editing === null) {
       // delete
       this.setState({
         editing: null

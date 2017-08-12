@@ -71,7 +71,7 @@ export default {
       noAccount: "Create an account if you don't have one yet",
       snack: {
         create: 'Transaction added',
-        edit: 'Transaction edited',
+        edit: 'Transaction updated',
         delete: 'Transaction deleted'
       },
       table: {
@@ -85,6 +85,14 @@ export default {
     addTransaction: {
       buttons: {
         add: 'Add transaction'
+      }
+    },
+    recurrenceContainer: {
+      selectLabel: 'Selected account',
+      snack: {
+        create: 'Recurring transction added',
+        edit: 'Recurring transction updated',
+        delete: 'Recurring transction deleted'
       }
     },
     tiles: {
@@ -182,6 +190,14 @@ export default {
     addTransaction: {
       buttons: {
         add: 'Créer une transaction'
+      }
+    },
+    recurrenceContainer: {
+      selectLabel: 'Choisissez un compte',
+      snack: {
+        create: 'Transaction récurrente ajoutée',
+        edit: 'Transaction récurrente mise à jour',
+        delete: 'Transaction récurrente supprimée'
       }
     },
     tiles: {

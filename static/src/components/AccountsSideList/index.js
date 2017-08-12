@@ -1,6 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import * as actionCreators from '../../actions/accounts'
 
 import AddAccount from '../Modals/AddAccount.js'
@@ -155,7 +156,7 @@ export default class AccountsSideList extends React.Component {
           ? null
           : <div className={styles.root}>
               <Subheader>
-                Your accounts
+                <FormattedMessage id="accounts.sidelist.subheader" />
                 <AddAccount createAccount={this.createAccount.bind(this)} />
               </Subheader>
               <GridList cellHeight={100} className={styles.gridList} cols={1}>

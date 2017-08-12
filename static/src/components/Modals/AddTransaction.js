@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -127,7 +128,7 @@ export default class AddTransaction extends React.Component {
     return (
       <div>
         <RaisedButton
-          label="Add transaction"
+          label={<FormattedMessage id="addTransaction.buttons.add" />}
           fullWidth={true}
           primary={true}
           onTouchTap={this.handleOpen}

@@ -62,6 +62,31 @@ export default {
       email_label: 'Email',
       password_label: 'Password'
     },
+    accounts: {
+      sidelist: {
+        subheader: 'Your accounts'
+      }
+    },
+    transactionsList: {
+      noAccount: "Create an account if you don't have one yet",
+      snack: {
+        create: 'Transaction added',
+        edit: 'Transaction edited',
+        delete: 'Transaction deleted'
+      },
+      table: {
+        tick: 'Tick',
+        date: 'Date',
+        label: 'Label',
+        debit: 'Debit',
+        credit: 'Credit'
+      }
+    },
+    addTransaction: {
+      buttons: {
+        add: 'Add transaction'
+      }
+    },
     tiles: {
       currentBalance:
         '{bankLabel} - {bankName} has a current balance of <mark>{accountBalance}</mark>',
@@ -133,6 +158,31 @@ export default {
         'Votre mot de passe doit comprendre au minimum 6 caractères',
       email_label: 'E-mail',
       password_label: 'Mot de passe'
+    },
+    accounts: {
+      sidelist: {
+        subheader: 'Mes comptes'
+      }
+    },
+    transactionsList: {
+      noAccount: "Ajoutez votre premier compte bancaire si ce n'est déja fait.",
+      snack: {
+        create: 'Transaction ajoutée',
+        edit: 'Transaction mise à jour',
+        delete: 'Transaction supprimée'
+      },
+      table: {
+        tick: 'Pointer',
+        date: 'Date',
+        label: "Nature de l'opération",
+        debit: 'Débit',
+        credit: 'Crédit'
+      }
+    },
+    addTransaction: {
+      buttons: {
+        add: 'Créer une transaction'
+      }
     },
     tiles: {
       currentBalance:

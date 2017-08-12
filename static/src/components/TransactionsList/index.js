@@ -2,6 +2,7 @@ import React from 'react'
 import 'babel-polyfill'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import * as actionCreators from '../../actions/transactions'
 import AddTransaction from '../Modals/AddTransaction.js'
 import EditTransaction from '../Modals/EditTransaction.js'
@@ -113,7 +114,7 @@ export default class TransactionsList extends React.Component {
     call().then(() => {
       this.fetchData()
       this.props.updateBalance()
-      this.showSnack('Transaction added to your account')
+      this.showSnack(<FormattedMessage id="transactionsList.snack.create" />)
     })
   }
 
@@ -124,7 +125,7 @@ export default class TransactionsList extends React.Component {
     call().then(() => {
       this.fetchData()
       this.props.updateBalance()
-      this.showSnack('Transaction edited')
+      this.showSnack(<FormattedMessage id="transactionsList.snack.edit" />)
     })
   }
 
@@ -134,7 +135,7 @@ export default class TransactionsList extends React.Component {
     call().then(() => {
       this.fetchData()
       this.props.updateBalance()
-      this.showSnack('Transaction deleted')
+      this.showSnack(<FormattedMessage id="transactionsList.snack.delete" />)
     })
   }
 
@@ -209,7 +210,9 @@ export default class TransactionsList extends React.Component {
     ) {
       return (
         <div className={styles.mainContainer}>
-          <h3>Create an account if you don't have one yet.</h3>
+          <h3>
+            <FormattedMessage id="transactionsList.noAccount" />
+          </h3>
         </div>
       )
     }
@@ -234,17 +237,19 @@ export default class TransactionsList extends React.Component {
                 >
                   <TableRow>
                     <TableHeaderColumn className={styles.tickColumn}>
-                      Tick
+                      <FormattedMessage id="transactionsList.table.tick" />
                     </TableHeaderColumn>
                     <TableHeaderColumn className={styles.smallColumn}>
-                      Date
+                      <FormattedMessage id="transactionsList.table.date" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>Label</TableHeaderColumn>
-                    <TableHeaderColumn className={styles.smallColumn}>
-                      Debit
+                    <TableHeaderColumn>
+                      <FormattedMessage id="transactionsList.table.label" />
                     </TableHeaderColumn>
                     <TableHeaderColumn className={styles.smallColumn}>
-                      Credit
+                      <FormattedMessage id="transactionsList.table.debit" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
+                      <FormattedMessage id="transactionsList.table.credit" />
                     </TableHeaderColumn>
                     <TableHeaderColumn className={styles.smallColumn} />
                   </TableRow>

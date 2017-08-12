@@ -3,9 +3,6 @@
 VIRTUALENV = venv/
 PRETTIER = ./static/node_modules/.bin/prettier
 
-launch:
-	. $(VIRTUALENV)bin/activate; python3.5 manage.py runserver
-
 install: create_virtualenv pip_install
 
 create_virtualenv:
@@ -16,3 +13,12 @@ pip_install:
 
 pretty:
 	$(PRETTIER) --single-quote --no-semi --write "static/src/**/*.js"
+
+launch:
+	export DATABASE_URL="mysql+mysqlconnector://root@localhost/piggydime"; . $(VIRTUALENV)bin/activate; python3.5 manage.py runserver
+
+dbgenerate:
+	export DATABASE_URL="mysql+mysqlconnector://root@localhost/piggydime"; python3.5 manage.py db revision --autogenerate
+
+dbupgrade:
+	export DATABASE_URL="mysql+mysqlconnector://root@localhost/piggydime"; python3.5 manage.py db upgrade

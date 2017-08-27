@@ -127,6 +127,32 @@ export default {
         confirm_delete: 'Do you really want to delete this account?'
       }
     },
+    addRecurrence: {
+      modal: {
+        title: 'Create recurring transaction',
+        label_error_text: 'Label is mandatory',
+        amount_error_text: {
+          empty: 'Amount is mandatory',
+          invalid: 'Amount should be a number'
+        },
+        recurrence_day_error_text: {
+          empty: 'Day of month is mandatory',
+          invalid: 'Day of month should be between 1 and 31.'
+        },
+        recurrence_month_error_text:
+          'Month of year should be between 1 and 12.',
+        from: 'From',
+        until: 'Until',
+        day_of_month: 'Day of month',
+        month_of_year: 'Month of year',
+        day_of_month_hint: 'Between 1 and 31',
+        month_of_year_hint: 'Leave empty if monthly',
+        label: 'Description',
+        label_hint: 'Enter a description',
+        amount: 'Amount',
+        amount_hint: 'Use -00.00 for debit transactions'
+      }
+    },
     recurrenceContainer: {
       selectLabel: 'Selected account',
       snack: {
@@ -270,6 +296,32 @@ export default {
       modal: {
         title: 'Editer un compte',
         confirm_delete: 'Voulez-vous vraiment supprimer ce compte ?'
+      }
+    },
+    addRecurrence: {
+      modal: {
+        title: 'Ajouter une transaction récurrente',
+        label_error_text: "Nature de l'opération requise",
+        amount_error_text: {
+          empty: 'Montant requis',
+          invalid: 'Montant invalide'
+        },
+        recurrence_day_error_text: {
+          empty: 'Jour du mois requis',
+          invalid: 'Le jour du mois dois être compris entre 1 et 31'
+        },
+        recurrence_month_error_text:
+          "Le mois de l'année doit être compris entre 1 and 12.",
+        from: 'Date de début',
+        until: 'Date de fin',
+        day_of_month: 'Jour du mois',
+        month_of_year: "Mois de l'année",
+        day_of_month_hint: 'Entre 1 et 31',
+        month_of_year_hint: 'Laisser vide si mensuelle',
+        label: "Nature de l'opération",
+        label_hint: 'Entrez une description',
+        amount: 'Montant',
+        amount_hint: 'Utilisez -00.00 pour les débits'
       }
     },
     recurrenceContainer: {

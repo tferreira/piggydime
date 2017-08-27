@@ -9,10 +9,10 @@ This project is still in development but the main features are already implement
  * [x] Create monthly and yearly recurring transactions
  * [x] Check your future account balance at a specific date
  * [x] Mini charts preview of debit vs credit by month
+ * [x] English and French languages support
 
  Upcoming features:
 
- * [ ] French translation (currently in progress)
  * [ ] Currency symbols
  * [ ] Statistics charts on home page tiles
  * [ ] Backup/Restore (CSV format)

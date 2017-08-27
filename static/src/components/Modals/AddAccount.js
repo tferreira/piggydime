@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
@@ -22,7 +23,7 @@ const initialState = {
   projectedDateValue: null
 }
 
-export default class AddAccount extends React.Component {
+class AddAccount extends React.Component {
   constructor(props) {
     super(props)
     this.state = initialState
@@ -84,14 +85,18 @@ export default class AddAccount extends React.Component {
       iban_is_valid = true
       stateToUpdate['iban_error_text'] = null
     } else {
-      stateToUpdate['iban_error_text'] = 'Your IBAN can have 34 characters max.'
+      stateToUpdate['iban_error_text'] = (
+        <FormattedMessage id="addAccount.modal.iban_error_text" />
+      )
     }
 
     if (this.state.bicValue.length <= 12) {
       bic_is_valid = true
       stateToUpdate['bic_error_text'] = null
     } else {
-      stateToUpdate['bic_error_text'] = 'Your BIC can have 12 characters max.'
+      stateToUpdate['bic_error_text'] = (
+        <FormattedMessage id="addAccount.modal.bic_error_text" />
+      )
     }
 
     if (
@@ -132,12 +137,12 @@ export default class AddAccount extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Cancel"
+        label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Submit"
+        label={<FormattedMessage id="buttons.add" />}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.onSubmit}
@@ -155,7 +160,9 @@ export default class AddAccount extends React.Component {
           <ContentAdd />
         </FloatingActionButton>
         <Dialog
-          title="Add account"
+          title={this.props.intl.formatMessage({
+            id: 'addAccount.modal.title'
+          })}
           actions={actions}
           modal={false}
           className={styles.dialog}
@@ -165,31 +172,39 @@ export default class AddAccount extends React.Component {
         >
           <div>
             <TextField
-              floatingLabelText="Label"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.label" />
+              }
               errorText={this.state.email_error_text}
               onChange={e => this.changeValue(e, 'labelValue')}
             />
             <br />
             <TextField
-              floatingLabelText="Bank"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.bank" />
+              }
               errorText={this.state.email_error_text}
               onChange={e => this.changeValue(e, 'bankValue')}
             />
             <br />
             <TextField
-              floatingLabelText="IBAN"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.IBAN" />
+              }
               errorText={this.state.iban_error_text}
               onChange={e => this.changeValue(e, 'ibanValue')}
             />
             <br />
             <TextField
-              floatingLabelText="BIC"
+              floatingLabelText={<FormattedMessage id="addAccount.modal.BIC" />}
               errorText={this.state.bic_error_text}
               onChange={e => this.changeValue(e, 'bicValue')}
             />
             <br />
             <DatePicker
-              floatingLabelText="Projected balance date"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.projected_date" />
+              }
               mode="landscape"
               autoOk={true}
               container="inline"
@@ -203,3 +218,5 @@ export default class AddAccount extends React.Component {
     )
   }
 }
+
+export default injectIntl(AddAccount)

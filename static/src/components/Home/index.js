@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
@@ -27,11 +28,11 @@ class Home extends React.Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return 'Use the left menu to log in or register an account.'
+        return <FormattedMessage id="home.steps.one.description" />
       case 1:
-        return 'Once logged in, you will be able to create your first bank account using the "plus sign" round button.'
+        return <FormattedMessage id="home.steps.two.description" />
       case 2:
-        return 'There is a feature to schedule monthly or yearly transctions. Then edit your account projected date parameter to know your future account balance.'
+        return <FormattedMessage id="home.steps.three.description" />
       default:
         return 'I want to break free!'
     }
@@ -42,16 +43,24 @@ class Home extends React.Component {
     const contentStyle = { margin: '0 16px' }
     return (
       <div className="container text-center">
-        <h1>Hello, welcome on Piggydime.</h1>
+        <h1>
+          <FormattedMessage id="home.welcome" />
+        </h1>
         <Stepper activeStep={stepIndex}>
           <Step>
-            <StepLabel>Login or register</StepLabel>
+            <StepLabel>
+              <FormattedMessage id="home.steps.one.title" />
+            </StepLabel>
           </Step>
           <Step>
-            <StepLabel>Create an account</StepLabel>
+            <StepLabel>
+              <FormattedMessage id="home.steps.two.title" />
+            </StepLabel>
           </Step>
           <Step>
-            <StepLabel>Recurring transactions</StepLabel>
+            <StepLabel>
+              <FormattedMessage id="home.steps.three.title" />
+            </StepLabel>
           </Step>
         </Stepper>
         <div style={contentStyle}>
@@ -64,9 +73,9 @@ class Home extends React.Component {
                     this.setState({ stepIndex: 0, finished: false })
                   }}
                 >
-                  Click here
+                  <FormattedMessage id="stepper.clickHere" />
                 </a>{' '}
-                to go back to the beginning.
+                <FormattedMessage id="stepper.backToBeginning" />
               </p>
             : <div>
                 <p>
@@ -74,13 +83,17 @@ class Home extends React.Component {
                 </p>
                 <div style={{ marginTop: 12 }}>
                   <FlatButton
-                    label="Back"
+                    label={<FormattedMessage id="stepper.back" />}
                     disabled={stepIndex === 0}
                     onTouchTap={this.handlePrev}
                     style={{ marginRight: 12 }}
                   />
                   <RaisedButton
-                    label={stepIndex === 2 ? 'Finish' : 'Next'}
+                    label={
+                      stepIndex === 2
+                        ? <FormattedMessage id="stepper.finish" />
+                        : <FormattedMessage id="stepper.next" />
+                    }
                     primary={true}
                     onTouchTap={this.handleNext}
                   />

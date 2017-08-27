@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { grey300, red500 } from 'material-ui/styles/colors'
 import DeleteForeverIcon from 'material-ui/svg-icons/action/delete-forever'
 import TextField from 'material-ui/TextField'
@@ -14,7 +15,7 @@ import {
 import { GridLoader } from 'halogen'
 import styles from './styles.scss'
 
-export default class RecurrenceList extends React.Component {
+class RecurrenceList extends React.Component {
   state = {
     fixedHeader: false,
     fixedFooter: false,
@@ -64,9 +65,11 @@ export default class RecurrenceList extends React.Component {
         editing: null
       })
       let choice = confirm(
-        'Do you really want to delete the recurring group: '.concat(
-          sortedGroups[row].label,
-          '?'
+        this.props.intl.formatMessage(
+          {
+            id: 'recurrenceList.confirm_delete'
+          },
+          { label: sortedGroups[row].label }
         )
       )
       if (choice == true) {
@@ -227,7 +230,13 @@ export default class RecurrenceList extends React.Component {
         return (
           <TableRow key={row.id}>
             <TableRowColumn className={archived ? styles.tableRowArchived : ''}>
-              {!archived ? row.label : row.label.concat(' (FINISHED)')}
+              {!archived
+                ? row.label
+                : row.label.concat(
+                    this.props.intl.formatMessage({
+                      id: 'recurrenceList.table.archived'
+                    })
+                  )}
             </TableRowColumn>
             <TableRowColumn className={archived ? styles.tableRowArchived : ''}>
               {row.start_date}
@@ -285,13 +294,27 @@ export default class RecurrenceList extends React.Component {
                   enableSelectAll={this.state.enableSelectAll}
                 >
                   <TableRow>
-                    <TableHeaderColumn>Label</TableHeaderColumn>
-                    <TableHeaderColumn>From</TableHeaderColumn>
-                    <TableHeaderColumn>Until</TableHeaderColumn>
-                    <TableHeaderColumn>Amount</TableHeaderColumn>
-                    <TableHeaderColumn>Day of month</TableHeaderColumn>
-                    <TableHeaderColumn>Month of year</TableHeaderColumn>
-                    <TableHeaderColumn>Actions</TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.label" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.from" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.until" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.amount" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.day_of_month" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.month_of_year" />
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      <FormattedMessage id="recurrenceList.table.actions" />
+                    </TableHeaderColumn>
                   </TableRow>
                 </TableHeader>
                 <TableBody
@@ -309,3 +332,5 @@ export default class RecurrenceList extends React.Component {
     )
   }
 }
+
+export default injectIntl(RecurrenceList)

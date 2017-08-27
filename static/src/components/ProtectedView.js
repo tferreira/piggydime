@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { FormattedMessage } from 'react-intl'
 import * as actionCreators from '../actions/user'
 
 import WelcomeTiles from './WelcomeTiles'
@@ -36,7 +37,12 @@ export default class ProtectedView extends React.Component {
           ? null
           : <div>
               <h1>
-                Welcome back, {this.props.userName}!
+                {
+                  <FormattedMessage
+                    id="home.welcomeBack"
+                    values={{ userName: this.props.userName }}
+                  />
+                }
               </h1>
               <WelcomeTiles />
             </div>}

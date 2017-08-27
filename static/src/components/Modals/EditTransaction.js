@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -9,7 +10,7 @@ import MoreHoriz from 'material-ui/svg-icons/navigation/more-horiz'
 
 import styles from './styles.scss'
 
-export default class EditTransaction extends React.Component {
+class EditTransaction extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -66,16 +67,22 @@ export default class EditTransaction extends React.Component {
     }
 
     if (this.state.labelValue === '') {
-      stateToUpdate['label_error_text'] = 'Label is mandatory.'
+      stateToUpdate['label_error_text'] = (
+        <FormattedMessage id="addTransaction.modal.label_error_text" />
+      )
     } else {
       stateToUpdate['label_error_text'] = null
       label_is_valid = true
     }
 
     if (this.state.amountValue === '') {
-      stateToUpdate['amount_error_text'] = 'Amount is mandatory.'
+      stateToUpdate['amount_error_text'] = (
+        <FormattedMessage id="addTransaction.modal.amount_error_text.empty" />
+      )
     } else if (!this.isCurrency(this.state.amountValue)) {
-      stateToUpdate['amount_error_text'] = 'Amount should be a number.'
+      stateToUpdate['amount_error_text'] = (
+        <FormattedMessage id="addTransaction.modal.amount_error_text.invalid" />
+      )
     } else {
       stateToUpdate['amount_error_text'] = null
       amount_is_valid = true
@@ -116,17 +123,17 @@ export default class EditTransaction extends React.Component {
   render() {
     const actions = [
       <RaisedButton
-        label="Delete"
+        label={<FormattedMessage id="buttons.delete" />}
         secondary={true}
         onTouchTap={this.onDelete}
       />,
       <FlatButton
-        label="Cancel"
+        label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Save"
+        label={<FormattedMessage id="buttons.submit" />}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.onSubmit}
@@ -145,7 +152,9 @@ export default class EditTransaction extends React.Component {
           <MoreHoriz color="grey" />
         </IconButton>
         <Dialog
-          title="Edit transaction"
+          title={this.props.intl.formatMessage({
+            id: 'editTransaction.modal.title'
+          })}
           actions={actions}
           modal={false}
           className={styles.dialog}
@@ -155,8 +164,12 @@ export default class EditTransaction extends React.Component {
         >
           <div>
             <DatePicker
-              floatingLabelText="Date"
-              hintText="Transaction date"
+              floatingLabelText={
+                <FormattedMessage id="addTransaction.modal.date" />
+              }
+              hintText={
+                <FormattedMessage id="addTransaction.modal.date_hint" />
+              }
               mode="landscape"
               autoOk={true}
               container="inline"
@@ -165,16 +178,24 @@ export default class EditTransaction extends React.Component {
             />
             <br />
             <TextField
-              floatingLabelText="Label"
-              hintText="Enter description here"
+              floatingLabelText={
+                <FormattedMessage id="addTransaction.modal.label" />
+              }
+              hintText={
+                <FormattedMessage id="addTransaction.modal.label_hint" />
+              }
               errorText={this.state.label_error_text}
               onChange={e => this.changeValue(e, 'labelValue')}
               defaultValue={this.state.labelValue}
             />
             <br />
             <TextField
-              floatingLabelText="Amount"
-              hintText="Use -00.00 for debit transactions"
+              floatingLabelText={
+                <FormattedMessage id="addTransaction.modal.amount" />
+              }
+              hintText={
+                <FormattedMessage id="addTransaction.modal.amount_hint" />
+              }
               errorText={this.state.amount_error_text}
               onChange={e => this.changeValue(e, 'amountValue')}
               defaultValue={this.state.amountValue}
@@ -186,3 +207,5 @@ export default class EditTransaction extends React.Component {
     )
   }
 }
+
+export default injectIntl(EditTransaction)

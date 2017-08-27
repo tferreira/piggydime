@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
@@ -23,7 +24,7 @@ const initialState = {
   recurrenceMonthValue: null
 }
 
-export default class AddRecurrence extends React.Component {
+class AddRecurrence extends React.Component {
   constructor(props) {
     super(props)
     this.state = initialState
@@ -76,28 +77,37 @@ export default class AddRecurrence extends React.Component {
       end_date_is_valid = true
     }
     if (this.state.labelValue === '') {
-      stateToUpdate['label_error_text'] = 'Label is mandatory.'
+      stateToUpdate['label_error_text'] = (
+        <FormattedMessage id="addRecurrence.modal.label_error_text" />
+      )
     } else {
       stateToUpdate['label_error_text'] = null
       label_is_valid = true
     }
     if (this.state.amountValue === '') {
-      stateToUpdate['amount_error_text'] = 'Amount is mandatory.'
+      stateToUpdate['amount_error_text'] = (
+        <FormattedMessage id="addRecurrence.modal.amount_error_text.empty" />
+      )
     } else if (!this.isCurrency(this.state.amountValue)) {
-      stateToUpdate['amount_error_text'] = 'Amount should be a number.'
+      stateToUpdate['amount_error_text'] = (
+        <FormattedMessage id="addRecurrence.modal.amount_error_text.invalid" />
+      )
     } else {
       stateToUpdate['amount_error_text'] = null
       amount_is_valid = true
     }
 
     if (this.state.recurrenceDayValue === '') {
-      stateToUpdate['recurrence_day_error_text'] = 'Day of month is mandatory.'
+      stateToUpdate['recurrence_day_error_text'] = (
+        <FormattedMessage id="addRecurrence.modal.recurrence_day_error_text.empty" />
+      )
     } else if (
       this.state.recurrenceDayValue < 1 ||
       this.state.recurrenceDayValue > 31
     ) {
-      stateToUpdate['recurrence_day_error_text'] =
-        'Day of month should be between 1 and 31.'
+      stateToUpdate['recurrence_day_error_text'] = (
+        <FormattedMessage id="addRecurrence.modal.recurrence_day_error_text.invalid" />
+      )
     } else {
       stateToUpdate['recurrence_day_error_text'] = null
       recurrence_day_is_valid = true
@@ -110,8 +120,9 @@ export default class AddRecurrence extends React.Component {
       this.state.recurrenceMonthValue < 1 ||
       this.state.recurrenceMonthValue > 12
     ) {
-      stateToUpdate['recurrence_month_error_text'] =
-        'Month of year should be between 1 and 12.'
+      stateToUpdate['recurrence_month_error_text'] = (
+        <FormattedMessage id="addRecurrence.modal.recurrence_month_error_text" />
+      )
     } else {
       stateToUpdate['recurrence_month_error_text'] = null
       recurrence_month_is_valid = true
@@ -170,12 +181,12 @@ export default class AddRecurrence extends React.Component {
 
     const actions = [
       <FlatButton
-        label="Cancel"
+        label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Add"
+        label={<FormattedMessage id="buttons.add" />}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.onSubmit}
@@ -193,7 +204,9 @@ export default class AddRecurrence extends React.Component {
           <ContentAdd />
         </FloatingActionButton>
         <Dialog
-          title="Add recurring transaction"
+          title={this.props.intl.formatMessage({
+            id: 'addRecurrence.modal.title'
+          })}
           actions={actions}
           modal={false}
           className={styles.dialog}
@@ -203,7 +216,9 @@ export default class AddRecurrence extends React.Component {
         >
           <div>
             <DatePicker
-              floatingLabelText="From"
+              floatingLabelText={
+                <FormattedMessage id="addRecurrence.modal.from" />
+              }
               mode="landscape"
               autoOk={true}
               container="inline"
@@ -211,7 +226,9 @@ export default class AddRecurrence extends React.Component {
                 this.changeDateValue(date, 'startDateValue')}
             />
             <DatePicker
-              floatingLabelText="Until"
+              floatingLabelText={
+                <FormattedMessage id="addRecurrence.modal.until" />
+              }
               mode="landscape"
               autoOk={true}
               container="inline"
@@ -219,29 +236,45 @@ export default class AddRecurrence extends React.Component {
             />
             <br />
             <TextField
-              floatingLabelText="Label"
-              hintText="Enter description here"
+              floatingLabelText={
+                <FormattedMessage id="addRecurrence.modal.label" />
+              }
+              hintText={
+                <FormattedMessage id="addRecurrence.modal.label_hint" />
+              }
               errorText={this.state.label_error_text}
               onChange={e => this.changeValue(e, 'labelValue')}
             />
             <br />
             <TextField
-              floatingLabelText="Amount"
-              hintText="Use -00.00 for debit transactions"
+              floatingLabelText={
+                <FormattedMessage id="addRecurrence.modal.amount" />
+              }
+              hintText={
+                <FormattedMessage id="addRecurrence.modal.amount_hint" />
+              }
               errorText={this.state.amount_error_text}
               onChange={e => this.changeValue(e, 'amountValue')}
             />
             <br />
             <TextField
-              floatingLabelText="Day of month"
-              hintText="Between 1 and 31"
+              floatingLabelText={
+                <FormattedMessage id="addRecurrence.modal.day_of_month" />
+              }
+              hintText={
+                <FormattedMessage id="addRecurrence.modal.day_of_month_hint" />
+              }
               errorText={this.state.recurrence_day_error_text}
               onChange={e => this.changeValue(e, 'recurrenceDayValue')}
             />
             <br />
             <TextField
-              floatingLabelText="Month of year"
-              hintText="Leave blank if monthly."
+              floatingLabelText={
+                <FormattedMessage id="addRecurrence.modal.month_of_year" />
+              }
+              hintText={
+                <FormattedMessage id="addRecurrence.modal.month_of_year_hint" />
+              }
               errorText={this.state.recurrence_month_error_text}
               onChange={e => this.changeValue(e, 'recurrenceMonthValue')}
               multiLine={true}
@@ -253,3 +286,5 @@ export default class AddRecurrence extends React.Component {
     )
   }
 }
+
+export default injectIntl(AddRecurrence)

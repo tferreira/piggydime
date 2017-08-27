@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import SelectField from 'material-ui/SelectField'
@@ -91,7 +92,7 @@ export default class RecurrenceContainer extends React.Component {
       )
     call().then(() => {
       this.fetchData()
-      this.showSnack('Recurring transaction added to your account')
+      this.showSnack(<FormattedMessage id="recurrenceContainer.snack.create" />)
     })
   }
 
@@ -105,7 +106,7 @@ export default class RecurrenceContainer extends React.Component {
     call().then(() => {
       callback(true)
       this.fetchData()
-      this.showSnack('Recurring transaction updated')
+      this.showSnack(<FormattedMessage id="recurrenceContainer.snack.edit" />)
     })
   }
 
@@ -116,7 +117,7 @@ export default class RecurrenceContainer extends React.Component {
     call().then(() => {
       callback(true)
       this.fetchData()
-      this.showSnack('Recurring transaction deleted')
+      this.showSnack(<FormattedMessage id="recurrenceContainer.snack.delete" />)
     })
   }
 
@@ -130,11 +131,15 @@ export default class RecurrenceContainer extends React.Component {
     return (
       <section>
         <div>
-          <h2>Recurring transactions</h2>
+          <h2>
+            <FormattedMessage id="recurrenceContainer.title" />
+          </h2>
           <SelectField
             value={this.state.selected}
             onChange={this.handleAccountChange.bind(this)}
-            floatingLabelText="Selected account"
+            floatingLabelText={
+              <FormattedMessage id="recurrenceContainer.selectLabel" />
+            }
           >
             {selectItems}
           </SelectField>

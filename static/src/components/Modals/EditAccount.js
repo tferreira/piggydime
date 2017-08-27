@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -9,7 +10,7 @@ import TextField from 'material-ui/TextField'
 
 import styles from './styles.scss'
 
-export default class EditAccount extends React.Component {
+class EditAccount extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -84,14 +85,18 @@ export default class EditAccount extends React.Component {
       iban_is_valid = true
       stateToUpdate['iban_error_text'] = null
     } else {
-      stateToUpdate['iban_error_text'] = 'Your IBAN can have 34 characters max.'
+      stateToUpdate['iban_error_text'] = (
+        <FormattedMessage id="addAccount.modal.iban_error_text" />
+      )
     }
 
     if (this.state.bicValue.length <= 12) {
       bic_is_valid = true
       stateToUpdate['bic_error_text'] = null
     } else {
-      stateToUpdate['bic_error_text'] = 'Your BIC can have 12 characters max.'
+      stateToUpdate['bic_error_text'] = (
+        <FormattedMessage id="addAccount.modal.bic_error_text" />
+      )
     }
 
     if (
@@ -131,7 +136,11 @@ export default class EditAccount extends React.Component {
   }
 
   onDelete = () => {
-    let choice = confirm('Do you really want to delete this account?')
+    let choice = confirm(
+      this.props.intl.formatMessage({
+        id: 'editAccount.modal.confirm_delete'
+      })
+    )
     if (choice == true) {
       this.props.deleteAccount({
         id: this.state.id
@@ -143,17 +152,17 @@ export default class EditAccount extends React.Component {
   render() {
     const actions = [
       <RaisedButton
-        label="Delete"
+        label={<FormattedMessage id="buttons.delete" />}
         secondary={true}
         onTouchTap={this.onDelete}
       />,
       <FlatButton
-        label="Cancel"
+        label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Save"
+        label={<FormattedMessage id="buttons.submit" />}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.onSubmit}
@@ -172,7 +181,9 @@ export default class EditAccount extends React.Component {
           <Edit color="white" />
         </IconButton>
         <Dialog
-          title="Edit account"
+          title={this.props.intl.formatMessage({
+            id: 'editAccount.modal.title'
+          })}
           actions={actions}
           modal={false}
           className={styles.dialog}
@@ -182,35 +193,43 @@ export default class EditAccount extends React.Component {
         >
           <div>
             <TextField
-              floatingLabelText="Label"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.label" />
+              }
               errorText={this.state.email_error_text}
               onChange={e => this.changeValue(e, 'labelValue')}
               defaultValue={this.state.labelValue}
             />
             <br />
             <TextField
-              floatingLabelText="Bank"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.bank" />
+              }
               errorText={this.state.email_error_text}
               onChange={e => this.changeValue(e, 'bankValue')}
               defaultValue={this.state.bankValue}
             />
             <br />
             <TextField
-              floatingLabelText="IBAN"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.IBAN" />
+              }
               errorText={this.state.iban_error_text}
               onChange={e => this.changeValue(e, 'ibanValue')}
               defaultValue={this.state.ibanValue}
             />
             <br />
             <TextField
-              floatingLabelText="BIC"
+              floatingLabelText={<FormattedMessage id="addAccount.modal.BIC" />}
               errorText={this.state.bic_error_text}
               onChange={e => this.changeValue(e, 'bicValue')}
               defaultValue={this.state.bicValue}
             />
             <br />
             <DatePicker
-              floatingLabelText="Projected balance date"
+              floatingLabelText={
+                <FormattedMessage id="addAccount.modal.projected_date" />
+              }
               mode="landscape"
               autoOk={true}
               container="inline"
@@ -225,3 +244,5 @@ export default class EditAccount extends React.Component {
     )
   }
 }
+
+export default injectIntl(EditAccount)

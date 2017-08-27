@@ -109,6 +109,24 @@ export default {
         title: 'Edit transaction'
       }
     },
+    addAccount: {
+      modal: {
+        title: 'Add account',
+        iban_error_text: 'Your IBAN can have 34 characters max',
+        bic_error_text: 'Your BIC can have 12 characters max.',
+        label: 'Account name',
+        bank: 'Bank',
+        IBAN: 'IBAN',
+        BIC: 'BIC',
+        projected_date: 'Projected balance date'
+      }
+    },
+    editAccount: {
+      modal: {
+        title: 'Edit account',
+        confirm_delete: 'Do you really want to delete this account?'
+      }
+    },
     recurrenceContainer: {
       selectLabel: 'Selected account',
       snack: {
@@ -234,6 +252,24 @@ export default {
     editTransaction: {
       modal: {
         title: 'Editer la transaction'
+      }
+    },
+    addAccount: {
+      modal: {
+        title: 'Ajouter un compte',
+        iban_error_text: 'IBAN limité à 34 caractères',
+        bic_error_text: 'BIC limité à 12 caractères',
+        label: 'Nom du compte',
+        bank: 'Banque',
+        IBAN: 'IBAN',
+        BIC: 'BIC',
+        projected_date: 'Date de solde prévisionnel'
+      }
+    },
+    editAccount: {
+      modal: {
+        title: 'Editer un compte',
+        confirm_delete: 'Voulez-vous vraiment supprimer ce compte ?'
       }
     },
     recurrenceContainer: {

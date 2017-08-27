@@ -1,7 +1,10 @@
 export default {
   en: {
     buttons: {
-      submit: 'Submit'
+      submit: 'Submit',
+      cancel: 'Cancel',
+      add: 'Add',
+      delete: 'Delete'
     },
     stepper: {
       next: 'Next',
@@ -85,6 +88,25 @@ export default {
     addTransaction: {
       buttons: {
         add: 'Add transaction'
+      },
+      modal: {
+        title: 'Add transaction',
+        label_error_text: 'Label is mandatory',
+        amount_error_text: {
+          empty: 'Amount is mandatory',
+          invalid: 'Amount should be a number'
+        },
+        date: 'Date',
+        date_hint: 'Transaction date',
+        label: 'Description',
+        label_hint: 'Enter a description',
+        amount: 'Amount',
+        amount_hint: 'Use -00.00 for debit transactions'
+      }
+    },
+    editTransaction: {
+      modal: {
+        title: 'Edit transaction'
       }
     },
     recurrenceContainer: {
@@ -104,7 +126,10 @@ export default {
   },
   fr: {
     buttons: {
-      submit: 'Envoyer'
+      submit: 'Envoyer',
+      cancel: 'Annuler',
+      add: 'Ajouter',
+      delete: 'Supprimer'
     },
     stepper: {
       next: 'Suivant',
@@ -190,6 +215,25 @@ export default {
     addTransaction: {
       buttons: {
         add: 'Créer une transaction'
+      },
+      modal: {
+        title: 'Ajouter une transaction',
+        label_error_text: "Nature de l'opération requise",
+        amount_error_text: {
+          empty: 'Montant requis',
+          invalid: 'Montant invalide'
+        },
+        date: 'Date',
+        date_hint: 'Date de transaction',
+        label: "Nature de l'opération",
+        label_hint: 'Entrez une description',
+        amount: 'Montant',
+        amount_hint: 'Utilisez -00.00 pour les débits'
+      }
+    },
+    editTransaction: {
+      modal: {
+        title: 'Editer la transaction'
       }
     },
     recurrenceContainer: {

@@ -131,7 +131,9 @@ export default class RecurrenceContainer extends React.Component {
     return (
       <section>
         <div>
-          <h2>Recurring transactions</h2>
+          <h2>
+            <FormattedMessage id="recurrenceContainer.title" />
+          </h2>
           <SelectField
             value={this.state.selected}
             onChange={this.handleAccountChange.bind(this)}

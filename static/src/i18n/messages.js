@@ -154,11 +154,26 @@ export default {
       }
     },
     recurrenceContainer: {
+      title: 'Recurring transactions',
       selectLabel: 'Selected account',
       snack: {
         create: 'Recurring transction added',
         edit: 'Recurring transction updated',
         delete: 'Recurring transction deleted'
+      }
+    },
+    recurrenceList: {
+      confirm_delete:
+        'Do you really want to delete the recurring group: {label}?',
+      table: {
+        label: 'Label',
+        from: 'From',
+        until: 'Until',
+        amount: 'Amount',
+        day_of_month: 'Day of month',
+        month_of_year: 'Month of year',
+        actions: 'Actions',
+        archived: ' (FINISHED)'
       }
     },
     tiles: {
@@ -325,11 +340,26 @@ export default {
       }
     },
     recurrenceContainer: {
+      title: 'Transactions récurrentes',
       selectLabel: 'Choisissez un compte',
       snack: {
         create: 'Transaction récurrente ajoutée',
         edit: 'Transaction récurrente mise à jour',
         delete: 'Transaction récurrente supprimée'
+      }
+    },
+    recurrenceList: {
+      confirm_delete:
+        'Voulez-vous vraiment supprimer la transaction récurrente suivante: {label} ?',
+      table: {
+        label: "Nature de l'opération",
+        from: 'Début',
+        until: 'Fin',
+        amount: 'Montant',
+        day_of_month: 'Jour du mois',
+        month_of_year: "Mois de l'année",
+        actions: 'Actions',
+        archived: ' (TERMINÉ)'
       }
     },
     tiles: {

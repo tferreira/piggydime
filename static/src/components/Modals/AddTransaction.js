@@ -1,8 +1,7 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
+import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 import DatePicker from 'material-ui/DatePicker'
 
@@ -117,12 +116,14 @@ class AddTransaction extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
+        flat
         label={<FormattedMessage id="buttons.cancel" />}
         primary={true}
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
+      <Button
+        flat
         label={<FormattedMessage id="buttons.add" />}
         primary={true}
         keyboardFocused={true}
@@ -133,7 +134,8 @@ class AddTransaction extends React.Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
+          raised
           label={<FormattedMessage id="addTransaction.buttons.add" />}
           fullWidth={true}
           primary={true}

@@ -8,12 +8,16 @@ import DatePicker from 'material-ui/DatePicker'
 
 import styles from './styles.scss'
 
+const initialDate = new Date()
+initialDate.setFullYear(initialDate.getFullYear())
+initialDate.setHours(0, 0, 0, 0)
+
 const initialState = {
   open: false,
   disabled: true,
   label_error_text: null,
   amount_error_text: null,
-  dateValue: null,
+  dateValue: initialDate,
   labelValue: '',
   amountValue: ''
 }
@@ -57,11 +61,13 @@ class AddTransaction extends React.Component {
 
   isDisabled() {
     let stateToUpdate = {}
-    let date_is_valid = false
+    let date_is_valid = true
     let label_is_valid = false
     let amount_is_valid = false
 
-    if (this.state.dateValue !== null) {
+    if (this.state.dateValue === null) {
+      date_is_valid = false
+    } else {
       date_is_valid = true
     }
 
@@ -160,6 +166,7 @@ class AddTransaction extends React.Component {
               }
               mode="landscape"
               autoOk={true}
+              value={this.state.dateValue}
               container="inline"
               onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
             />

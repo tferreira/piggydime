@@ -15,7 +15,7 @@
 }
 
 :local(.mainTable) {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 :local(.largeColumn) {
   width: 360px;

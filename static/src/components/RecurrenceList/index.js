@@ -294,25 +294,25 @@ class RecurrenceList extends React.Component {
                   enableSelectAll={this.state.enableSelectAll}
                 >
                   <TableRow>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.largeColumn}>
                       <FormattedMessage id="recurrenceList.table.label" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="recurrenceList.table.from" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="recurrenceList.table.until" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="recurrenceList.table.amount" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="recurrenceList.table.day_of_month" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="recurrenceList.table.month_of_year" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="recurrenceList.table.actions" />
                     </TableHeaderColumn>
                   </TableRow>

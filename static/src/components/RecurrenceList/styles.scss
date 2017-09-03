@@ -7,7 +7,7 @@
 }
 
 :local(.smallColumn) {
-  width: 12%;
+  width: 50px;
 }
 
 :local(.tableRow) {
@@ -17,5 +17,9 @@
   color: #e0e0e0;
 }
 
-:local(.mainTable) {}
-:local(.largeColumn) {}
+:local(.mainTable) {
+  overflow-x: scroll;
+}
+:local(.largeColumn) {
+  width: 150px;
+}

@@ -14,5 +14,9 @@
   width: 50px;
 }
 
-:local(.mainTable) {}
-:local(.largeColumn) {}
+:local(.mainTable) {
+  overflow-x: scroll;
+}
+:local(.largeColumn) {
+  width: 360px;
+}

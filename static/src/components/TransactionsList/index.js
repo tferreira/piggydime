@@ -242,7 +242,7 @@ export default class TransactionsList extends React.Component {
                     <TableHeaderColumn className={styles.smallColumn}>
                       <FormattedMessage id="transactionsList.table.date" />
                     </TableHeaderColumn>
-                    <TableHeaderColumn>
+                    <TableHeaderColumn className={styles.largeColumn}>
                       <FormattedMessage id="transactionsList.table.label" />
                     </TableHeaderColumn>
                     <TableHeaderColumn className={styles.smallColumn}>

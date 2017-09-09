@@ -1,22 +1,26 @@
 :local(.mainContainer) {
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 50;
   width: 100%;
-}
-
-:local(.smallColumn) {
-  width: 115px;
 }
 
 :local(.tickColumn) {
   width: 50px;
 }
 
+:local(.smallColumn) {
+  width: 115px;
+}
+
+:local(.largeColumn) {
+  width: 360px;
+}
+
 :local(.mainTable) {
   overflow-x: auto;
 }
-:local(.largeColumn) {
-  width: 360px;
+
+:local(.tableRow) {
 }

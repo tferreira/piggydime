@@ -1,17 +1,11 @@
 :local(.sidebar) {
-  width: 220;
-}
-
-:local(.root) {
-  width: 220;
-  display: 'flex';
-  flex-wrap: 'wrap';
-  justify-content: 'space-around';
-
+  margin-top: 10px;
+  display: flex;
 }
 
 :local(.gridList) {
   overflow-y: 'auto';
+  flex-wrap: no-wrap;
 }
 
 :local(.gridTile) {

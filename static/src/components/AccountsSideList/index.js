@@ -154,15 +154,12 @@ export default class AccountsSideList extends React.Component {
       <div className={styles.sidebar}>
         {!this.props.loaded
           ? null
-          : <div className={styles.root}>
-              <Subheader>
-                <FormattedMessage id="accounts.sidelist.subheader" />
-                <AddAccount createAccount={this.createAccount.bind(this)} />
-              </Subheader>
-              <GridList cellHeight={100} className={styles.gridList} cols={1}>
+          : <div>
+              <GridList cellHeight={100} className={styles.gridList}>
                 {this.renderAccountsList()}
               </GridList>
             </div>}
+        <AddAccount createAccount={this.createAccount.bind(this)} />
       </div>
     )
   }

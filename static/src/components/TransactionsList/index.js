@@ -51,7 +51,6 @@ export default class TransactionsList extends React.Component {
     deselectOnClickaway: false,
     showCheckboxes: false,
     height: '400px',
-    width: '100%',
     snackOpen: false,
     snackMessage: ''
   }
@@ -226,7 +225,6 @@ export default class TransactionsList extends React.Component {
               <Table
                 ref="table"
                 height={this.state.height}
-                width={this.state.width}
                 fixedHeader={this.state.fixedHeader}
                 fixedFooter={this.state.fixedFooter}
                 selectable={this.state.selectable}
@@ -237,7 +235,7 @@ export default class TransactionsList extends React.Component {
                   adjustForCheckbox={this.state.showCheckboxes}
                   enableSelectAll={this.state.enableSelectAll}
                 >
-                  <TableRow>
+                  <TableRow className={styles.tableRow}>
                     <TableHeaderColumn className={styles.tickColumn}>
                       <FormattedMessage id="transactionsList.table.tick" />
                     </TableHeaderColumn>
@@ -261,7 +259,7 @@ export default class TransactionsList extends React.Component {
                   deselectOnClickaway={this.state.deselectOnClickaway}
                   showRowHover={this.state.showRowHover}
                   stripedRows={this.state.stripedRows}
-                  style={{ height: '100%', width: '100%' }}
+                  style={{ height: '100%' }}
                 >
                   {this.renderTransactionsList(this.props.data)}
                 </TableBody>

@@ -164,10 +164,8 @@ class AddTransaction extends React.Component {
               hintText={
                 <FormattedMessage id="addTransaction.modal.date_hint" />
               }
-              mode="landscape"
               autoOk={true}
               value={this.state.dateValue}
-              container="inline"
               onChange={(e, date) => this.changeDateValue(date, 'dateValue')}
             />
             <br />

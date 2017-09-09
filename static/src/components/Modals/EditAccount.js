@@ -230,9 +230,7 @@ class EditAccount extends React.Component {
               floatingLabelText={
                 <FormattedMessage id="addAccount.modal.projected_date" />
               }
-              mode="landscape"
               autoOk={true}
-              container="inline"
               onChange={(e, date) =>
                 this.changeDateValue(date, 'projectedDateValue')}
               value={new Date(this.state.projectedDateValue)}

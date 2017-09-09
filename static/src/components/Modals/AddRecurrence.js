@@ -219,9 +219,7 @@ class AddRecurrence extends React.Component {
               floatingLabelText={
                 <FormattedMessage id="addRecurrence.modal.from" />
               }
-              mode="landscape"
               autoOk={true}
-              container="inline"
               onChange={(e, date) =>
                 this.changeDateValue(date, 'startDateValue')}
             />
@@ -229,9 +227,7 @@ class AddRecurrence extends React.Component {
               floatingLabelText={
                 <FormattedMessage id="addRecurrence.modal.until" />
               }
-              mode="landscape"
               autoOk={true}
-              container="inline"
               onChange={(e, date) => this.changeDateValue(date, 'endDateValue')}
             />
             <br />

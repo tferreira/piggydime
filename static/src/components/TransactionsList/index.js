@@ -181,7 +181,7 @@ export default class TransactionsList extends React.Component {
           <TableRowColumn className={styles.smallColumn}>
             {row.date.toString()}
           </TableRowColumn>
-          <TableRowColumn>
+          <TableRowColumn className={styles.largeColumn}>
             {row.label}
           </TableRowColumn>
           <TableRowColumn className={styles.smallColumn}>

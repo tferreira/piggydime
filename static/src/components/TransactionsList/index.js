@@ -52,7 +52,8 @@ export default class TransactionsList extends React.Component {
     showCheckboxes: false,
     height: '400px',
     snackOpen: false,
-    snackMessage: ''
+    snackMessage: '',
+    showRecurring: false
   }
 
   fetchData(account_id = null) {
@@ -148,6 +149,12 @@ export default class TransactionsList extends React.Component {
     })
   }
 
+  toggleRecurring(event, isChecked) {
+    this.setState({
+      showRecurring: isChecked
+    })
+  }
+
   renderTransactionsList(transactions) {
     transactions.sort((a, b) => {
       if (new Date(a.date) < new Date(b.date)) return -1
@@ -156,21 +163,45 @@ export default class TransactionsList extends React.Component {
       if (a.id > b.id) return 1
       return 0
     })
-    // filter future recurring transactions
-    transactions = transactions.filter(element => {
-      return (
-        element.recurring_group_id === null ||
-        (element.recurring_group_id !== null &&
-          new Date(element.date) <= new Date())
-      )
-    })
+    // get projected balance date for current account
+    let projectedDate = this.props.accounts.filter(
+      element => element.id == this.props.selectedAccount
+    )[0].projected_date
+
+    if (this.state.showRecurring) {
+      // display recurring transactions of the month
+      transactions = transactions.filter(element => {
+        return (
+          element.recurring_group_id === null ||
+          (element.recurring_group_id !== null &&
+            new Date(element.date) <= new Date()) ||
+          (element.recurring_group_id !== null &&
+            new Date(element.date) <= new Date(projectedDate))
+        )
+      })
+    } else {
+      // filter all future recurring transactions
+      transactions = transactions.filter(element => {
+        return (
+          element.recurring_group_id === null ||
+          (element.recurring_group_id !== null &&
+            new Date(element.date) <= new Date())
+        )
+      })
+    }
     const rows = transactions.map((row, index) => {
       let credit =
         parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
       let debit =
         parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
+      let isFutureAndRecurring =
+        new Date(row.date) > new Date() && row.recurring_group_id !== null
+        console.log(new Date(row.date), row.recurring_group_id, isFutureAndRecurring)
       return (
-        <TableRow key={row.transaction_id}>
+        <TableRow
+          key={row.transaction_id}
+          className={isFutureAndRecurring ? styles.tableRowFuture : ''}
+        >
           <TableRowColumn className={styles.tickColumn}>
             <Checkbox
               defaultChecked={Boolean(row.tick)}
@@ -235,7 +266,7 @@ export default class TransactionsList extends React.Component {
                   adjustForCheckbox={this.state.showCheckboxes}
                   enableSelectAll={this.state.enableSelectAll}
                 >
-                  <TableRow className={styles.tableRow}>
+                  <TableRow>
                     <TableHeaderColumn className={styles.tickColumn}>
                       <FormattedMessage id="transactionsList.table.tick" />
                     </TableHeaderColumn>
@@ -265,10 +296,16 @@ export default class TransactionsList extends React.Component {
                 </TableBody>
                 <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
                   <TableRow>
-                    <TableRowColumn colSpan="5">
+                    <TableRowColumn colSpan="4">
                       <AddTransaction
                         selectedAccount={this.props.selectedAccount}
                         createTransaction={this.createTransaction.bind(this)}
+                      />
+                    </TableRowColumn>
+                    <TableRowColumn colSpan="1">
+                      <Toggle
+                        label="Display recurring"
+                        onToggle={this.toggleRecurring.bind(this)}
                       />
                     </TableRowColumn>
                   </TableRow>

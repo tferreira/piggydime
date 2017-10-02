@@ -1,7 +1,8 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as actionCreators from '../../actions/balances'
+import * as accountsActions from '../../actions/accounts'
+import * as balancesActions from '../../actions/balances'
 
 import AccountsSideList from '../../components/AccountsSideList'
 import TransactionsList from '../../components/TransactionsList'
@@ -10,7 +11,8 @@ import styles from './styles.scss'
 
 function mapStateToProps(state) {
   return {
-    data: state.balances.data,
+    balancesData: state.balances.data,
+    accountsData: state.accounts.data,
     token: state.auth.token,
     loaded: state.balances.loaded,
     isFetching: state.balances.isFetching
@@ -18,7 +20,12 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch)
+  return {
+    actions: {
+      accounts: bindActionCreators(accountsActions, dispatch),
+      balances: bindActionCreators(balancesActions, dispatch)
+    }
+  }
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -34,7 +41,7 @@ export default class AccountsContainer extends React.Component {
 
   fetchData() {
     const token = this.props.token
-    this.props.fetchBalancesData(token)
+    this.props.actions.balances.fetchBalancesData(token)
   }
 
   render() {
@@ -42,10 +49,13 @@ export default class AccountsContainer extends React.Component {
       <section>
         <div className={styles.inRow}>
           <AccountsSideList
-            balances={this.props.data}
+            balances={this.props.balancesData}
             updateBalance={this.fetchData.bind(this)}
           />
-          <TransactionsList updateBalance={this.fetchData.bind(this)} />
+          <TransactionsList
+            accounts={this.props.accountsData}
+            updateBalance={this.fetchData.bind(this)}
+          />
         </div>
       </section>
     )
@@ -55,6 +65,7 @@ export default class AccountsContainer extends React.Component {
 AccountsContainer.propTypes = {
   fetchBalancesData: React.PropTypes.func,
   loaded: React.PropTypes.bool,
-  data: React.PropTypes.any,
+  balancesData: React.PropTypes.any,
+  accountsData: React.PropTypes.any,
   token: React.PropTypes.string
 }

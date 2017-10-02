@@ -21,10 +21,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch)
-}
-
-function mapDispatchToProps(dispatch) {
   return {
     actions: {
       accounts: bindActionCreators(accountsActions, dispatch),

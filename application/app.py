@@ -333,12 +333,12 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
         rule_string = "RRULE:FREQ={};BYMONTHDAY={};INTERVAL=1".format(frequency, recurrence_day)
     elif frequency == 'YEARLY':
         rule_string = "RRULE:FREQ={};BYMONTH={};BYMONTHDAY={}".format(frequency, recurrence_month, recurrence_day)
-    if future_only:
-        start_date = datetime.today() + timedelta(days=1)
     if (isinstance(start_date, str)):
         start_date = parse(start_date)
     if (isinstance(end_date, str)):
         end_date = parse(end_date)
+    if future_only and start_date < datetime.now().date():
+        start_date = datetime.today() + timedelta(days=1)
     rule = rrulestr(rule_string, dtstart=datetime.combine(start_date, time()))
     times = rule.between(
         after=datetime.combine(start_date, time()),

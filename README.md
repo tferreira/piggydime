@@ -19,7 +19,7 @@ This project is still in development but the main features are already implement
 
 This application has been build on top of the [React-Redux-Flask](https://github.com/dternyak/React-Redux-Flask) boilerplate (Flask JWT Blackend and a React/Redux frontend with Material UI).
 
-![screenshot](http://i.imgur.com/lemwdQQ.png)
+![screenshot](https://i.imgur.com/5xNSlpO.png)
 
 ## How to install
 

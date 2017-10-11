@@ -10,6 +10,7 @@ create_virtualenv:
 
 pip_install:
 	. $(VIRTUALENV)bin/activate; pip3.5 install -r requirements.txt
+	. $(VIRTUALENV)bin/activate; pip3.5 install py-bcrypt==0.4
 
 pretty:
 	$(PRETTIER) --single-quote --no-semi --write "static/src/**/*.js"

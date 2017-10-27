@@ -196,7 +196,6 @@ export default class TransactionsList extends React.Component {
         parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
       let isFutureAndRecurring =
         new Date(row.date) > new Date() && row.recurring_group_id !== null
-        console.log(new Date(row.date), row.recurring_group_id, isFutureAndRecurring)
       return (
         <TableRow
           key={row.transaction_id}

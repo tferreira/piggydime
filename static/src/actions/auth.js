@@ -145,8 +145,8 @@ export function registerUser(email, password) {
         dispatch(
           registerUserFailure({
             response: {
-              status: 403,
-              statusText: 'User with that email already exists'
+              status: error.response.status,
+              statusText: error.response.data.message
             }
           })
         )

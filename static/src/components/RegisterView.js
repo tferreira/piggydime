@@ -15,6 +15,7 @@ import { validateEmail } from '../utils/misc'
 function mapStateToProps(state) {
   return {
     isRegistering: state.auth.isRegistering,
+    statusIntlId: state.auth.statusIntlId,
     statusText: state.auth.statusText
   }
 }

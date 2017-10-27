@@ -115,7 +115,6 @@ export default class AccountsSideList extends React.Component {
               ? styles.gridTileSelected
               : styles.gridTile
           }
-          cols={1}
           onTouchTap={e => {
             e.stopPropagation()
             this.select(row.id)
@@ -154,12 +153,12 @@ export default class AccountsSideList extends React.Component {
       <div className={styles.sidebar}>
         {!this.props.loaded
           ? null
-          : <div>
-              <GridList cellHeight={100} className={styles.gridList}>
+          : <div className={styles.gridRoot}>
+              <GridList cellHeight={100} className={styles.gridList} cols={4}>
                 {this.renderAccountsList()}
               </GridList>
             </div>}
-        <AddAccount createAccount={this.createAccount.bind(this)} />
+            <AddAccount createAccount={this.createAccount.bind(this)} className={styles.addAccountBtn} />
       </div>
     )
   }

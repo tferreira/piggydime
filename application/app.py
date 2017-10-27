@@ -31,6 +31,9 @@ def get_user():
 
 @app.route("/api/create_user", methods=["POST"])
 def create_user():
+    if app.config['BLOCK_USER_CREATION']:
+        return jsonify(message="User creation is disabled"), 403
+
     incoming = request.get_json()
     user = User(
         email=incoming["email"],

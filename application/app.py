@@ -349,17 +349,19 @@ def generate_recurring(account_id, label, amount, start_date, end_date, recurrin
         inc=True)
 
     for occurence in times:
-        transaction_id = str(uuid4())
-        transaction = Transaction(
-            transaction_id=transaction_id,
-            account_id=account_id,
-            label=label,
-            amount=amount,
-            recurring_group_id=recurring_group_id,
-            date=occurence,
-            tick=0
-        )
-        db.session.add(transaction)
+        # extra safety check
+        if start_date.strftime('%F%H%M%S') <= occurence.strftime('%F%H%M%S') <= end_date.strftime('%F%H%M%S'):
+            transaction_id = str(uuid4())
+            transaction = Transaction(
+                transaction_id=transaction_id,
+                account_id=account_id,
+                label=label,
+                amount=amount,
+                recurring_group_id=recurring_group_id,
+                date=occurence,
+                tick=0
+            )
+            db.session.add(transaction)
 
 
 @app.route("/api/recurring/create", methods=["POST"])

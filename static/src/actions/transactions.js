@@ -1,7 +1,9 @@
 import {
   FETCH_TRANSACTIONS_DATA_REQUEST,
   RECEIVE_TRANSACTIONS_DATA,
-  ADD_TRANSACTION
+  ADD_TRANSACTION,
+  EDIT_TRANSACTION,
+  DELETE_TRANSACTION
 } from '../constants/index'
 import { parseJSON } from '../utils/misc'
 import {
@@ -32,6 +34,24 @@ export function fetchTransactionsDataRequest() {
 export function addTransactionToStore(data) {
   return {
     type: ADD_TRANSACTION,
+    payload: {
+      data
+    }
+  }
+}
+
+export function editTransactionOnStore(data) {
+  return {
+    type: EDIT_TRANSACTION,
+    payload: {
+      data
+    }
+  }
+}
+
+export function deleteTransactionFromStore(data) {
+  return {
+    type: DELETE_TRANSACTION,
     payload: {
       data
     }
@@ -88,7 +108,11 @@ export function editTransaction(token, transaction) {
       transaction.date
     )
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        transaction.id = response.id
+        dispatch(editTransactionOnStore(transaction))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))
@@ -101,7 +125,9 @@ export function tickTransaction(token, transaction_id, isChecked) {
   return dispatch => {
     tick_transaction(token, transaction_id, isChecked)
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))
@@ -114,7 +140,11 @@ export function deleteTransaction(token, transaction_id) {
   return dispatch => {
     delete_transaction(token, transaction_id)
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        transaction.id = response.id
+        dispatch(deleteTransactionFromStore(transaction))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))

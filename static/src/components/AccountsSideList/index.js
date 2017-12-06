@@ -158,7 +158,10 @@ export default class AccountsSideList extends React.Component {
                 {this.renderAccountsList()}
               </GridList>
             </div>}
-            <AddAccount createAccount={this.createAccount.bind(this)} className={styles.addAccountBtn} />
+        <AddAccount
+          createAccount={this.createAccount.bind(this)}
+          className={styles.addAccountBtn}
+        />
       </div>
     )
   }

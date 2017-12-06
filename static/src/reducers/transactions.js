@@ -1,7 +1,9 @@
 import {
   RECEIVE_TRANSACTIONS_DATA,
   FETCH_TRANSACTIONS_DATA_REQUEST,
-  ADD_TRANSACTION
+  ADD_TRANSACTION,
+  EDIT_TRANSACTION,
+  DELETE_TRANSACTION
 } from '../constants'
 import { createReducer } from '../utils/misc'
 
@@ -25,5 +27,18 @@ export default createReducer(initialState, {
   [ADD_TRANSACTION]: (state, payload) =>
     Object.assign({}, state, {
       data: [...state.data, payload.data]
+    }),
+  [EDIT_TRANSACTION]: (state, payload) =>
+    Object.assign({}, state, {
+      data: state.data.map((element, index) => {
+        if (element.transaction_id == payload.data.id) {
+          return Object.assign({}, element, payload.data)
+        }
+        return element
+      })
+    }),
+  [DELETE_TRANSACTION]: (state, payload) =>
+    Object.assign({}, state, {
+      data: state.data.filter(element => element.id != payload.data.id)
     })
 })

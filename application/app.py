@@ -298,7 +298,8 @@ def edit_transaction():
         return jsonify(message="That unique transaction_id already exists."), 409
 
     return jsonify(
-        id=transaction.first().id
+        id=transaction.first().transaction_id,
+        balances=get_balances()
     )
 
 
@@ -317,7 +318,8 @@ def tick_transaction():
         return jsonify(message="Failed to tick transaction."), 409
 
     return jsonify(
-        status='ok'
+        status='ok',
+        balances=get_balances()
     )
 
 
@@ -334,7 +336,8 @@ def delete_transaction():
         return jsonify(message="Failed to delete transaction."), 409
 
     return jsonify(
-        status='ok'
+        status='ok',
+        balances=get_balances()
     )
 
 

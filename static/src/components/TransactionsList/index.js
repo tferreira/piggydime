@@ -113,8 +113,6 @@ export default class TransactionsList extends React.Component {
     let call = async () =>
       await await this.props.createTransaction(token, transaction)
     call().then(() => {
-      this.fetchData()
-      this.props.updateBalance()
       this.showSnack(<FormattedMessage id="transactionsList.snack.create" />)
     })
   }

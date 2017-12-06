@@ -1,6 +1,7 @@
 import {
   FETCH_TRANSACTIONS_DATA_REQUEST,
-  RECEIVE_TRANSACTIONS_DATA
+  RECEIVE_TRANSACTIONS_DATA,
+  ADD_TRANSACTION
 } from '../constants/index'
 import { parseJSON } from '../utils/misc'
 import {
@@ -10,6 +11,7 @@ import {
   delete_transaction,
   tick_transaction
 } from '../utils/http_functions'
+import { receiveBalancesData } from './balances'
 import { logoutAndRedirect } from './auth'
 
 export function receiveTransactionsData(data) {
@@ -24,6 +26,15 @@ export function receiveTransactionsData(data) {
 export function fetchTransactionsDataRequest() {
   return {
     type: FETCH_TRANSACTIONS_DATA_REQUEST
+  }
+}
+
+export function addTransactionToStore(data) {
+  return {
+    type: ADD_TRANSACTION,
+    payload: {
+      data
+    }
   }
 }
 
@@ -54,7 +65,11 @@ export function createTransaction(token, transaction) {
       transaction.date
     )
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        transaction.id = response.id
+        dispatch(addTransactionToStore(transaction))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))

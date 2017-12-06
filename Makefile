@@ -6,7 +6,7 @@ PRETTIER = ./static/node_modules/.bin/prettier
 install: create_virtualenv pip_install
 
 create_virtualenv:
-	if [ ! -d env ]; then virtualenv -p python3.5 $(VIRTUALENV); fi
+	if [ ! -d venv ]; then virtualenv -p python3.5 $(VIRTUALENV); fi
 
 pip_install:
 	. $(VIRTUALENV)bin/activate; pip3.5 install -r requirements.txt

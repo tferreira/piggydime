@@ -75,8 +75,6 @@ def is_token_valid():
         return jsonify(token_is_valid=False), 403
 
 
-@app.route("/api/balances", methods=["GET"])
-@requires_auth
 def get_balances():
     balancesList = []
     accountsObjects = Account.get_accounts(g.current_user)
@@ -105,7 +103,40 @@ def get_balances():
             'balance': 0 if balance.balance is None else str(balance.balance),
             'projected_balance': 0 if projected_balance.balance is None else str(projected_balance.balance)
         })
-    return jsonify(result=balancesList)
+    return balancesList
+
+
+@app.route("/api/balances", methods=["GET"])
+@requires_auth
+def get_balances_route():
+    balancesList = []
+    accountsObjects = Account.get_accounts(g.current_user)
+    for account in accountsObjects:
+        # Basic balance only calculated on ticked transactions
+        balance = db.session \
+            .query(func.sum(Transaction.amount).label("balance")) \
+            .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= datetime.now().date()), (Transaction.tick == 1)) \
+            .first()
+
+        if account.projected_date is not None:
+            projected_balance = db.session \
+                .query(func.sum(Transaction.amount).label("balance")) \
+                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= account.projected_date)) \
+                .first()
+        else:
+            _, num_days = calendar.monthrange(datetime.now().year, datetime.now().month)
+            last_day_of_month = date(datetime.now().year, datetime.now().month, num_days)
+            projected_balance = db.session \
+                .query(func.sum(Transaction.amount).label("balance")) \
+                .filter((Transaction.account_id == account.id), (db.func.date(Transaction.date) <= last_day_of_month)) \
+                .first()
+
+        balancesList.append({
+            'account_id': account.id,
+            'balance': 0 if balance.balance is None else str(balance.balance),
+            'projected_balance': 0 if projected_balance.balance is None else str(projected_balance.balance)
+        })
+    return jsonify(result=get_balances())
 
 
 @app.route("/api/accounts", methods=["GET"])
@@ -244,7 +275,8 @@ def create_transaction():
         return jsonify(message="Account with that IBAN already exists"), 409
 
     return jsonify(
-        id=transaction.id
+        transaction_id=transaction_id,
+        balances=get_balances()
     )
 
 
@@ -266,7 +298,7 @@ def edit_transaction():
         return jsonify(message="That unique transaction_id already exists."), 409
 
     return jsonify(
-        id=transaction.first().id
+        balances=get_balances()
     )
 
 
@@ -285,7 +317,8 @@ def tick_transaction():
         return jsonify(message="Failed to tick transaction."), 409
 
     return jsonify(
-        status='ok'
+        status='ok',
+        balances=get_balances()
     )
 
 
@@ -302,7 +335,8 @@ def delete_transaction():
         return jsonify(message="Failed to delete transaction."), 409
 
     return jsonify(
-        status='ok'
+        status='ok',
+        balances=get_balances()
     )
 
 

@@ -1,6 +1,9 @@
 import {
   FETCH_TRANSACTIONS_DATA_REQUEST,
-  RECEIVE_TRANSACTIONS_DATA
+  RECEIVE_TRANSACTIONS_DATA,
+  ADD_TRANSACTION,
+  EDIT_TRANSACTION,
+  DELETE_TRANSACTION
 } from '../constants/index'
 import { parseJSON } from '../utils/misc'
 import {
@@ -10,6 +13,7 @@ import {
   delete_transaction,
   tick_transaction
 } from '../utils/http_functions'
+import { receiveBalancesData } from './balances'
 import { logoutAndRedirect } from './auth'
 
 export function receiveTransactionsData(data) {
@@ -24,6 +28,33 @@ export function receiveTransactionsData(data) {
 export function fetchTransactionsDataRequest() {
   return {
     type: FETCH_TRANSACTIONS_DATA_REQUEST
+  }
+}
+
+export function addTransactionToStore(data) {
+  return {
+    type: ADD_TRANSACTION,
+    payload: {
+      data
+    }
+  }
+}
+
+export function editTransactionOnStore(data) {
+  return {
+    type: EDIT_TRANSACTION,
+    payload: {
+      data
+    }
+  }
+}
+
+export function deleteTransactionFromStore(transaction_id) {
+  return {
+    type: DELETE_TRANSACTION,
+    payload: {
+      transaction_id
+    }
   }
 }
 
@@ -54,7 +85,11 @@ export function createTransaction(token, transaction) {
       transaction.date
     )
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        transaction.transaction_id = response.transaction_id
+        dispatch(addTransactionToStore(transaction))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))
@@ -73,7 +108,10 @@ export function editTransaction(token, transaction) {
       transaction.date
     )
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(editTransactionOnStore(transaction))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))
@@ -86,7 +124,9 @@ export function tickTransaction(token, transaction_id, isChecked) {
   return dispatch => {
     tick_transaction(token, transaction_id, isChecked)
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))
@@ -99,7 +139,10 @@ export function deleteTransaction(token, transaction_id) {
   return dispatch => {
     delete_transaction(token, transaction_id)
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(deleteTransactionFromStore(transaction_id))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))

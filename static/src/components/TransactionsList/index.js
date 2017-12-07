@@ -113,8 +113,6 @@ export default class TransactionsList extends React.Component {
     let call = async () =>
       await await this.props.createTransaction(token, transaction)
     call().then(() => {
-      this.fetchData()
-      this.props.updateBalance()
       this.showSnack(<FormattedMessage id="transactionsList.snack.create" />)
     })
   }
@@ -124,8 +122,6 @@ export default class TransactionsList extends React.Component {
     let call = async () =>
       await await this.props.editTransaction(token, transaction)
     call().then(() => {
-      this.fetchData()
-      this.props.updateBalance()
       this.showSnack(<FormattedMessage id="transactionsList.snack.edit" />)
     })
   }
@@ -134,8 +130,6 @@ export default class TransactionsList extends React.Component {
     const token = this.props.token
     let call = async () => await await this.props.deleteTransaction(token, id)
     call().then(() => {
-      this.fetchData()
-      this.props.updateBalance()
       this.showSnack(<FormattedMessage id="transactionsList.snack.delete" />)
     })
   }
@@ -144,9 +138,7 @@ export default class TransactionsList extends React.Component {
     const token = this.props.token
     let call = async () =>
       await await this.props.tickTransaction(token, id_transaction, isChecked)
-    call().then(() => {
-      this.props.updateBalance()
-    })
+    call().then(() => {})
   }
 
   toggleRecurring(event, isChecked) {

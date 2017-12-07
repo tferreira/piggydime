@@ -275,7 +275,7 @@ def create_transaction():
         return jsonify(message="Account with that IBAN already exists"), 409
 
     return jsonify(
-        id=transaction_id,
+        transaction_id=transaction_id,
         balances=get_balances()
     )
 
@@ -298,7 +298,6 @@ def edit_transaction():
         return jsonify(message="That unique transaction_id already exists."), 409
 
     return jsonify(
-        id=transaction.first().transaction_id,
         balances=get_balances()
     )
 

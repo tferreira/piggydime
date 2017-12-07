@@ -31,7 +31,7 @@ export default createReducer(initialState, {
   [EDIT_TRANSACTION]: (state, payload) =>
     Object.assign({}, state, {
       data: state.data.map((element, index) => {
-        if (element.transaction_id == payload.data.id) {
+        if (element.transaction_id == payload.data.transaction_id) {
           return Object.assign({}, element, payload.data)
         }
         return element
@@ -39,6 +39,8 @@ export default createReducer(initialState, {
     }),
   [DELETE_TRANSACTION]: (state, payload) =>
     Object.assign({}, state, {
-      data: state.data.filter(element => element.id != payload.data.id)
+      data: state.data.filter(
+        element => element.transaction_id != payload.transaction_id
+      )
     })
 })

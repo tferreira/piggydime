@@ -49,11 +49,11 @@ export function editTransactionOnStore(data) {
   }
 }
 
-export function deleteTransactionFromStore(data) {
+export function deleteTransactionFromStore(transaction_id) {
   return {
     type: DELETE_TRANSACTION,
     payload: {
-      data
+      transaction_id
     }
   }
 }
@@ -86,7 +86,7 @@ export function createTransaction(token, transaction) {
     )
       .then(parseJSON)
       .then(response => {
-        transaction.id = response.id
+        transaction.transaction_id = response.transaction_id
         dispatch(addTransactionToStore(transaction))
         dispatch(receiveBalancesData(response.balances))
       })
@@ -109,7 +109,6 @@ export function editTransaction(token, transaction) {
     )
       .then(parseJSON)
       .then(response => {
-        transaction.id = response.id
         dispatch(editTransactionOnStore(transaction))
         dispatch(receiveBalancesData(response.balances))
       })
@@ -141,8 +140,7 @@ export function deleteTransaction(token, transaction_id) {
     delete_transaction(token, transaction_id)
       .then(parseJSON)
       .then(response => {
-        transaction.id = response.id
-        dispatch(deleteTransactionFromStore(transaction))
+        dispatch(deleteTransactionFromStore(transaction_id))
         dispatch(receiveBalancesData(response.balances))
       })
       .catch(error => {

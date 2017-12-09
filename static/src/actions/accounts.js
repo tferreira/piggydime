@@ -66,8 +66,9 @@ export function createAccount(token, account) {
     )
       .then(parseJSON)
       .then(response => {
-        dispatch(selectAccount(response.id))
         dispatch(receiveBalancesData(response.balances))
+        dispatch(receiveAccountsData(response.accounts))
+        dispatch(selectAccount(response.id))
       })
       .catch(error => {
         if (error.status === 401) {
@@ -90,6 +91,7 @@ export function editAccount(token, account) {
     )
       .then(parseJSON)
       .then(response => {
+        dispatch(receiveAccountsData(response.accounts))
         dispatch(receiveBalancesData(response.balances))
       })
       .catch(error => {
@@ -104,7 +106,9 @@ export function deleteAccount(token, id) {
   return dispatch => {
     delete_account(token, id)
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(receiveAccountsData(response.accounts))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))

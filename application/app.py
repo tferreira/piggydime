@@ -179,7 +179,8 @@ def create_account():
         return jsonify(message="Account with that IBAN already exists"), 409
 
     return jsonify(
-        id=account.id
+        id=account.id,
+        balances=get_balances()
     )
 
 
@@ -202,7 +203,7 @@ def edit_account():
         return jsonify(message="Account with that IBAN already exists"), 409
 
     return jsonify(
-        id=account.first().id
+        balances=get_balances()
     )
 
 

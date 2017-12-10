@@ -10,6 +10,7 @@ import {
   edit_account,
   delete_account
 } from '../utils/http_functions'
+import { receiveBalancesData } from './balances'
 import { logoutAndRedirect } from './auth'
 
 export function receiveAccountsData(data) {
@@ -65,6 +66,8 @@ export function createAccount(token, account) {
     )
       .then(parseJSON)
       .then(response => {
+        dispatch(receiveBalancesData(response.balances))
+        dispatch(receiveAccountsData(response.accounts))
         dispatch(selectAccount(response.id))
       })
       .catch(error => {
@@ -87,7 +90,10 @@ export function editAccount(token, account) {
       account.projected_date
     )
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(receiveAccountsData(response.accounts))
+        dispatch(receiveBalancesData(response.balances))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))
@@ -100,7 +106,9 @@ export function deleteAccount(token, id) {
   return dispatch => {
     delete_account(token, id)
       .then(parseJSON)
-      .then(response => {})
+      .then(response => {
+        dispatch(receiveAccountsData(response.accounts))
+      })
       .catch(error => {
         if (error.status === 401) {
           dispatch(logoutAndRedirect(error))

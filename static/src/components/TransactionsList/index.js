@@ -56,7 +56,8 @@ export default class TransactionsList extends React.Component {
       height: '400px',
       snackOpen: false,
       snackMessage: '',
-      showRecurring: false
+      showRecurring: false,
+      preventScroll: false
     }
     this.fireOnScroll = this.fireOnScroll.bind(this)
   }
@@ -67,7 +68,8 @@ export default class TransactionsList extends React.Component {
     }
     if (account_id !== null) {
       const token = this.props.token
-      this.props.fetchTransactionsData(token, account_id)
+      const limit = this.props.data ? this.props.data.length + 50 : 50
+      this.props.fetchTransactionsData(token, account_id, limit)
     }
   }
 
@@ -86,9 +88,11 @@ export default class TransactionsList extends React.Component {
 
   fireOnScroll(event) {
     const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
-    if (elem.scrollTop == 0)
-    {
-      //do something
+    if (elem.scrollTop == 0 && !this.props.isFetching) {
+      this.setState({
+        preventScroll: true
+      })
+      this.fetchData()
     }
   }
 
@@ -106,7 +110,13 @@ export default class TransactionsList extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     // Do not scroll on ticking
     if (prevProps.data !== this.props.data) {
-      this.scrollToBottom()
+      if (!this.state.preventScroll) {
+        this.scrollToBottom()
+      } else {
+        this.setState({
+          preventScroll: false
+        })
+      }
     }
     if (this.refs.table) {
       const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)

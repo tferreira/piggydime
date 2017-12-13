@@ -1,4 +1,5 @@
 from index import db, bcrypt
+from sqlalchemy import desc
 
 
 class User(db.Model):
@@ -83,6 +84,8 @@ class Transaction(db.Model):
         return Transaction.query \
             .filter((Transaction.account_id == account_id),
                     (db.func.date(Transaction.date) <= Account.get_projected_date(account_id))) \
+            .order_by(desc(Transaction.date)) \
+            .limit(limit) \
             .all()
 
 

@@ -240,8 +240,9 @@ def delete_account():
 def get_transactions():
     incoming = request.args
     account_id = incoming["account_id"]
+    limit = incoming["limit"]
     transactionsList = []
-    transactionsObjects = Transaction.get_transactions(account_id)
+    transactionsObjects = Transaction.get_transactions(account_id, limit)
     for transaction in transactionsObjects:
         transactionsList.append({
             'transaction_id': transaction.transaction_id,

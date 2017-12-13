@@ -1,4 +1,5 @@
 from index import db, bcrypt
+from sqlalchemy import desc
 
 
 class User(db.Model):
@@ -74,8 +75,12 @@ class Transaction(db.Model):
         self.tick = tick
 
     @staticmethod
-    def get_transactions(account_id):
-        return Transaction.query.filter_by(account_id=account_id).all()
+    def get_transactions(account_id, limit):
+        return Transaction.query \
+                          .filter_by(account_id=account_id) \
+                          .order_by(desc(Transaction.date)) \
+                          .limit(limit) \
+                          .all()
 
 
 class RecurringGroup(db.Model):

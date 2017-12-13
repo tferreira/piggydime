@@ -58,10 +58,10 @@ export function deleteTransactionFromStore(transaction_id) {
   }
 }
 
-export function fetchTransactionsData(token, account_id) {
+export function fetchTransactionsData(token, account_id, limit) {
   return dispatch => {
     dispatch(fetchTransactionsDataRequest())
-    data_about_transactions(token, account_id)
+    data_about_transactions(token, account_id, limit)
       .then(parseJSON)
       .then(response => {
         dispatch(receiveTransactionsData(response.result))

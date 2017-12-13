@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import 'babel-polyfill'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -40,20 +41,24 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TransactionsList extends React.Component {
-  state = {
-    fixedHeader: true,
-    fixedFooter: true,
-    stripedRows: true,
-    showRowHover: false,
-    selectable: false,
-    multiSelectable: false,
-    enableSelectAll: false,
-    deselectOnClickaway: false,
-    showCheckboxes: false,
-    height: '400px',
-    snackOpen: false,
-    snackMessage: '',
-    showRecurring: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      fixedHeader: true,
+      fixedFooter: true,
+      stripedRows: true,
+      showRowHover: false,
+      selectable: false,
+      multiSelectable: false,
+      enableSelectAll: false,
+      deselectOnClickaway: false,
+      showCheckboxes: false,
+      height: '400px',
+      snackOpen: false,
+      snackMessage: '',
+      showRecurring: false
+    }
+    this.fireOnScroll = this.fireOnScroll.bind(this)
   }
 
   fetchData(account_id = null) {
@@ -79,6 +84,19 @@ export default class TransactionsList extends React.Component {
     })
   }
 
+  fireOnScroll(event) {
+    const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+    if (elem.scrollTop == 0)
+    {
+      //do something
+    }
+  }
+
+  componentWillUnmount() {
+    const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+    elem.removeEventListener('scroll', this.fireOnScroll)
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedAccount !== this.props.selectedAccount) {
       this.fetchData(nextProps.selectedAccount)
@@ -89,6 +107,10 @@ export default class TransactionsList extends React.Component {
     // Do not scroll on ticking
     if (prevProps.data !== this.props.data) {
       this.scrollToBottom()
+    }
+    if (this.refs.table) {
+      const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+      elem.addEventListener('scroll', this.fireOnScroll)
     }
   }
 

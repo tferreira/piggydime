@@ -53,6 +53,11 @@ class Account(db.Model):
         else:
             return None
 
+    @staticmethod
+    def get_projected_date(id):
+        account = Account.query.filter_by(id=id).first()
+        return account.projected_date
+
 
 class Transaction(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -75,7 +80,10 @@ class Transaction(db.Model):
 
     @staticmethod
     def get_transactions(account_id):
-        return Transaction.query.filter_by(account_id=account_id).all()
+        return Transaction.query \
+            .filter((Transaction.account_id == account_id),
+                    (db.func.date(Transaction.date) <= Account.get_projected_date(account_id))) \
+            .all()
 
 
 class RecurringGroup(db.Model):

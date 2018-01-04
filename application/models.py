@@ -1,5 +1,6 @@
 from index import db, bcrypt
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
+from datetime import datetime
 
 
 class User(db.Model):
@@ -80,13 +81,22 @@ class Transaction(db.Model):
         self.tick = tick
 
     @staticmethod
-    def get_transactions(account_id):
+    def get_transactions(account_id, limit):
         return Transaction.query \
-            .filter((Transaction.account_id == account_id),
-                    (db.func.date(Transaction.date) <= Account.get_projected_date(account_id))) \
+            .filter(Transaction.account_id == account_id) \
+            .filter(or_(db.func.date(Transaction.date) <= datetime.now().date(), Transaction.recurring_group_id == None)) \
             .order_by(desc(Transaction.date)) \
             .limit(limit) \
             .all()
+
+    @staticmethod
+    def get_recurring_until_projected(account_id):
+        return Transaction.query \
+            .filter((Transaction.account_id == account_id),
+                    (db.func.date(Transaction.date) <= Account.get_projected_date(account_id)),
+                    (db.func.date(Transaction.date) > datetime.now().date()),
+                    (Transaction.recurring_group_id != None)) \
+            .order_by(desc(Transaction.date)) \
 
 
 class RecurringGroup(db.Model):

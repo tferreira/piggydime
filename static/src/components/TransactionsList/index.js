@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.transactions.loaded,
     isFetching: state.transactions.isFetching,
-    selectedAccount: state.accounts.selectedAccount,
+    selectedAccount: state.accounts.selectedAccount
   }
 }
 
@@ -72,6 +72,9 @@ export default class TransactionsList extends React.Component {
       const limit = this.props.data ? this.props.data.length + 50 : 50
       this.props.fetchTransactionsData(token, account_id, limit)
     }
+    this.setState({
+      showRecurring: false
+    })
   }
 
   fetchFutureData(account_id = null) {
@@ -96,8 +99,7 @@ export default class TransactionsList extends React.Component {
     const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
     if (elem.scrollTop == 0 && !this.props.isFetching) {
       this.setState({
-        preventScroll: true,
-        showRecurring: false
+        preventScroll: true
       })
       this.fetchData()
     }
@@ -108,6 +110,9 @@ export default class TransactionsList extends React.Component {
       showRecurring: isChecked,
       recurringLoaded: false
     })
+    if (!isChecked) {
+      this.fetchData()
+    }
   }
 
   showSnack(snackMessage) {
@@ -331,6 +336,7 @@ export default class TransactionsList extends React.Component {
                     <TableRowColumn colSpan="1">
                       <Toggle
                         label="Display recurring"
+                        toggled={this.state.showRecurring}
                         onToggle={this.toggleRecurring.bind(this)}
                       />
                     </TableRowColumn>

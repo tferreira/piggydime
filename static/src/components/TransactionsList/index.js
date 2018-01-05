@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     token: state.auth.token,
     loaded: state.transactions.loaded,
     isFetching: state.transactions.isFetching,
-    selectedAccount: state.accounts.selectedAccount
+    selectedAccount: state.accounts.selectedAccount,
   }
 }
 
@@ -57,6 +57,7 @@ export default class TransactionsList extends React.Component {
       snackOpen: false,
       snackMessage: '',
       showRecurring: false,
+      recurringLoaded: false,
       preventScroll: false
     }
     this.fireOnScroll = this.fireOnScroll.bind(this)
@@ -73,6 +74,42 @@ export default class TransactionsList extends React.Component {
     }
   }
 
+  fetchFutureData(account_id = null) {
+    if (!this.state.recurringLoaded) {
+      if (account_id === null) {
+        account_id = this.props.selectedAccount
+      }
+      if (account_id !== null) {
+        const token = this.props.token
+        let call = async () =>
+          await await this.props.fetchFutureTransactionsData(token, account_id)
+        call().then(() => {
+          this.setState({
+            recurringLoaded: true
+          })
+        })
+      }
+    }
+  }
+
+  fireOnScroll(event) {
+    const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+    if (elem.scrollTop == 0 && !this.props.isFetching) {
+      this.setState({
+        preventScroll: true,
+        showRecurring: false
+      })
+      this.fetchData()
+    }
+  }
+
+  toggleRecurring(event, isChecked) {
+    this.setState({
+      showRecurring: isChecked,
+      recurringLoaded: false
+    })
+  }
+
   showSnack(snackMessage) {
     this.setState({
       snackMessage,
@@ -84,16 +121,6 @@ export default class TransactionsList extends React.Component {
     this.setState({
       snackOpen: false
     })
-  }
-
-  fireOnScroll(event) {
-    const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
-    if (elem.scrollTop == 0 && !this.props.isFetching) {
-      this.setState({
-        preventScroll: true
-      })
-      this.fetchData()
-    }
   }
 
   componentWillUnmount() {
@@ -173,13 +200,12 @@ export default class TransactionsList extends React.Component {
     call().then(() => {})
   }
 
-  toggleRecurring(event, isChecked) {
-    this.setState({
-      showRecurring: isChecked
-    })
-  }
-
   renderTransactionsList(transactions) {
+    if (this.state.showRecurring) {
+      // add recurring transactions
+      this.fetchFutureData()
+    }
+
     transactions.sort((a, b) => {
       if (new Date(a.date) < new Date(b.date)) return -1
       if (new Date(a.date) > new Date(b.date)) return 1
@@ -325,6 +351,7 @@ export default class TransactionsList extends React.Component {
 
 TransactionsList.propTypes = {
   fetchTransactionsData: React.PropTypes.func,
+  fetchFutureTransactionsData: React.PropTypes.func,
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,

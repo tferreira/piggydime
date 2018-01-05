@@ -1,4 +1,6 @@
 import {
+  FETCH_FUTURE_TRANSACTIONS_DATA_REQUEST,
+  RECEIVE_FUTURE_TRANSACTIONS_DATA,
   FETCH_TRANSACTIONS_DATA_REQUEST,
   RECEIVE_TRANSACTIONS_DATA,
   ADD_TRANSACTION,
@@ -8,6 +10,7 @@ import {
 import { parseJSON } from '../utils/misc'
 import {
   data_about_transactions,
+  data_about_future_transactions,
   create_transaction,
   edit_transaction,
   delete_transaction,
@@ -28,6 +31,21 @@ export function receiveTransactionsData(data) {
 export function fetchTransactionsDataRequest() {
   return {
     type: FETCH_TRANSACTIONS_DATA_REQUEST
+  }
+}
+
+export function receiveFutureTransactionsData(data) {
+  return {
+    type: RECEIVE_FUTURE_TRANSACTIONS_DATA,
+    payload: {
+      data
+    }
+  }
+}
+
+export function fetchFutureTransactionsDataRequest() {
+  return {
+    type: FETCH_FUTURE_TRANSACTIONS_DATA_REQUEST
   }
 }
 
@@ -55,6 +73,22 @@ export function deleteTransactionFromStore(transaction_id) {
     payload: {
       transaction_id
     }
+  }
+}
+
+export function fetchFutureTransactionsData(token, account_id) {
+  return dispatch => {
+    dispatch(fetchFutureTransactionsDataRequest())
+    data_about_future_transactions(token, account_id)
+      .then(parseJSON)
+      .then(response => {
+        dispatch(receiveFutureTransactionsData(response.result))
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          dispatch(logoutAndRedirect(error))
+        }
+      })
   }
 }
 

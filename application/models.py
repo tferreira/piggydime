@@ -96,7 +96,7 @@ class Transaction(db.Model):
                     (db.func.date(Transaction.date) <= Account.get_projected_date(account_id)),
                     (db.func.date(Transaction.date) > datetime.now().date()),
                     (Transaction.recurring_group_id != None)) \
-            .order_by(desc(Transaction.date)) \
+            .all()
 
 
 class RecurringGroup(db.Model):

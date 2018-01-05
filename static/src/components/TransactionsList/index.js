@@ -187,32 +187,7 @@ export default class TransactionsList extends React.Component {
       if (a.id > b.id) return 1
       return 0
     })
-    // get projected balance date for current account
-    let projectedDate = this.props.accounts.filter(
-      element => element.id == this.props.selectedAccount
-    )[0].projected_date
 
-    if (this.state.showRecurring) {
-      // display recurring transactions of the month
-      transactions = transactions.filter(element => {
-        return (
-          element.recurring_group_id === null ||
-          (element.recurring_group_id !== null &&
-            new Date(element.date) <= new Date()) ||
-          (element.recurring_group_id !== null &&
-            new Date(element.date) <= new Date(projectedDate))
-        )
-      })
-    } else {
-      // filter all future recurring transactions
-      transactions = transactions.filter(element => {
-        return (
-          element.recurring_group_id === null ||
-          (element.recurring_group_id !== null &&
-            new Date(element.date) <= new Date())
-        )
-      })
-    }
     const rows = transactions.map((row, index) => {
       let credit =
         parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)

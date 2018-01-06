@@ -240,8 +240,29 @@ def delete_account():
 def get_transactions():
     incoming = request.args
     account_id = incoming["account_id"]
+    limit = incoming["limit"]
     transactionsList = []
-    transactionsObjects = Transaction.get_transactions(account_id)
+    transactionsObjects = Transaction.get_transactions(account_id, limit)
+    for transaction in transactionsObjects:
+        transactionsList.append({
+            'transaction_id': transaction.transaction_id,
+            'account_id': transaction.account_id,
+            'label': transaction.label,
+            'amount': str(transaction.amount),  # Decimal is not JSON serializable
+            'recurring_group_id': transaction.recurring_group_id,
+            'date': transaction.date.strftime('%Y-%m-%d'),
+            'tick': transaction.tick,
+        })
+    return jsonify(result=transactionsList)
+
+
+@app.route("/api/transactions/future", methods=["GET"])
+@requires_auth
+def get_future_transactions():
+    incoming = request.args
+    account_id = incoming["account_id"]
+    transactionsList = []
+    transactionsObjects = Transaction.get_recurring_until_projected(account_id)
     for transaction in transactionsObjects:
         transactionsList.append({
             'transaction_id': transaction.transaction_id,

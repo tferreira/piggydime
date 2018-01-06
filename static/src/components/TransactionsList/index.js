@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import 'babel-polyfill'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -40,20 +41,26 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TransactionsList extends React.Component {
-  state = {
-    fixedHeader: true,
-    fixedFooter: true,
-    stripedRows: true,
-    showRowHover: false,
-    selectable: false,
-    multiSelectable: false,
-    enableSelectAll: false,
-    deselectOnClickaway: false,
-    showCheckboxes: false,
-    height: '400px',
-    snackOpen: false,
-    snackMessage: '',
-    showRecurring: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      fixedHeader: true,
+      fixedFooter: true,
+      stripedRows: true,
+      showRowHover: false,
+      selectable: false,
+      multiSelectable: false,
+      enableSelectAll: false,
+      deselectOnClickaway: false,
+      showCheckboxes: false,
+      height: '400px',
+      snackOpen: false,
+      snackMessage: '',
+      showRecurring: false,
+      recurringLoaded: false,
+      preventScroll: false
+    }
+    this.fireOnScroll = this.fireOnScroll.bind(this)
   }
 
   fetchData(account_id = null) {
@@ -62,7 +69,49 @@ export default class TransactionsList extends React.Component {
     }
     if (account_id !== null) {
       const token = this.props.token
-      this.props.fetchTransactionsData(token, account_id)
+      const limit = this.props.data ? this.props.data.length + 50 : 50
+      this.props.fetchTransactionsData(token, account_id, limit)
+    }
+    this.setState({
+      showRecurring: false
+    })
+  }
+
+  fetchFutureData(account_id = null) {
+    if (!this.state.recurringLoaded) {
+      if (account_id === null) {
+        account_id = this.props.selectedAccount
+      }
+      if (account_id !== null) {
+        const token = this.props.token
+        let call = async () =>
+          await await this.props.fetchFutureTransactionsData(token, account_id)
+        call().then(() => {
+          this.setState({
+            recurringLoaded: true
+          })
+        })
+      }
+    }
+  }
+
+  fireOnScroll(event) {
+    const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+    if (elem.scrollTop == 0 && !this.props.isFetching) {
+      this.setState({
+        preventScroll: true
+      })
+      this.fetchData()
+    }
+  }
+
+  toggleRecurring(event, isChecked) {
+    this.setState({
+      showRecurring: isChecked,
+      recurringLoaded: false
+    })
+    if (!isChecked) {
+      this.fetchData()
     }
   }
 
@@ -79,6 +128,11 @@ export default class TransactionsList extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+    elem.removeEventListener('scroll', this.fireOnScroll)
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedAccount !== this.props.selectedAccount) {
       this.fetchData(nextProps.selectedAccount)
@@ -88,7 +142,17 @@ export default class TransactionsList extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     // Do not scroll on ticking
     if (prevProps.data !== this.props.data) {
-      this.scrollToBottom()
+      if (!this.state.preventScroll) {
+        this.scrollToBottom()
+      } else {
+        this.setState({
+          preventScroll: false
+        })
+      }
+    }
+    if (this.refs.table) {
+      const elem = ReactDOM.findDOMNode(this.refs.table.refs.tableDiv)
+      elem.addEventListener('scroll', this.fireOnScroll)
     }
   }
 
@@ -141,13 +205,12 @@ export default class TransactionsList extends React.Component {
     call().then(() => {})
   }
 
-  toggleRecurring(event, isChecked) {
-    this.setState({
-      showRecurring: isChecked
-    })
-  }
-
   renderTransactionsList(transactions) {
+    if (this.state.showRecurring) {
+      // add recurring transactions
+      this.fetchFutureData()
+    }
+
     transactions.sort((a, b) => {
       if (new Date(a.date) < new Date(b.date)) return -1
       if (new Date(a.date) > new Date(b.date)) return 1
@@ -155,39 +218,16 @@ export default class TransactionsList extends React.Component {
       if (a.id > b.id) return 1
       return 0
     })
-    // get projected balance date for current account
-    let projectedDate = this.props.accounts.filter(
-      element => element.id == this.props.selectedAccount
-    )[0].projected_date
 
-    if (this.state.showRecurring) {
-      // display recurring transactions of the month
-      transactions = transactions.filter(element => {
-        return (
-          element.recurring_group_id === null ||
-          (element.recurring_group_id !== null &&
-            new Date(element.date) <= new Date()) ||
-          (element.recurring_group_id !== null &&
-            new Date(element.date) <= new Date(projectedDate))
-        )
-      })
-    } else {
-      // filter all future recurring transactions
-      transactions = transactions.filter(element => {
-        return (
-          element.recurring_group_id === null ||
-          (element.recurring_group_id !== null &&
-            new Date(element.date) <= new Date())
-        )
-      })
-    }
     const rows = transactions.map((row, index) => {
       let credit =
         parseFloat(row.amount) < 0 ? '' : Number(row.amount).toFixed(2)
       let debit =
         parseFloat(row.amount) < 0 ? Number(row.amount).toFixed(2) : ''
       let isFutureAndRecurring =
-        new Date(row.date) > new Date() && row.recurring_group_id !== null
+        new Date(row.date) > new Date() &&
+        row.recurring_group_id !== null &&
+        row.recurring_group_id !== undefined
       return (
         <TableRow
           key={row.transaction_id}
@@ -296,6 +336,7 @@ export default class TransactionsList extends React.Component {
                     <TableRowColumn colSpan="1">
                       <Toggle
                         label="Display recurring"
+                        toggled={this.state.showRecurring}
                         onToggle={this.toggleRecurring.bind(this)}
                       />
                     </TableRowColumn>
@@ -316,6 +357,7 @@ export default class TransactionsList extends React.Component {
 
 TransactionsList.propTypes = {
   fetchTransactionsData: React.PropTypes.func,
+  fetchFutureTransactionsData: React.PropTypes.func,
   loaded: React.PropTypes.bool,
   data: React.PropTypes.any,
   token: React.PropTypes.string,

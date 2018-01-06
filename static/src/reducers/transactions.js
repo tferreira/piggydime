@@ -1,4 +1,6 @@
 import {
+  RECEIVE_FUTURE_TRANSACTIONS_DATA,
+  FETCH_FUTURE_TRANSACTIONS_DATA_REQUEST,
   RECEIVE_TRANSACTIONS_DATA,
   FETCH_TRANSACTIONS_DATA_REQUEST,
   ADD_TRANSACTION,
@@ -10,10 +12,22 @@ import { createReducer } from '../utils/misc'
 const initialState = {
   data: null,
   isFetching: false,
-  loaded: false
+  loaded: false,
+  isFetchingFuture: false,
+  loadedFuture: false
 }
 
 export default createReducer(initialState, {
+  [RECEIVE_FUTURE_TRANSACTIONS_DATA]: (state, payload) =>
+    Object.assign({}, state, {
+      data: [...state.data, ...payload.data],
+      isFetchingFuture: false,
+      loadedFuture: true
+    }),
+  [FETCH_FUTURE_TRANSACTIONS_DATA_REQUEST]: state =>
+    Object.assign({}, state, {
+      isFetchingFuture: true
+    }),
   [RECEIVE_TRANSACTIONS_DATA]: (state, payload) =>
     Object.assign({}, state, {
       data: payload.data,

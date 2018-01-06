@@ -102,12 +102,24 @@ export function delete_account(token, id) {
   )
 }
 
-export function data_about_transactions(token, account_id) {
+export function data_about_future_transactions(token, account_id) {
+  return axios.get(
+    'api/transactions/future',
+    Object.assign(
+      {
+        params: { account_id: account_id }
+      },
+      tokenConfig(token)
+    )
+  )
+}
+
+export function data_about_transactions(token, account_id, limit) {
   return axios.get(
     'api/transactions',
     Object.assign(
       {
-        params: { account_id: account_id }
+        params: { account_id: account_id, limit: limit }
       },
       tokenConfig(token)
     )

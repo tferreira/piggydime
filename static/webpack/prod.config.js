@@ -1,7 +1,25 @@
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+  optimization: {
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true
+        },
+        sourceMap: true
+      })
+    ]
+  },
+ 
   devtool: 'source-map',
 
   entry: ['bootstrap-loader/extractStyles'],
@@ -11,7 +29,7 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
+    rules: [{
       test: /\.scss$/,
       loader: 'style!css!postcss-loader!sass',
     }],
@@ -25,12 +43,14 @@ module.exports = {
       __DEVELOPMENT__: false,
     }),
     new ExtractTextPlugin('bundle.css'),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+	new webpack.LoaderOptionsPlugin({
+	  options: {
+	    context: __dirname,
+	    postcss: [
+		  autoprefixer
+	    ]
+	  }
+	})
   ],
 };

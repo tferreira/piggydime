@@ -28,14 +28,14 @@ const common = {
   },
 
   resolve: {
-    extensions: ['', '.jsx', '.js', '.json', '.scss'],
-    modulesDirectories: ['node_modules', PATHS.app],
+    extensions: ['.jsx', '.js', '.json', '.scss'],
+    modules: ['node_modules', PATHS.app],
   },
 
   module: {
-    loaders: [{
+    rules: [{
       test: /bootstrap-sass\/assets\/javascripts\//,
-      loader: 'imports?jQuery=jquery',
+      loader: 'imports-loader?jQuery=jquery',
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'url?limit=10000&mimetype=application/font-woff',
@@ -66,17 +66,6 @@ const common = {
       loader: 'file?name=[name].[ext]',
     }],
   },
-
-  postcss: (webpack) => (
-    [
-      autoprefixer({
-        browsers: ['last 2 versions'],
-      }),
-      postcssImport({
-        addDependencyTo: webpack,
-      }),
-    ]
-  ),
 };
 
 if (TARGET === 'start' || !TARGET) {

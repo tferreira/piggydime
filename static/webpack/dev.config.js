@@ -13,7 +13,7 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
+    rules: [{
       test: /\.scss$/,
       loader: 'style!css?localIdentName=[path][name]--[local]!postcss-loader!sass',
     }],
@@ -27,9 +27,9 @@ module.exports = {
       __DEVELOPMENT__: true,
     }),
     new ExtractTextPlugin('bundle.css'),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.ProvidePlugin({
       jQuery: 'jquery',
     }),

@@ -17,7 +17,7 @@ Mako==1.0.4
 MarkupSafe==0.23
 mysql-connector-python-rf==2.2.2
 psycopg2==2.7.1
-py==1.4.31
+py==1.10.0
 pycparser==2.14
 pytest==3.0.1
 pytest-cov==2.3.1
